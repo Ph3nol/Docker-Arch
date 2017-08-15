@@ -27,8 +27,6 @@ class PhpDockerContainer extends DockerContainer
             ))
             ->applyShellConfiguration();
 
-        $service->dontUpdatePackagesSources();
-
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {
             $this->applyDotfiles();

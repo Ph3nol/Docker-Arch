@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class BuildCommand extends Command
+class GenerateCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -22,11 +22,11 @@ class BuildCommand extends Command
         parent::configure();
 
         $this
-            ->setName('build')
-            ->setDescription('Build Docker configuration.')
+            ->setName('generate')
+            ->setDescription('Generate Docker configuration.')
             ->addArgument(
                 'path',
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 sprintf(
                     'Project local path, containing %s configuration file.',
                     Architect::TYPE_PROJECT_CONFIG_FILENAME
@@ -41,6 +41,6 @@ class BuildCommand extends Command
     {
         $templatedFileGenerator = new TemplatedFileGenerator();
         $architect = new Architect($templatedFileGenerator);
-        $architect->build($input->getArgument('path'));
+        $architect->generate($input->getArgument('path') ? : getcwd());
     }
 }

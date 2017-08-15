@@ -21,6 +21,5 @@ class RedisDockerContainer extends DockerContainer
             ->setFrom(sprintf('redis:%s-alpine', $this->getService()->getOptions()['version']));
 
         $service = $this->getService();
-        $service->dontUpdatePackagesSources();
     }
 }

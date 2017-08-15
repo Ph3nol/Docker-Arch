@@ -26,6 +26,21 @@ class ServiceCollection extends \ArrayObject
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getCliServices(): ServiceCollection
+    {
+        $cliServices = [];
+        foreach ($this as $service) {
+            if (true === ($service->getOptions()['cliOnly'] ?? false)) {
+                $cliServices[] = $service;
+            }
+        }
+
+        return new ServiceCollection($cliServices);
+    }
+
+    /**
      * @param ServiceInterface $refService
      *
      * @return ServiceInterface[]

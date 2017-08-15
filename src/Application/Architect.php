@@ -81,7 +81,7 @@ class Architect implements ArchitectInterface
     /**
      * {@inheritdoc}
      */
-    public function build($projectPath): void
+    public function generate($projectPath): void
     {
         $project = $this->initProject($projectPath);
 

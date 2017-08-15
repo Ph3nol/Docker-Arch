@@ -53,11 +53,6 @@ abstract class AbstractService implements ServiceInterface
     private $options = [];
 
     /**
-     * @var boolean
-     */
-    private $needsPackagesSourcesUpdate = true;
-
-    /**
      * @param ProjectInterface $project
      * @param array            $options
      */
@@ -113,14 +108,6 @@ abstract class AbstractService implements ServiceInterface
     public function isDockerSynched(): bool
     {
         return $this->dockerSync;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isCli(): bool
-    {
-        return false;
     }
 
     /**
@@ -186,34 +173,6 @@ abstract class AbstractService implements ServiceInterface
     public function getHost(): ?string
     {
         return $this->host;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function needsPackagesSourcesUpdate(): bool
-    {
-        return $needsPackagesSourcesUpdate;
-    }
-
-    /**
-     * @return self
-     */
-    public function updatePackagesSources(): self
-    {
-        $this->needsPackagesSourcesUpdate = true;
-
-        return $this;
-    }
-
-    /**
-     * @return self
-     */
-    public function dontUpdatePackagesSources(): self
-    {
-        $this->needsPackagesSourcesUpdate = false;
-
-        return $this;
     }
 
     /**

@@ -23,7 +23,7 @@ From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
 
 ```
 docker pull ph3nol/docker-arch
-docker run -it -v $(pwd):/destination ph3nol/docker-arch build /destination
+docker run -it -v $(pwd):/destination ph3nol/docker-arch generate /destination
 ```
 
 Build from local library Dockerfile:
@@ -42,7 +42,7 @@ docker build --force-rm --no-cache -t ph3nol/docker-arch ./docker/phar/
 docker build --force-rm --no-cache -t ph3nol/docker-arch-local ./docker/local/
 docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local php
 docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local composer
-docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local bin/docker-arch build /destination
+docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local bin/docker-arch generate /destination
 docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local composer build-phar
 ```
 

@@ -22,7 +22,6 @@ class NginxDockerContainer extends DockerContainer
             ->setWorkingDir('/apps');
 
         $service = $this->getService();
-        $service->dontUpdatePackagesSources();
 
         // Templated files.
         $service->addTemplatedFile(new TemplatedFile(

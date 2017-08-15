@@ -14,5 +14,5 @@ interface ArchitectInterface
      *
      * @return void
      */
-    public function build($projectPath): void;
+    public function generate($projectPath): void;
 }

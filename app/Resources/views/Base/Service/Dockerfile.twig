@@ -26,13 +26,11 @@ LABEL maintainer="{{ dockerContainer.maintainer|raw }}"
 COPY {{ entryFrom }} {{ entryTo }}
 {% endfor %}
 {# ----------------------------------------------------- Packages (RUN apt-get part) #}
-{% if dockerContainer.updatePackagesSources %}
+{% if dockerContainer.packages|length %}
 
 # Update APT sources.
 RUN set -xe && \
     apt-get update
-{% endif %}
-{% if dockerContainer.packages|length %}
 
 # Install package from APT.
 RUN apt-get install -y {{ dockerContainer.packages|join(" \\\n    ") }}

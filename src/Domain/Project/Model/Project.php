@@ -53,6 +53,14 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getCliServices(): ServiceCollection
+    {
+        return $this->getServices()->getCliServices();
+    }
+
+    /**
      * @param ServiceInterface $forService
      *
      * @return array

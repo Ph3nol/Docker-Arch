@@ -1,4 +1,4 @@
-{% set dockerSyncRequired = (generator.project.dockerSynchedServices|length > 0) %}
+{% set dockerSyncRequired = (project.dockerSynchedServices|length > 0) %}
 
 #!/bin/bash
 
@@ -19,8 +19,8 @@ terminate () {
 
 {% if dockerSyncRequired %}
 create_volumes () {
-{% for serviceGenerator in generator.servicesGenerators if serviceGenerator.service.isDockerSynched == true %}
-    docker volume create --name=docker-arch-{{ serviceGenerator.service.identifier }}-sync
+{% for service in project.services if service.isDockerSynched == true %}
+    docker volume create --name=docker-arch-{{ service.identifier }}-sync
 {% endfor %}
 }
 {% endif %}
@@ -49,16 +49,19 @@ terminate
 }
 
 shell () {
-if [ $# -lt 2 ]; then
-echo "You must given an instance name, from available (UP) ones:"
-echo ""
-$DOCKER_COMPOSE_COMMAND ps
-echo ""
-echo "Example: $0 $1 <name>"
-terminate
-fi
+DOCKER_CLI_CONTAINERS_IDENTIFIERS=({% for service in project.cliServices %}"{{ service.identifier }}"{% if not loop.last %} {% endif %}{% endfor %})
+INDEX=1
+echo "Choose the container instance to access its bash/zsh shell:"
+for DOCKER_CONTAINER_IDENTIFIER in "${DOCKER_CLI_CONTAINERS_IDENTIFIERS[@]}"
+do
+    CONTAINER_STATUS=$($DOCKER_COMPOSE_COMMAND ps | sed 1,2d | grep Up | grep $DOCKER_CONTAINER_IDENTIFIER | cut -d ' ' -f1)
+    CONTAINER_STATUS_DISPLAY=$(if [ ${CONTAINER_STATUS} != "" ]; then echo "AVAILABLE"; else echo "NOT AVAILABLE"; fi)
+    echo "    > $INDEX - $DOCKER_CONTAINER_IDENTIFIER [$CONTAINER_STATUS_DISPLAY]"
+    INDEX=$(($INDEX+1))
+done
+read -p "Choose the container instance (list above) to access its bash/zsh shell: "  DOCKER_CONTAINER_INDEX
 
-$DOCKER_COMPOSE_COMMAND exec $2 bash
+$DOCKER_COMPOSE_COMMAND exec ${DOCKER_CLI_CONTAINERS_IDENTIFIERS[$DOCKER_CONTAINER_INDEX - 1]} bash
 terminate
 }
 
