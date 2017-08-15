@@ -1,7 +1,7 @@
 .PHONY: test lint
 
 lint:
-	vendor/bin/coke
+	bin/coke
 
 test:
-	vendor/bin/atoum
+	bin/atoum -v # To do: write tests!
