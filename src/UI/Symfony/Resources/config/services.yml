@@ -1,0 +1,12 @@
+parameters:
+    ph3.docker_arch.templated_file_generator.class: Ph3\DockerArch\Application\TemplatedFileGenerator
+    ph3.docker_arch.architect.class: Ph3\DockerArch\Application\Architect
+
+services:
+    ph3.docker_arch.templated_file_generator:
+        class: "%ph3.docker_arch.templated_file_generator.class%"
+
+    ph3.docker_arch.architect:
+        class: "%ph3.docker_arch.architect.class%"
+        arguments:
+            - "@ph3.docker_arch.templated_file_generator"

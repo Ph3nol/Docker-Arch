@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+if [ -f "bower.json" ]
+then
+    bower install
+fi
+
+if [ -f "package.json" ]
+then
+    npm install
+fi
+
+{% if service.options.supervisor %}
+/usr/bin/supervisord
+{% elseif true == service.options.cliOnly %}
+bash
+{% endif %}

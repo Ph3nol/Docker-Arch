@@ -1,0 +1,5 @@
+.docker-arch/
+vendor/
+bin/atoum
+bin/coke
+bin/php*

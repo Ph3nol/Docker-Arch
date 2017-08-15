@@ -1,0 +1,51 @@
+{
+    "name": "ph3nol/docker-arch",
+    "description": "Generate Web/CLI projects Dockerized environments, from 1 simple JSON file.",
+    "keywords": ["docker", "docker-compose", "generator", "devops", "developer-tools"],
+    "type": "standalone",
+    "homepage": "https://github.com/Ph3nol/Docker-Arch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cédric Dugat",
+            "email": "cedric@dugat.me"
+        },
+        {
+            "name": "Community contributors",
+            "homepage": "https://github.com/Ph3nol/Docker-Arch/contributors"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.1",
+        "symfony/yaml": "~3.3",
+        "symfony/console": "~3.3",
+        "symfony/filesystem": "^3.3",
+        "symfony/options-resolver": "^3.3",
+        "twig/twig": "^1.0||^2.0"
+    },
+    "autoload": {
+        "psr-4": { "Ph3\\DockerArch\\": "src/" }
+    },
+    "scripts": {
+        "build-phar" : [
+            "composer install --no-dev --prefer-dist",
+            "curl --silent -o ./phar-composer -L `curl -s https://api.github.com/repos/clue/phar-composer/releases | grep browser_download_url | head -n 1 | cut -d '\"' -f 4`",
+            "chmod +x ./phar-composer",
+            "./phar-composer build . dist/",
+            "rm ./phar-composer"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "bin": [
+        "bin/docker-arch"
+    ],
+    "require-dev": {
+        "atoum/atoum": "^3.0",
+        "atoum/stubs": "*",
+        "m6web/coke": "^2.1",
+        "m6web/symfony2-coding-standard": "^3.3"
+    }
+}

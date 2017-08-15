@@ -1,0 +1,48 @@
+version: "3"
+{# ----------------------------------------------------- Volumes #}
+{% if project.dockerSynchedServices|length %}
+
+volumes:
+{% endif %}
+{% for service in project.dockerSynchedServices %}
+    docker-arch-{{ service.identifier }}-sync:
+        external: true
+{% endfor %}
+{# ----------------------------------------------------- Services #}
+
+services:
+{% for service in project.services %}
+    {{ service.identifier }}:
+{# ----------------------------------------------------- Instance specific build and name #}
+        container_name: {{ service.identifier }}
+        build: ./{{ service.identifier }}
+{% set links = project.getLinksForService(service) %}
+{% if links|length %}
+{# ----------------------------------------------------- Links #}
+        links:
+{% for link in links %}
+            - {{ link }}
+{% endfor %}
+{% endif %}
+{% set volumes = project.getVolumesForService(service) %}
+{% if volumes|length %}
+{# ----------------------------------------------------- Volumes #}
+        volumes:
+{% for volume in volumes %}
+            - {{ volume.local }}:{{ volume.remote }}{% if volume.type|default(null) %}:{{ volume.type }}{% endif %}
+
+{% endfor %}
+{% endif %}
+{% if service.ports|length %}
+{# ----------------------------------------------------- Ports #}
+        ports:
+{% for publicPort, internalPort in service.ports %}
+            - {{ publicPort }}:{{ internalPort }}
+{% endfor %}
+{% endif %}
+{% if true == service.isCli or true == service.options.cliOnly|default(false) %}
+        stdin_open: true
+        tty: true
+{% endif %}
+
+{% endfor %}

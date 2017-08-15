@@ -1,0 +1,16 @@
+{
+    "services": [
+        {
+            "type": "php",
+            "localPath": "./",
+            "dockerSync": false,
+            "options": {
+                "version": "7.1",
+                "cliOnly": true,
+                "config": {
+                    "phar.readonly": "0"
+                }
+            }
+        }
+    ]
+}

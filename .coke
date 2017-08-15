@@ -1,0 +1,8 @@
+command=phpcs
+standard=vendor/m6web/symfony2-coding-standard/Symfony2
+standard=Symfony2
+verbose=true
+# only-git-changed=true
+
+src/
+!test

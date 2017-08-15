@@ -1,0 +1,22 @@
+{
+    "services": [
+        {
+            "type": "nginx",
+            "localPath": "./app",
+            "host": "localhost",
+            "container": {
+                "ports": {
+                    "8888": "80"
+                }
+            }
+        },
+        {
+            "type": "nodejs",
+            "localPath": "./app",
+            "host": "localhost",
+            "options": {
+                "version": "8"
+            }
+        }
+    ]
+}

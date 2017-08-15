@@ -1,0 +1,65 @@
+.SILENT:
+
+OS := $(shell uname)
+
+create-volumes:
+{% if generator.project.dockerSynchedServices|length %}
+{% for serviceGenerator in generator.servicesGenerators if serviceGenerator.service.isDockerSynched == true %}
+	docker volume create --name=docker-arch-{{ serviceGenerator.service.identifier }}-sync
+{% endfor %}
+{% endif %}
+
+init-sync:
+{% if generator.project.dockerSynchedServices|length %}
+	make create-volumes
+	docker-sync start
+{% endif %}
+
+init:
+ifeq ($(OS),Darwin)
+	make init-sync
+	docker-compose up --build -d
+else
+	docker-compose up --build -d
+endif
+
+start:
+ifeq ($(OS),Darwin)
+	make create-volumes
+	make init-sync
+	docker-compose up -d
+else
+	docker-compose up -d
+endif
+
+start-all:
+ifeq ($(OS),Darwin)
+	make create-volumes
+	make init-sync
+	docker-compose up -d
+else
+	docker-compose up -d
+endif
+
+stop:
+{% if generator.project.dockerSynchedServices|length %}
+ifeq ($(OS),Darwin)
+	docker-compose stop
+	docker-sync stop
+else
+	docker-compose stop
+endif
+{% else %}
+	docker-compose stop
+{% endif %}
+
+clean:
+	docker-compose rm --stop --force
+	# docker stop $(docker ps -a -q)
+	# docker rm --force $(docker ps -a -q)
+{% if generator.project.dockerSynchedServices|length %}
+ifeq ($(OS),Darwin)
+	docker-sync clean
+endif
+{% endif %}
+	docker volume prune

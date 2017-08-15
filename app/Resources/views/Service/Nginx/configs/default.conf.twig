@@ -1,0 +1,14 @@
+{% set project = generator.project %}
+{% set service = generator.service %}
+server {
+    add_header 'X-Precious-Animal' 'Unicorn' always;
+    add_header 'X-Sexy-Animal' 'Pony' always;
+    add_header 'X-Docker-Container' '{{ service.identifier }}' always;
+}
+
+server {
+    server_name _;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+}

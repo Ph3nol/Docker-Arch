@@ -1,0 +1,32 @@
+{% set project = generator.project %}
+{% set service = generator.service %}
+{% set host = forService.host|default('localhost') %}
+server {
+    server_name {{ host }};
+    root /apps/{{ host }};
+
+    index index.html index.htm index.php;
+
+    access_log /var/log/nginx/{{ host }}-access.log;
+    error_log /var/log/nginx/{{ host }}-error.log;
+
+    location / {
+        fastcgi_pass {{ forService.identifier }}:9000;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param HTTPS off;
+        fastcgi_param REMOTE_ADDR 127.0.0.1;
+
+        add_header 'Access-Control-Allow-Origin' "$http_origin";
+        add_header 'Access-Control-Allow-Credentials' 'true';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+        add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With';
+
+        if ($request_method = 'OPTIONS') {
+            return 204;
+        }
+    }
+}

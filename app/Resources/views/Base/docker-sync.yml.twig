@@ -1,0 +1,19 @@
+version: "2"
+
+syncs:
+{% for service in project.dockerSynchedServices %}
+    docker-arch-{{ service.identifier }}-sync:
+        src: "{{ service.localPath }}"
+        sync_strategy: "unison"
+        sync_userid: "33"
+        sync_excludes:
+            - ".DS_Store"
+            - "docker"
+            - "logs/*"
+            - "cache/*"
+            - "app/logs/*"
+            - "app/cache/*"
+            - "var/logs/*"
+            - "var/cache/*"
+
+{% endfor %}

@@ -1,0 +1,37 @@
+{
+    "services": [
+        {
+            "type": "nginx",
+            "localPath": "./app",
+            "host": "localhost",
+            "container": {
+                "ports": {
+                    "8888": "80"
+                }
+            }
+        },
+        {
+            "type": "php",
+            "localPath": "./app",
+            "host": "localhost",
+            "options": {
+                "version": "7.1",
+                "extensions": [
+                    "pdo_mysql"
+                ]
+            }
+        },
+        {
+            "type": "mysql",
+            "container": {
+                "ports": {
+                    "3306": "3306"
+                }
+            },
+            "options": {
+                "version": "5.7",
+                "dataLocation": "/tmp/docker/mysql/data"
+            }
+        }
+    ]
+}

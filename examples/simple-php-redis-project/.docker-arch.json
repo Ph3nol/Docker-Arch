@@ -1,0 +1,36 @@
+{
+    "services": [
+        {
+            "type": "nginx",
+            "localPath": "./app",
+            "host": "localhost",
+            "container": {
+                "ports": {
+                    "8888": "80"
+                }
+            }
+        },
+        {
+            "type": "php",
+            "localPath": "./app",
+            "host": "localhost",
+            "options": {
+                "version": "7.1",
+                "extensions": [
+                    "redis"
+                ]
+            }
+        },
+        {
+            "type": "redis",
+            "container": {
+                "ports": {
+                    "6379": "6379"
+                }
+            },
+            "options": {
+                "version": "4.0"
+            }
+        }
+    ]
+}

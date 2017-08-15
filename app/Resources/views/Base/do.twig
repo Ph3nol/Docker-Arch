@@ -1,0 +1,101 @@
+{% set dockerSyncRequired = (generator.project.dockerSynchedServices|length > 0) %}
+
+#!/bin/bash
+
+INITIAL_DIR=$PWD
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOCKER_COMPOSE_COMMAND="docker-compose"
+DOCKER_SYNC_COMMAND="docker-sync"
+
+cd "$DIR"
+
+usage () {
+    echo "Usage : $0 (build|start|shell|dc|stop|clean)"
+}
+
+terminate () {
+    cd $INITIAL_DIR
+}
+
+{% if dockerSyncRequired %}
+create_volumes () {
+{% for serviceGenerator in generator.servicesGenerators if serviceGenerator.service.isDockerSynched == true %}
+    docker volume create --name=docker-arch-{{ serviceGenerator.service.identifier }}-sync
+{% endfor %}
+}
+{% endif %}
+
+build () {
+{% if dockerSyncRequired %}
+create_volumes
+$DOCKER_SYNC_COMMAND start
+{% endif %}
+$DOCKER_COMPOSE_COMMAND up --build -d
+terminate
+}
+
+start () {
+{% if dockerSyncRequired %}
+create_volumes
+$DOCKER_SYNC_COMMAND start
+{% endif %}
+$DOCKER_COMPOSE_COMMAND up -d
+terminate
+}
+
+compose () {
+$DOCKER_COMPOSE_COMMAND ${@:2}
+terminate
+}
+
+shell () {
+if [ $# -lt 2 ]; then
+echo "You must given an instance name, from available (UP) ones:"
+echo ""
+$DOCKER_COMPOSE_COMMAND ps
+echo ""
+echo "Example: $0 $1 <name>"
+terminate
+fi
+
+$DOCKER_COMPOSE_COMMAND exec $2 bash
+terminate
+}
+
+stop () {
+{% if dockerSyncRequired %}
+    $DOCKER_SYNC_COMMAND stop
+    $DOCKER_COMPOSE_COMMAND stop
+{% endif %}
+$DOCKER_COMPOSE_COMMAND stop
+terminate
+}
+
+clean () {
+$DOCKER_COMPOSE_COMMAND rm --stop --force
+# docker stop $(docker ps -a -q)
+# docker rm --force $(docker ps -a -q)
+{% if dockerSyncRequired %}
+    $DOCKER_SYNC_COMMAND clean
+{% endif %}
+docker volume prune
+terminate
+}
+
+case "$1" in
+
+build) build
+    ;;
+start) start
+    ;;
+dc) compose $*
+    ;;
+shell) shell $*
+    ;;
+stop) stop
+    ;;
+clean) clean
+    ;;
+*) usage
+   ;;
+esac
