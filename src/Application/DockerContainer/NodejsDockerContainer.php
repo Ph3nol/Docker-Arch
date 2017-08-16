@@ -56,7 +56,10 @@ class NodejsDockerContainer extends DockerContainer
         }
 
         // Copy entries.
-        $this->addCopyEntry(['local' => 'entrypoint.sh', 'remote' => '/root/entrypoint.sh']);
+        $this->addCopyEntry([
+            'local' => 'entrypoint.sh',
+            'remote' => '/root/entrypoint.sh',
+        ]);
 
         // Templated files.
         $service->addTemplatedFile(new TemplatedFile(

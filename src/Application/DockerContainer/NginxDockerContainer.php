@@ -35,7 +35,10 @@ class NginxDockerContainer extends DockerContainer
 
         // Copy entries.
         if (true === $hasGeneratedVhosts) {
-            $this->addCopyEntry(['local' => 'conf.d/*', 'remote' => '/etc/nginx/conf.d/']);
+            $this->addCopyEntry([
+                'local' => 'conf.d/*',
+                'remote' => '/etc/nginx/conf.d/',
+            ]);
         }
     }
 

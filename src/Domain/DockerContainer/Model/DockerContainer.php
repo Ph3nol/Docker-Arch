@@ -87,5 +87,11 @@ class DockerContainer implements DockerContainerInterface
             'dotfiles/.shell.config',
             'Service/Common/.shell.config.twig'
         ));
+
+        // Copy entries.
+        $thos->addCopyEntry([
+            'local' => 'dotfiles/.shell.config',
+            'remote'=> '/root/.shell.config',
+        ]);
     }
 }
