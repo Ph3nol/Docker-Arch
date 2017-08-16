@@ -89,7 +89,7 @@ class DockerContainer implements DockerContainerInterface
         ));
 
         // Copy entries.
-        $thos->addCopyEntry([
+        $this->addCopyEntry([
             'local' => 'dotfiles/.shell.config',
             'remote'=> '/root/.shell.config',
         ]);
