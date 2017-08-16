@@ -71,7 +71,6 @@ class DockerContainer implements DockerContainerInterface
         // Commands.
         if (true === $this->getService()->getOptions()['zsh']) {
             $this
-                ->addCommand('echo "zsh" > /root/.bashrc')
                 ->addCommand('echo "\nsource /root/.shell.config" > /root/.zshrc')
                 ->addCommand('chsh -s /bin/zsh');
         } else {

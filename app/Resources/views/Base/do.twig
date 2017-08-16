@@ -50,16 +50,17 @@ terminate
 
 shell () {
 DOCKER_CLI_CONTAINERS_IDENTIFIERS=({% for service in project.cliServices %}"{{ service.identifier }}"{% if not loop.last %} {% endif %}{% endfor %})
+DOCKER_CLI_CONTAINERS_SHELLS=({% for service in project.cliServices %}"{{ service.options.zsh|default(false) ? 'zsh': 'bash' }}"{% if not loop.last %} {% endif %}{% endfor %})
 INDEX=1
 echo "Choose the container instance to access its bash/zsh shell:"
 for DOCKER_CONTAINER_IDENTIFIER in "${DOCKER_CLI_CONTAINERS_IDENTIFIERS[@]}"
 do
     CONTAINER_STATUS=$($DOCKER_COMPOSE_COMMAND ps | sed 1,2d | grep Up | grep $DOCKER_CONTAINER_IDENTIFIER | cut -d ' ' -f1)
     CONTAINER_STATUS_DISPLAY=$(if [ ${CONTAINER_STATUS} != "" ]; then echo "AVAILABLE"; else echo "NOT AVAILABLE"; fi)
-    echo "    > $INDEX - $DOCKER_CONTAINER_IDENTIFIER [$CONTAINER_STATUS_DISPLAY]"
+    echo "    > $INDEX - $DOCKER_CONTAINER_IDENTIFIER [$DOCKER_CLI_CONTAINERS_SHELLS[$INDEX]] [$CONTAINER_STATUS_DISPLAY]"
     INDEX=$(($INDEX+1))
 done
-read -p "Choose the container instance (list above) to access its bash/zsh shell: "  DOCKER_CONTAINER_INDEX
+read -p "Choose the container instance (list above) to access its bash/zsh shell: " DOCKER_CONTAINER_INDEX
 
 $DOCKER_COMPOSE_COMMAND exec ${DOCKER_CLI_CONTAINERS_IDENTIFIERS[$DOCKER_CONTAINER_INDEX - 1]} bash
 terminate
