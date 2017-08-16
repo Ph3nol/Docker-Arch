@@ -2,7 +2,7 @@
     "services": [
         {
             "type": "php",
-            "localPath": "./",
+            "localPath": "../",
             "dockerSync": false,
             "options": {
                 "version": "7.1",
@@ -10,7 +10,11 @@
                 "config": {
                     "phar.readonly": "0"
                 }
-            }
+            },
+            "packages": [
+                "zip",
+                "unzip"
+            ]
         }
     ]
 }

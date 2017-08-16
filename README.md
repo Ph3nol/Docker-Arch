@@ -24,7 +24,6 @@ From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
 
 ```
 docker pull ph3nol/docker-arch
-docker run -it -v $(pwd):/destination ph3nol/docker-arch generate /destination
 ```
 
 Build from local library Dockerfile:
@@ -33,19 +32,40 @@ Build from local library Dockerfile:
 docker build --force-rm --no-cache -t ph3nol/docker-arch ./docker/phar/
 ```
 
-## Docker Arch JSON file configuration
+## Build Docker environment
 
-[See some projects configurations examples](examples/).
+Go to your project root directory, containing `.docker-arch.json` file [see examples](examples/).
+
+Generate Docker environment from installed package:
+
+```
+docker-arch generate
+```
+
+Or generate from Docker image:
+
+```
+docker run -it -v $(pwd):/destination ph3nol/docker-arch generate /destination
+```
+
+Then, from your project root directory:
+
+```
+.docker-arch/do build    # Build containers (like `docker-compose up --build -d`)
+.docker-arch/do start    # Start containers (like `docker-compose up -d`)
+.docker-arch/do shell    # Access a container Shell
+.docker-arch/do dc       # Access `docker-compose` with your configuration, for specific requests
+.docker-arch/do stop     # Stop containers (like `docker-compose stop`)
+.docker-arch/do clean    # Stop/Remove containers and reset linked volumes
+```
 
 ## Development
 
-```
-docker build --force-rm --no-cache -t ph3nol/docker-arch-local ./docker/local/
-docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local php
-docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local composer
-docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local bin/docker-arch generate /destination
-docker run -it -v /path/to/the/docker-arch/library:/app -v $(pwd):/destination ph3nol/docker-arch-local composer build-phar
-```
+* Install Docker Arch (see the installation dedicated part)
+* Clone this project from Github
+* `composer install`
+* Build Docker Arch environment with `docker-arch build` (library root directory)
+* Use `.docker-arch/do` (see the part above)
 
 ## To do
 
