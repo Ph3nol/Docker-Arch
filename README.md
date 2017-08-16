@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ph3nol/docker-arch.svg)](https://packagist.org/packages/ph3nol/docker-arch)
 [![Build Status](https://secure.travis-ci.org/Ph3nol/Docker-Arch.png)](http://travis-ci.org/Ph3nol/Docker-Arch)
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/4f6f80c4-281a-4903-bf4c-1eb264995dbd/big.png)](https://insight.sensiolabs.com/projects/4f6f80c4-281a-4903-bf4c-1eb264995dbd)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/acb7b2ff-0aa1-47bf-a0a9-7b944c36b7c4/big.png)](https://insight.sensiolabs.com/projects/acb7b2ff-0aa1-47bf-a0a9-7b944c36b7c4)
 
 ## Local installation
 

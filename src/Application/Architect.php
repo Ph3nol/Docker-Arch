@@ -34,22 +34,12 @@ class Architect implements ArchitectInterface
     /**
      * @var string
      */
-    private $buildIdentifier;
-
-    /**
-     * @var string
-     */
     private $projectPath;
 
     /**
      * @var PersisterInterface
      */
     private $persister;
-
-    /**
-     * @var ProjectInterface
-     */
-    private $project;
 
     /**
      * @var Filesystem
@@ -66,7 +56,6 @@ class Architect implements ArchitectInterface
         define('PROJECT_SRC_DIR', PROJECT_ROOT_DIR.'/src');
 
         $this->templatedFileGenerator = $templatedFileGenerator;
-        $this->buildIdentifier = uniqid();
         $this->fs = new Filesystem();
     }
 
@@ -145,6 +134,6 @@ class Architect implements ArchitectInterface
             $this->persister = Persister::init($this->projectPath);
         }
 
-        return $this->project = (new ProjectRepository($this->persister))->getProject();
+        return (new ProjectRepository($this->persister))->getProject();
     }
 }

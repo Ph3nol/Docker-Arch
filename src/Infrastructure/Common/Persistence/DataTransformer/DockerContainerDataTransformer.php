@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer;
 
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 
 /**
