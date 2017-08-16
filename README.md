@@ -13,11 +13,10 @@ To install, just get `install.sh` file, and launch it.
 Here is an example with `curl` usage:
 
 ```
-curl -L -s -o \
-    /tmp/docker-arch-install \
+curl -L -s -o docker-arch-install \
     https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh
-chmod +x /tmp/docker-arch-install
-./tmp/docker-arch-install
+chmod +x docker-arch-install
+./docker-arch-install
 ```
 
 ## Docker installation

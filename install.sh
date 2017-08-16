@@ -3,9 +3,7 @@
 GITHUB_LAST_RELEASE_ENDPOINT="https://api.github.com/repos/Ph3nol/Docker-Arch/releases/tags/latest"
 DESTINATION_BIN_PATH="/usr/local/bin/docker-arch"
 
-echo ""
-echo "   Docker Arch(itect) 🐳"
-echo "--- INSTALLATION SCRIPT ---"
+echo "--- Docker Arch(itect) - Installation script ---"
 echo ""
 echo "Looking for your available download package..."
 
@@ -40,8 +38,5 @@ echo "• Installing..."
 chmod +x /tmp/docker-arch
 mv /tmp/docker-arch "$DESTINATION_BIN_PATH"
 echo "• Done."
-
 echo ""
-echo "Your PATH global is the following: $PATH."
-echo "Be sure /usr/local/bin is present, or add it for direct access to docker-arch (or use absolute path calls)."
 echo "Enjoy! 🐳"
