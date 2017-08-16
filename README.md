@@ -9,13 +9,14 @@
 
 ## Local installation
 
-```
-curl -O -sL https://github.com/Ph3nol/Docker-Arch/raw/master/dist/docker-arch.phar
-chmod +x docker-arch.phar
-mv docker-arch.phar /usr/local/bin/docker-arch
-```
+To install, just get `install.sh` file, and launch it.
+Here is an example with `curl` usage:
 
-Note: for information, there is no stable release for instant, work is in progress.
+```
+curl -L -s -o /tmp/docker-arch-install https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh
+chmod +x /tmp/docker-arch-install
+./tmp/docker-arch-install
+```
 
 ## Docker installation
 

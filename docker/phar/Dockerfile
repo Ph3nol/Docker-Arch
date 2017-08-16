@@ -7,9 +7,11 @@ RUN set -xe && \
     apt-get update && \
     apt-get install -y wget
 
-RUN wget --quiet --no-check-certificate -O /root/docker-arch https://github.com/Ph3nol/Docker-Arch/raw/master/dist/docker-arch.phar
-RUN chmod +x /root/docker-arch
+RUN wget --quiet --no-check-certificate -O \
+    /root/docker-arch-install \
+    https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh
 
-RUN cat /root/docker-arch
+RUN chmod +x /root/docker-arch-install
+RUN /root/docker-arch-install
 
-ENTRYPOINT ["/root/docker-arch"]
+ENTRYPOINT ["/usr/local/bin/docker-arch"]
