@@ -10,11 +10,7 @@
                 "config": {
                     "phar.readonly": "0"
                 }
-            },
-            "packages": [
-                "zip",
-                "unzip"
-            ]
+            }
         }
     ]
 }
