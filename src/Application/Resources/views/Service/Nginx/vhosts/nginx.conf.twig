@@ -1,5 +1,3 @@
-{% set project = generator.project %}
-{% set service = generator.service %}
 {% set host = forService.host|default('localhost') %}
 server {
     server_name {{ host }};

@@ -43,9 +43,9 @@ class NginxDockerContainer extends DockerContainer
     }
 
     /**
-     * @return void
+     * @return boolean
      */
-    private function addVhostsTemplatedFiles(): void
+    private function addVhostsTemplatedFiles(): bool
     {
         $projectService = $this->getService();
 
@@ -56,9 +56,11 @@ class NginxDockerContainer extends DockerContainer
                 $vhostsServicesByHost[$service->getHost()] = $service;
             }
         }
+
+        $hasGeneratedVhosts = false;
         $vhostIndex = 0;
         foreach ($vhostsServicesByHost as $host => $service) {
-            $vhostName = $service->getType();
+            $vhostName = $service->getName();
             $appType = $service->getOptions()['appType'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
@@ -76,6 +78,9 @@ class NginxDockerContainer extends DockerContainer
             ]));
 
             ++$vhostIndex;
+            $hasGeneratedVhosts = true;
         }
+
+        return $hasGeneratedVhosts;
     }
 }

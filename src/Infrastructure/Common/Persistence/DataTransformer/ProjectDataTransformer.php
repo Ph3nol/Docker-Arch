@@ -33,6 +33,11 @@ class ProjectDataTransformer
             $project->addService($service);
         }
 
+        // Project services Docker containers initialization.
+        foreach ($project->getServices() as $service) {
+            $service->getDockerContainer()->init();
+        }
+
         return $project;
     }
 }

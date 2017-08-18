@@ -7,4 +7,8 @@ namespace Ph3\DockerArch\Domain\DockerContainer\Model;
  */
 interface DockerContainerInterface
 {
+    /**
+     * @return void
+     */
+    public function init(): void;
 }

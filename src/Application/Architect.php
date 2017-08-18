@@ -85,26 +85,29 @@ class Architect implements ArchitectInterface
             $project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
         }
 
+        // Project files dump.
         foreach ($project->getTemplatedFiles() as $templatedFile) {
-            $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), [
-                'project' => $project,
-            ]);
+            $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
+                ['project' => $project],
+                $templatedFile->getParameters()
+            ));
             $this->fs->dumpFile($tmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
             if ($chmod = $templatedFile->getChmod()) {
                 $this->fs->chmod($tmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
             }
         }
 
+        // Project services files, with dump.
         foreach ($project->getServices() as $service) {
             $serviceTmpBuildDir = sprintf('%s/%s', $tmpBuildDir, $service->getIdentifier());
 
             $service->addTemplatedFile(new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig'));
 
             foreach ($service->getTemplatedFiles() as $templatedFile) {
-                $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), [
-                    'project' => $project,
-                    'service' => $service,
-                ]);
+                $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
+                    ['project' => $project, 'service' => $service],
+                    $templatedFile->getParameters()
+                ));
                 $this->fs->dumpFile($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
                 if ($chmod = $templatedFile->getChmod()) {
                     $this->fs->chmod($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);

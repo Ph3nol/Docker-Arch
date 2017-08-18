@@ -38,7 +38,14 @@ class DockerContainer implements DockerContainerInterface
     {
         $this->service = $service;
         $this->setMaintainer('Docker Arch <https://github.com/Ph3nol/Docker-Arch>');
-        $this->init();
+        $this->addEnv('DOCKER_CONTAINER_NAME', $service->getIdentifier());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init(): void
+    {
     }
 
     /**
