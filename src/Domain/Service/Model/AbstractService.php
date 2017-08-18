@@ -196,6 +196,14 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @return string|false
+     */
+    public function allowedLinksExpression()
+    {
+        return false;
+    }
+
+    /**
      * @return void
      */
     private function initIdentifier(): void
@@ -206,13 +214,5 @@ abstract class AbstractService implements ServiceInterface
         } else {
             $this->identifier = sprintf('%s-%s', $this->getName(), uniqid());
         }
-    }
-
-    /**
-     * @return string|false
-     */
-    public function allowedLinksExpression()
-    {
-        return false;
     }
 }
