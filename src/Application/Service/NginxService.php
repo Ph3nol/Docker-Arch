@@ -18,4 +18,12 @@ class NginxService extends AbstractService
     {
         return new OptionsResolver();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function allowedLinksExpression(): ?string
+    {
+        return '(php|nodejs)';
+    }
 }

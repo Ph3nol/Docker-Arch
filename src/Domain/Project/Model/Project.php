@@ -67,8 +67,16 @@ class Project implements ProjectInterface
      */
     public function getLinksForService(ServiceInterface $forService): array
     {
+        if (false === $forService->allowedLinksExpression()) {
+            return [];
+        }
+
         // Some logic to links Service and avoid circular references.
         $isAllowed = function (ServiceInterface $service, ServiceInterface $forService) {
+            if (true === in_array($forService->getName(), ['mysql', 'redis'])) {
+                return false;
+            }
+
             if (true === in_array($service->getName(), ['nginx'])) {
                 return false;
             }
@@ -90,9 +98,11 @@ class Project implements ProjectInterface
                 continue;
             }
 
-            if (true === $isAllowed($service, $forService)) {
-                $links[] = $service->getIdentifier();
+            if (false === (bool) preg_match('/'.$forService->allowedLinksExpression().'/i', $service->getName())) {
+                continue;
             }
+
+            $links[] = $service->getIdentifier();
         }
 
         return $links;

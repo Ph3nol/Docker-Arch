@@ -207,4 +207,12 @@ abstract class AbstractService implements ServiceInterface
             $this->identifier = sprintf('%s-%s', $this->getName(), uniqid());
         }
     }
+
+    /**
+     * @return string|false
+     */
+    public function allowedLinksExpression()
+    {
+        return false;
+    }
 }

@@ -50,4 +50,12 @@ class PhpService extends AbstractService
 
         return $resolver;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function allowedLinksExpression(): ?string
+    {
+        return '(mysql|mariadb|redis)';
+    }
 }
