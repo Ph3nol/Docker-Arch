@@ -71,27 +71,6 @@ class Project implements ProjectInterface
             return [];
         }
 
-        // Some logic to links Service and avoid circular references.
-        $isAllowed = function (ServiceInterface $service, ServiceInterface $forService) {
-            if (true === in_array($forService->getName(), ['mysql', 'redis'])) {
-                return false;
-            }
-
-            if (true === in_array($service->getName(), ['nginx'])) {
-                return false;
-            }
-
-            if ('nginx' === $service->getName() && 'nginx' !== $forService->getName()) {
-                return false;
-            }
-
-            if ($service->getName() === $forService->getName()) {
-                return false;
-            }
-
-            return true;
-        };
-
         $links = [];
         foreach ($this->getServices() as $service) {
             if ($service->isSame($forService)) {
