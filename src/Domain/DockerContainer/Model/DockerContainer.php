@@ -84,7 +84,7 @@ class DockerContainer implements DockerContainerInterface
         // Templated files.
         $this->getService()->addTemplatedFile(new TemplatedFile(
             'dotfiles/.shell.config',
-            'Service/Common/.shell.config.twig'
+            'Service/Common/shell.config.twig'
         ));
 
         // Copy entries.
