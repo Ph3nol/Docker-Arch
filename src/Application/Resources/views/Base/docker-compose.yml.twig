@@ -33,10 +33,11 @@ services:
 
 {% endfor %}
 {% endif %}
-{% if service.ports|length %}
+{% set ports = service.dockerContainer.ports %}
+{% if ports|length %}
 {# ----------------------------------------------------- Ports #}
         ports:
-{% for publicPort, internalPort in service.ports %}
+{% for publicPort, internalPort in ports %}
             - {{ publicPort }}:{{ internalPort }}
 {% endfor %}
 {% endif %}
