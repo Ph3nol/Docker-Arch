@@ -56,7 +56,10 @@ class PhpDockerContainer extends DockerContainer
 
         // Envs.
         if (true === $service->getOptions()['composer']) {
-            $this->addEnv('PATH', '/root/.composer/vendor/bin:$PATH');
+            $this
+                ->addEnv('COMPOSER_ALLOW_SUPERUSER', '1')
+                ->addEnv('COMPOSER_HOME', '/tmp')
+                ->addEnv('PATH', '/root/.composer/vendor/bin:$PATH');
         }
     }
 
