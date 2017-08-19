@@ -32,7 +32,7 @@ class ServiceCollection extends \ArrayObject
     {
         $cliServices = [];
         foreach ($this as $service) {
-            if (true === ($service->getOptions()['cliOnly'] ?? false)) {
+            if (true === (bool) preg_match('/(php|nodejs)/i', $service->getName())) {
                 $cliServices[] = $service;
             }
         }
