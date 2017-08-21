@@ -7,6 +7,10 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/acb7b2ff-0aa1-47bf-a0a9-7b944c36b7c4/big.png)](https://insight.sensiolabs.com/projects/acb7b2ff-0aa1-47bf-a0a9-7b944c36b7c4)
 
+## Demonstration
+
+[![asciicast](https://asciinema.org/a/134119.png)](https://asciinema.org/a/134119?autoplay=1)
+
 ## Local installation (PHP 7.1+ required)
 
 To install, just get `install.sh` file, and launch it.
