@@ -49,4 +49,5 @@ export PROMPT='${ret_status} (🐳  {{ service.identifier }}) %{$fg[cyan]%}%c%{$
 ### --- SSH
 
 eval `ssh-agent -s` &> /dev/null
-ssh-add $(find /root/.ssh -maxdepth 1 -type f -printf '%p\n' | grep id_) &> /dev/null
+ssh-add -K $(find /root/.ssh -maxdepth 1 -type f -printf '%p\n' | grep id_) &> /dev/null
+ssh-add -A &> /dev/null
