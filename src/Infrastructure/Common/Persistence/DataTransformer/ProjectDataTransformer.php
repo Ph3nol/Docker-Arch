@@ -38,10 +38,10 @@ class ProjectDataTransformer
         $project = new Project($data['name'] ?? uniqid());
 
         // Project properties.
-        if ($locale = $data['locale'] ?? null) {
+        if ($data['locale'] ?? null) {
             $project->setLocale($data['locale']);
         }
-        if ($user = $data['user'] ?? null) {
+        if ($data['user'] ?? null) {
             $project->setUser($data['user']);
         }
         if ($logsPath = $data['logsPath'] ?? false) {
