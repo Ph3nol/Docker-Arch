@@ -29,8 +29,8 @@ class ServiceDataTransformer
         $containerFqcn = $this->getDockerContainerFqcn($data['type']);
 
         $service = new $serviceFqcn($project, $data['options'] ? : []);
-        if ($data['localPath'] ?? null) {
-            $service->setLocalPath($data['localPath']);
+        if ($data['path'] ?? null) {
+            $service->setPath($data['path']);
         }
         if ($data['dockerSync'] ?? null) {
             $service->withDockerSync();

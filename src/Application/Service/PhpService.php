@@ -23,6 +23,7 @@ class PhpService extends AbstractService
             'cliOnly' => false,
             'zsh' => true,
             'customZsh' => false,
+            'powerline' => false,
             'composer' => true,
             'extensions' => [],
             'config' => [],
@@ -57,5 +58,13 @@ class PhpService extends AbstractService
     public function allowedLinksExpression(): ?string
     {
         return '(mysql|mariadb|redis)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWebService(): bool
+    {
+        return true;
     }
 }

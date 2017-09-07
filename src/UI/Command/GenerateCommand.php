@@ -29,7 +29,7 @@ class GenerateCommand extends Command
                 InputArgument::OPTIONAL,
                 sprintf(
                     'Project local path, containing %s configuration file.',
-                    Architect::TYPE_PROJECT_CONFIG_FILENAME
+                    Architect::PROJECT_CONFIG_FILENAME
                 )
             );
     }

@@ -1,26 +1,33 @@
 {% set dockerSyncRequired = (project.dockerSynchedServices|length > 0) %}
-
 #!/bin/bash
 
 INITIAL_DIR=$PWD
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DOCKER_COMPOSE_COMMAND="docker-compose"
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+DOCKER_COMMAND="docker"
+DOCKER_COMPOSE_COMMAND="docker-compose -p {{ project.identifier }}"
 DOCKER_SYNC_COMMAND="docker-sync"
 
 cd "$DIR"
+
+terminate () {
+    cd $INITIAL_DIR
+    exit 0
+}
+
+if [ ! -f "$DIR/.env" ]; then
+    echo "No .env file found into $DIR."
+    echo "Create it from .env.dist one and try again."
+    terminate
+fi
 
 usage () {
     echo "Usage : $0 (build|start|shell|dc|stop|clean)"
 }
 
-terminate () {
-    cd $INITIAL_DIR
-}
-
 {% if dockerSyncRequired %}
 create_volumes () {
 {% for service in project.services if service.isDockerSynched == true %}
-    docker volume create --name=docker-arch-{{ service.identifier }}-sync
+    $DOCKER_COMMAND volume create --name={{ project.identifier }}-{{ service.identifier }}-sync
 {% endfor %}
 }
 {% endif %}
@@ -78,12 +85,12 @@ terminate
 
 clean () {
 $DOCKER_COMPOSE_COMMAND rm --stop --force
-# docker stop $(docker ps -a -q)
-# docker rm --force $(docker ps -a -q)
+# $DOCKER_COMMAND stop $($DOCKER_COMMAND ps -a -q)
+# $DOCKER_COMMAND rm --force $($DOCKER_COMMAND ps -a -q)
 {% if dockerSyncRequired %}
     $DOCKER_SYNC_COMMAND clean
 {% endif %}
-docker volume prune
+$DOCKER_COMMAND volume prune
 terminate
 }
 

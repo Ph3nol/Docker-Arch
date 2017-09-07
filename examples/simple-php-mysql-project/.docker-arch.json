@@ -1,36 +1,23 @@
 {
+    "name": "Simple PHP MySQL Project",
     "services": [
         {
             "type": "nginx",
-            "localPath": "./app",
-            "host": "localhost",
-            "container": {
-                "ports": {
-                    "8888": "80"
-                }
-            }
+            "path": "./app",
+            "host": "localhost"
         },
         {
             "type": "php",
-            "localPath": "./app",
+            "path": "./app",
             "host": "localhost",
             "options": {
-                "version": "7.1",
-                "extensions": [
-                    "pdo_mysql"
-                ]
+                "version": "7.1"
             }
         },
         {
             "type": "mysql",
-            "container": {
-                "ports": {
-                    "3306": "3306"
-                }
-            },
             "options": {
-                "version": "5.7",
-                "dataLocation": "/tmp/docker/mysql/data"
+                "version": "5.7"
             }
         }
     ]

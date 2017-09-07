@@ -2,8 +2,10 @@
 
 namespace Ph3\DockerArch\Application\DockerContainer;
 
+use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\Service;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -17,11 +19,16 @@ class NginxDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
+        parent::init();
+
         $this
             ->setFrom('nginx:1-alpine')
             ->setWorkingDir('/apps');
 
         $service = $this->getService();
+        $project = $service->getProject();
 
         // Templated files.
         $service->addTemplatedFile(new TemplatedFile(
@@ -40,6 +47,19 @@ class NginxDockerContainer extends DockerContainer
                 'remote' => '/etc/nginx/conf.d/',
             ]);
         }
+
+        // Volumes.
+        $project->addEnv('NGINX_LOGS_LOCATION', Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/logs/nginx');
+        $this
+            ->addVolume([
+                'local' => '${'.$project->generateEnvKey('NGINX_LOGS_LOCATION').'}',
+                'remote' => '/var/log/nginx',
+                'type' => 'rw',
+            ]);
+
+        // Ports.
+        $project->addEnv('NGINX_PORT', ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey('NGINX_PORT').'}', '80');
     }
 
     /**

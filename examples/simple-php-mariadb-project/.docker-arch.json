@@ -1,32 +1,23 @@
 {
+    "name": "Simple PHP MariaDB Project",
     "services": [
         {
             "type": "nginx",
-            "localPath": "./app",
-            "host": "localhost",
-            "exposedPorts": {
-                "8888": "80"
-            }
+            "path": "./app",
+            "host": "localhost"
         },
         {
             "type": "php",
-            "localPath": "./app",
+            "path": "./app",
             "host": "localhost",
             "options": {
-                "version": "7.1",
-                "extensions": [
-                    "pdo_mysql"
-                ]
+                "version": "7.1"
             }
         },
         {
             "type": "mariadb",
-            "exposedPorts": {
-                "3306": "3306"
-            },
             "options": {
-                "version": "10.3",
-                "dataLocation": "/tmp/docker/mariadb/data"
+                "version": "10.3"
             }
         }
     ]

@@ -22,7 +22,8 @@ class TemplatedFileGenerator implements TemplatedFileGeneratorInterface
     public function __construct()
     {
         $loader = new Twig_Loader_Filesystem(__DIR__.'/Resources/views');
-        $this->templateEngine = new Twig_Environment($loader);
+        $this->templateEngine = new Twig_Environment($loader, ['debug' => true]);
+        $this->templateEngine->addExtension(new Twig_Extension_Debug());
     }
 
     /**

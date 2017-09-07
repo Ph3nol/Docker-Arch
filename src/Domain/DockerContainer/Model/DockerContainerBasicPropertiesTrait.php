@@ -28,6 +28,11 @@ trait DockerContainerBasicPropertiesTrait
     protected $entryPoint;
 
     /**
+     * @var string
+     */
+    protected $user;
+
+    /**
      * @return string
      */
     public function getFrom(): ?string
@@ -103,6 +108,26 @@ trait DockerContainerBasicPropertiesTrait
     public function setMaintainer(string $maintainer): self
     {
         $this->maintainer = $maintainer;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param string $user
+     *
+     * @return self
+     */
+    public function setUser(string $user)
+    {
+        $this->user = $user;
 
         return $this;
     }

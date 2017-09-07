@@ -56,4 +56,21 @@ class ServiceCollection extends \ArrayObject
 
         return new ServiceCollection($services);
     }
+
+    /**
+     * @param string $name
+     *
+     * @return ServiceInterface[]
+     */
+    public function getServicesForName(string $name): ServiceCollection
+    {
+        $services = [];
+        foreach ($this as $service) {
+            if ($service->getName() === $name) {
+                $services[] = $service;
+            }
+        }
+
+        return new ServiceCollection($services);
+    }
 }

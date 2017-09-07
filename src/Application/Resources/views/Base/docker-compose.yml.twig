@@ -1,24 +1,28 @@
 version: "3"
-{# ----------------------------------------------------- Volumes #}
-{% if project.dockerSynchedServices|length %}
 
+{# ----------------------------------------------------- Networks #}
+networks:
+    main-network:
+        driver: bridge
+
+{# ----------------------------------------------------- Volumes #}
 volumes:
-{% endif %}
+    {{ project.identifier }}-logs:
 {% for service in project.dockerSynchedServices %}
-    docker-arch-{{ service.identifier }}-sync:
+    {{ project.identifier }}-{{ service.identifier }}-sync:
         external: true
 {% endfor %}
-{# ----------------------------------------------------- Services #}
 
+{# ----------------------------------------------------- Services #}
 services:
 {% for service in project.services %}
     {{ service.identifier }}:
-{# ----------------------------------------------------- Instance specific build and name #}
-        container_name: {{ service.identifier }}
+        container_name: {{ project.identifier }}-{{ service.identifier }}
         build: ./{{ service.identifier }}
+        networks:
+            - main-network
 {% set links = project.getLinksForService(service) %}
 {% if links|length %}
-{# ----------------------------------------------------- Links #}
         links:
 {% for link in links %}
             - {{ link }}
@@ -26,20 +30,31 @@ services:
 {% endif %}
 {% set volumes = project.getVolumesForService(service) %}
 {% if volumes|length %}
-{# ----------------------------------------------------- Volumes #}
         volumes:
 {% for volume in volumes %}
             - {{ volume.local }}:{{ volume.remote }}{% if volume.type|default(null) %}:{{ volume.type }}{% endif %}
 
 {% endfor %}
 {% endif %}
+{% set envs = service.dockerContainer.envs %}
+{% if envs|length %}
+        environment:
+{% for key, value in envs %}
+            - {{ key }}={{ value }}
+{% endfor %}
+{% endif %}
 {% set ports = service.dockerContainer.ports %}
 {% if ports|length %}
-{# ----------------------------------------------------- Ports #}
         ports:
 {% for publicPort, internalPort in ports %}
             - {{ publicPort }}:{{ internalPort }}
 {% endfor %}
+{% endif %}
+{% if service.dockerContainer.isUserCreationEnabled == true %}
+        user: {{ service.dockerContainer.user }}
+{% endif %}
+{% if service.dockerContainer.workingDir %}
+        working_dir: {{ service.dockerContainer.workingDir }}
 {% endif %}
 {% if true == service.isCli or true == service.options.cliOnly|default(false) %}
         stdin_open: true

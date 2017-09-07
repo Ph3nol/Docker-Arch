@@ -1,33 +1,21 @@
 {
+    "name": "Simple PHP Redis Project",
     "services": [
         {
             "type": "nginx",
-            "localPath": "./app",
-            "host": "localhost",
-            "container": {
-                "ports": {
-                    "8888": "80"
-                }
-            }
+            "path": "./app",
+            "host": "localhost"
         },
         {
             "type": "php",
-            "localPath": "./app",
+            "path": "./app",
             "host": "localhost",
             "options": {
-                "version": "7.1",
-                "extensions": [
-                    "redis"
-                ]
+                "version": "7.1"
             }
         },
         {
             "type": "redis",
-            "container": {
-                "ports": {
-                    "6379": "6379"
-                }
-            },
             "options": {
                 "version": "4.0"
             }

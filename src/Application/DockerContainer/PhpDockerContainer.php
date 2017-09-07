@@ -17,13 +17,15 @@ class PhpDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        parent::init();
+
         $service = $this->getService();
 
         $this
             ->setFrom(sprintf('php:%s', $service->getOptions()['version']))
             ->setWorkingDir(sprintf(
                 '/apps/%s',
-                $service->getHost() ? : $service->getIdentifier()
+                $service->getIdentifier()
             ))
             ->applyShellConfiguration();
 
@@ -58,8 +60,7 @@ class PhpDockerContainer extends DockerContainer
         if (true === $service->getOptions()['composer']) {
             $this
                 ->addEnv('COMPOSER_ALLOW_SUPERUSER', '1')
-                ->addEnv('COMPOSER_HOME', '/tmp')
-                ->addEnv('PATH', '/root/.composer/vendor/bin:$PATH');
+                ->addEnv('COMPOSER_HOME', '/tmp');
         }
     }
 

@@ -17,15 +17,17 @@ class NodejsDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        parent::init();
+
         $service = $this->getService();
 
         $this
             ->setFrom(sprintf('node:%s', $service->getOptions()['version']))
             ->setWorkingDir(sprintf(
                 '/apps/%s',
-                $service->getHost() ? : $service->getIdentifier()
+                $service->getIdentifier()
             ))
-            ->setEntryPoint('/root/entrypoint.sh')
+            ->setEntryPoint('~/entrypoint.sh')
             ->applyShellConfiguration();
 
         // Volumes.
@@ -46,10 +48,10 @@ class NodejsDockerContainer extends DockerContainer
         }
 
         // Commands.
-        $this->addCommand('chmod +x /root/entrypoint.sh');
+        $this->addCommand('chmod +x ~/entrypoint.sh');
         if (true === $service->getOptions()['bower']) {
             $this->addCommand('npm install -g bower');
-            $this->addCommand('echo \'{ "allow_root": true }\' > /root/.bowerrc');
+            $this->addCommand('echo \'{ "allow_root": true }\' > ~/.bowerrc');
         }
         if (true === $service->getOptions()['gulp']) {
             $this->addCommand('npm install -g gulp-cli');
@@ -58,7 +60,7 @@ class NodejsDockerContainer extends DockerContainer
         // Copy entries.
         $this->addCopyEntry([
             'local' => 'entrypoint.sh',
-            'remote' => '/root/entrypoint.sh',
+            'remote' => '~/entrypoint.sh',
         ]);
 
         // Templated files.

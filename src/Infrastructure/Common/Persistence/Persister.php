@@ -42,7 +42,7 @@ class Persister implements PersisterInterface
      */
     public static function getFilePath($path = null): string
     {
-        return $path.Architect::TYPE_PROJECT_CONFIG_FILENAME;
+        return $path.Architect::PROJECT_CONFIG_FILENAME;
     }
 
     /**

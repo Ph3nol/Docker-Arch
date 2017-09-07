@@ -26,4 +26,12 @@ class NginxService extends AbstractService
     {
         return '(php|nodejs)';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWebService(): bool
+    {
+        return true;
+    }
 }

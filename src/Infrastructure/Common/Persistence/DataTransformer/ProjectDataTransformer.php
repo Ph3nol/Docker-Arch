@@ -2,8 +2,11 @@
 
 namespace Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer;
 
+use Cocur\Slugify\Slugify;
+use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Domain\Project\Model\Project;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
+use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\InvalidDataFileFormatException;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\ServiceDataTransformer;
 
 /**
@@ -24,14 +27,35 @@ class ProjectDataTransformer
         }
 
         if (null === $data || false === is_array($data)) {
-            return new Project();
+            throw new InvalidDataFileFormatException(
+                sprintf(
+                    'Project `%s` JSON content seem to be invalid',
+                    Architect::PROJECT_CONFIG_FILENAME
+                )
+            );
         }
 
-        $project = new Project();
-        foreach ($data['services'] as $serviceData) {
+        $project = new Project($data['name'] ?? uniqid());
+
+        // Project properties.
+        if ($locale = $data['locale'] ?? null) {
+            $project->setLocale($data['locale']);
+        }
+        if ($user = $data['user'] ?? null) {
+            $project->setUser($data['user']);
+        }
+        if ($logsPath = $data['logsPath'] ?? false) {
+            $project->setLogsPath($data['logsPath']);
+        }
+        foreach ($data['services'] ?? [] as $serviceData) {
             $service = (new ServiceDataTransformer())->toModel($serviceData, $project);
             $project->addService($service);
         }
+        foreach ($data['envs'] ?? [] as $key => $value) {
+            $project->addEnv($key, $value);
+        }
+
+        $this->updateProjectServicesIdentifiers($project);
 
         // Project services Docker containers initialization.
         foreach ($project->getServices() as $service) {
@@ -39,5 +63,22 @@ class ProjectDataTransformer
         }
 
         return $project;
+    }
+
+    /**
+     * @param ProjectInterface $project
+     *
+     * @return void
+     */
+    private function updateProjectServicesIdentifiers(ProjectInterface $project): void
+    {
+        foreach ($project->getServices() as $service) {
+            $identicalNameServices = $project->getServicesForName($service->getName());
+            if (1 >= $identicalNameServices) {
+                $service->setIdentifier(
+                    (new Slugify())->slugify($service->getName())
+                );
+            }
+        }
     }
 }

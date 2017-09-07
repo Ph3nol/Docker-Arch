@@ -20,11 +20,12 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Architect implements ArchitectInterface
 {
-    public const TYPE_PROJECT_NAME = 'Docker Arch';
-    public const TYPE_PROJECT_URL = 'https://github.com/ph3nol/docker-arch';
-    public const TYPE_PROJECT_CONFIG_FILENAME = '/.docker-arch.json';
-    public const TYPE_PROJECT_CONFIG_DIRECTORY = '/.docker-arch';
-    public const TYPE_PROJECT_TMP_CONFIG_DIRECTORY = '/.docker-arch.tmp';
+    public const PROJECT_NAME = 'Docker Arch';
+    public const PROJECT_URL = 'https://github.com/ph3nol/docker-arch';
+    public const PROJECT_CONFIG_FILENAME = '/.docker-arch.json';
+    public const PROJECT_CONFIG_DIRECTORY = '/.docker-arch';
+    public const PROJECT_TMP_CONFIG_DIRECTORY = '/.docker-arch.tmp';
+    public const GLOBAL_ABSOLUTE_TMP_DIRECTORY = '/tmp/.docker-arch';
 
     /**
      * @var TemplatedFileGeneratorInterface
@@ -74,10 +75,12 @@ class Architect implements ArchitectInterface
     {
         $project = $this->initProject($projectPath);
 
-        $tmpBuildDir = $this->projectPath.self::TYPE_PROJECT_TMP_CONFIG_DIRECTORY;
+        $tmpBuildDir = $this->projectPath.self::PROJECT_TMP_CONFIG_DIRECTORY;
         $this->fs->remove($tmpBuildDir);
 
         // Project files.
+        $project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/.gitignore.twig'));
+        $project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/.env.dist.twig'));
         $project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
         $project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
         $project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
@@ -115,11 +118,26 @@ class Architect implements ArchitectInterface
             }
         }
 
+        $projectDir = $this->projectPath.self::PROJECT_CONFIG_DIRECTORY;
+
+        // Backup some resources.
+        $dotEnvFilePath = $projectDir.'/.env';
+        $initialDotEnvContent = null;
+        if (file_exists($dotEnvFilePath)) {
+            $initialDotEnvContent = file_get_contents($dotEnvFilePath);
+        }
+
         // Export Docker configuration and clean.
-        $projectDir = $this->projectPath.self::TYPE_PROJECT_CONFIG_DIRECTORY;
         $this->fs->remove($projectDir);
         $this->fs->mirror($tmpBuildDir, $projectDir);
         $this->fs->remove($tmpBuildDir);
+
+        // Recreate backuped resources.
+        if (null !== $initialDotEnvContent) {
+            $this->fs->dumpFile($dotEnvFilePath, $initialDotEnvContent);
+        } else {
+            $this->fs->dumpFile($dotEnvFilePath, file_get_contents($projectDir.'/.env.dist'));
+        }
     }
 
     /**
@@ -137,6 +155,9 @@ class Architect implements ArchitectInterface
             $this->persister = Persister::init($this->projectPath);
         }
 
-        return (new ProjectRepository($this->persister))->getProject();
+        $project = (new ProjectRepository($this->persister))->getProject();
+        $project->setPath($this->projectPath);
+
+        return $project;
     }
 }

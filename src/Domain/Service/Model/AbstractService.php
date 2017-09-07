@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Domain\Service\Model;
 
+use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
@@ -45,7 +46,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @var string
      */
-    private $localPath;
+    private $path;
 
     /**
      * @var array
@@ -61,6 +62,14 @@ abstract class AbstractService implements ServiceInterface
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
         $this->initIdentifier();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getIdentifier() ?? '';
     }
 
     /**
@@ -135,13 +144,13 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @param string $localPath
+     * @param string $path
      *
      * @return ServiceInterface
      */
-    public function setLocalPath($localPath): self
+    public function setPath($path): self
     {
-        $this->localPath = $localPath;
+        $this->path = $path;
 
         return $this;
     }
@@ -149,9 +158,9 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @return string
      */
-    public function getLocalPath(): ?string
+    public function getPath(): ?string
     {
-        return $this->localPath;
+        return $this->path;
     }
 
     /**
@@ -204,12 +213,32 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function isWebService(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return self
+     */
+    public function setIdentifier(string $identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
      * @return void
      */
     private function initIdentifier(): void
     {
         if ($hostKey = $this->getHost()) {
-            $hostKey = str_replace(['.', '_'], '-', $hostKey);
+            $hostKey = (new Slugify())->slugify($hostKey);
             $this->identifier = sprintf('%s-%s', $this->getName(), $hostKey);
         } else {
             $this->identifier = sprintf('%s-%s', $this->getName(), uniqid());

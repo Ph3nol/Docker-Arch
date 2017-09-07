@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Application\DockerContainer;
 
+use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\Service\Model\Service;
@@ -17,26 +18,39 @@ class MysqlDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        parent::init();
+
         $service = $this->getService();
+        $project = $service->getProject();
 
         $this->setFrom(sprintf('mysql:%s', $this->getService()->getOptions()['version']));
 
+        $project
+            ->addEnv('MYSQL_ROOT_PASSWORD', 'docker')
+            ->addEnv('MYSQL_USER', 'docker')
+            ->addEnv('MYSQL_PASSWORD', 'docker')
+            ->addEnv('MYSQL_DATABASE', 'docker')
+            ->addEnv('MYSQL_ALLOW_EMPTY_PASSWORD', 'true')
+            ->addEnv('MYSQL_DATA_LOCATION', Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/data/mysql');
+
+        // Service Docker envs.
+        $this
+            ->addEnvFromProject('MYSQL_ROOT_PASSWORD')
+            ->addEnvFromProject('MYSQL_USER')
+            ->addEnvFromProject('MYSQL_PASSWORD')
+            ->addEnvFromProject('MYSQL_DATABASE')
+            ->addEnvFromProject('MYSQL_ALLOW_EMPTY_PASSWORD');
+
         // Volumes.
-        $dataLocation = $this->getService()->getOptions()['dataLocation'];
-        if (null !== $dataLocation) {
-            $this->addVolume([
-                'local' => $dataLocation,
+        $this
+            ->addVolume([
+                'local' => '${'.$project->generateEnvKey('MYSQL_DATA_LOCATION').'}',
                 'remote' => '/var/lib/mysql',
                 'type' => 'rw',
             ]);
-        }
 
-        // Envs.
-        $this
-            ->addEnv('MYSQL_ROOT_PASSWORD', $service->getOptions()['rootPassword'])
-            ->addEnv('MYSQL_USER', $service->getOptions()['user'])
-            ->addEnv('MYSQL_PASSWORD', $service->getOptions()['password'])
-            ->addEnv('MYSQL_DATABASE', $service->getOptions()['database'])
-            ->addEnv('MYSQL_ALLOW_EMPTY_PASSWORD', $service->getOptions()['allowEmptyPassword'] ? 'true' : 'false');
+        // Ports.
+        $project->addEnv('MYSQL_PORT', ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey('MYSQL_PORT').'}', '3306');
     }
 }

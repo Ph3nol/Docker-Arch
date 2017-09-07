@@ -29,7 +29,7 @@ class DockerContainerDataTransformer
             $dockerContainer->setWorkingDir($data['workingDir']);
         }
         foreach ($data['ports'] ?? [] as $from => $to) {
-            $dockerContainer->addPort((int) $from, (int) $to);
+            $dockerContainer->addPort($from, $to);
         }
         foreach ($data['envs'] ?? [] as $key => $value) {
             $dockerContainer->addEnv($key, $value);

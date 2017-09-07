@@ -1,15 +1,19 @@
 {
+    "name": "Docker Arch",
     "services": [
         {
             "type": "php",
-            "localPath": "../",
+            "path": "../",
             "dockerSync": false,
             "options": {
                 "version": "7.1",
                 "cliOnly": true,
                 "config": {
                     "phar.readonly": "0"
-                }
+                },
+                "zsh": true,
+                "customZsh": true,
+                "powerline": true
             }
         }
     ]

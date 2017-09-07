@@ -7,6 +7,10 @@ namespace Ph3\DockerArch\Domain\DockerContainer\Model;
  */
 interface DockerContainerInterface
 {
+    public const PACKAGE_MANAGER_TYPE_APT = 'apt';
+    public const PACKAGE_MANAGER_TYPE_APTITUTDE = 'aptitude';
+    public const PACKAGE_MANAGER_TYPE_APK = 'apk';
+
     /**
      * @return void
      */

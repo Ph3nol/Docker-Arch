@@ -22,12 +22,15 @@ trait DockerContainerPackagesTrait
 
     /**
      * @param string $package
+     * @param bool   $condition
      *
      * @return self
      */
-    public function addPackage(string $package): self
+    public function addPackage(string $package, bool $condition = true): self
     {
-        $this->packages[] = $package;
+        if (true === $condition) {
+            $this->packages[] = $package;
+        }
 
         return $this;
     }

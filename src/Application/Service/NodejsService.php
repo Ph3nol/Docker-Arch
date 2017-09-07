@@ -21,7 +21,8 @@ class NodejsService extends AbstractService
             'cliOnly' => false,
             'dotfiles' => true,
             'zsh' => true,
-            'customZsh' => true,
+            'customZsh' => false,
+            'powerline' => false,
             'bower' => true,
             'gulp' => true,
             'npmPackages' => [],
@@ -39,5 +40,13 @@ class NodejsService extends AbstractService
     public function allowedLinksExpression(): ?string
     {
         return '(mysql|mariadb|redis)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWebService(): bool
+    {
+        return true;
     }
 }
