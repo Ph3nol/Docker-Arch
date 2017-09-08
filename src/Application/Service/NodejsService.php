@@ -29,6 +29,7 @@ class NodejsService extends AbstractService
             'supervisor' => false,
         ]);
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['0', '4', '6', '7', '8']);
 
         return $resolver;

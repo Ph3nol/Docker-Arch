@@ -79,16 +79,17 @@ class NginxDockerContainer extends DockerContainer
         $hasGeneratedVhosts = false;
         $vhostIndex = 0;
         foreach ($vhostsServicesByHost as $host => $service) {
-            $app_type = $service->getOptions()['app_type'] ?? null;
+            $appType = $service->getOptions()['app_type'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
                 $service->getName(),
-                $app_type ? '-'.$app_type : null
+                $appType ? '-'.$appType : null
             );
             $filePath = sprintf(
-                'conf.d/%s-%s.vhost.conf',
+                'conf.d/%s-%s%s.vhost.conf',
                 str_pad($vhostIndex + 10, 3, '0', STR_PAD_LEFT),
-                $service->getIdentifier()
+                $service->getIdentifier(),
+                $appType ? '-'.$appType : null
             );
 
             $dockerContainerService->addTemplatedFile(new TemplatedFile($filePath, $templatePath, [

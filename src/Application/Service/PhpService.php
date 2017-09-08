@@ -29,6 +29,7 @@ class PhpService extends AbstractService
             'config' => [],
         ]);
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['5.6', '7.0', '7.1', '7.2']);
         $resolver->setNormalizer('version', function (Options $options, $value) {
             $dockerVersionSuffix = (true === $options['cli_only']) ? '-cli' : '-fpm';

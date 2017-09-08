@@ -26,11 +26,11 @@ LABEL maintainer="{{ dockerContainer.maintainer|raw }}"
 ENV {{ envKey }} {{ envValue }}
 {% endfor %}
 {# ----------------------------------------------------- To-copy entries (COPY part) #}
-{% if dockerContainer.copy_entries|length %}
+{% if dockerContainer.copyEntries|length %}
 
 # Copy some entries.
 {% endif %}
-{% for copyEntry in dockerContainer.copy_entries %}
+{% for copyEntry in dockerContainer.copyEntries %}
 COPY {{ copyEntry.local }} {{ copyEntry.remote }}
 {% endfor %}
 {# ----------------------------------------------------- Packages (RUN apt-get part) #}

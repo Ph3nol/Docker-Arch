@@ -18,6 +18,7 @@ class MysqlService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['5.5', '5.6', '5.7', '8.0']);
 
         return $resolver;

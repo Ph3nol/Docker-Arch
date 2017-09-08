@@ -20,7 +20,7 @@ trait DockerContainerBasicPropertiesTrait
     /**
      * @var string
      */
-    protected $working_dir;
+    protected $workingDir;
 
     /**
      * @var string
@@ -57,17 +57,17 @@ trait DockerContainerBasicPropertiesTrait
      */
     public function getWorkingDir(): ?string
     {
-        return $this->working_dir;
+        return $this->workingDir;
     }
 
     /**
-     * @param string $working_dir
+     * @param string $workingDir
      *
      * @return self
      */
-    public function setWorkingDir(string $working_dir): self
+    public function setWorkingDir(string $workingDir): self
     {
-        $this->working_dir = $working_dir;
+        $this->workingDir = $workingDir;
 
         return $this;
     }

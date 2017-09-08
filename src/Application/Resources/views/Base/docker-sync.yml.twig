@@ -1,7 +1,7 @@
 version: "2"
 
 syncs:
-{% for service in project.docker_synchedServices %}
+{% for service in project.dockerSynchedServices %}
     {{ project.identifier }}-{{ service.identifier }}-sync:
         src: "{{ service.path }}"
         sync_strategy: "unison"
