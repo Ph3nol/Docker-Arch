@@ -1,0 +1,7 @@
+{
+    "name": "ph3/docker-arch-demo",
+    "description": "Docker Arch demo.",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}
