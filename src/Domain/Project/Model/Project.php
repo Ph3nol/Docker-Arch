@@ -2,6 +2,8 @@
 
 namespace Ph3\DockerArch\Domain\Project\Model;
 
+use Cocur\Slugify\Slugify;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerEnvsTrait;
 use Ph3\DockerArch\Domain\Service\Model\ServiceCollection;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
@@ -11,7 +13,35 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
  */
 class Project implements ProjectInterface
 {
+    public const DOCKER_ENV_CONFIGURATION_PREFIX = 'DOCKER_CONFIG_';
+
     use TemplatedFilesPropertyTrait;
+    use DockerContainerEnvsTrait;
+
+    /**
+     * @var string
+     */
+    private $label;
+
+    /**
+     * @var string
+     */
+    private $user;
+
+    /**
+     * @var string
+     */
+    private $locale = 'en_US';
+
+    /**
+     * @var string
+     */
+    private $path = './';
+
+    /**
+     * @var string
+     */
+    private $logsPath = './.docker-arch/logs';
 
     /**
      * @var ServiceInterface[]
@@ -19,11 +49,28 @@ class Project implements ProjectInterface
     private $services;
 
     /**
-     * Constructor.
+     * @param string $label
      */
-    public function __construct()
+    public function __construct(string $label)
     {
+        $this->label = $label;
         $this->services = new ServiceCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return (new Slugify())->slugify($this->getLabel());
     }
 
     /**
@@ -61,6 +108,16 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @param string $name
+     *
+     * @return ServiceInterface[]
+     */
+    public function getServicesForName(string $name): ServiceCollection
+    {
+        return $this->getServices()->getServicesForName($name);
+    }
+
+    /**
      * @param ServiceInterface $forService
      *
      * @return array
@@ -94,7 +151,13 @@ class Project implements ProjectInterface
      */
     public function getVolumesForService(ServiceInterface $forService): array
     {
-        $volumes = [];
+        $volumes = [
+            '/data/logs' => [
+                'local' => $this->getIdentifier().'-logs',
+                'remote' => '/data/logs',
+                'type' => 'rw',
+            ],
+        ];
 
         foreach ($this->getServices() as $service) {
             if (true === $service->isDockerSynched()) {
@@ -106,15 +169,117 @@ class Project implements ProjectInterface
             }
         }
 
-        $servicesDockerContainers = array_map(function (ServiceInterface $service) {
-            return $service->getDockerContainer();
-        }, (array) $this->getServices());
-
-        foreach ($servicesDockerContainers as $container) {
-            $volumes += $container->getVolumes();
-        }
+        $volumes += $forService->getDockerContainer()->getVolumes();
 
         return array_filter($volumes);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogsPath(): string
+    {
+        return $this->logsPath;
+    }
+
+    /**
+     * @param string $logsPath
+     *
+     * @return self
+     */
+    public function setLogsPath(string $logsPath)
+    {
+        $this->logsPath = $logsPath;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    public function generateEnvKey(string $key): string
+    {
+        return self::DOCKER_ENV_CONFIGURATION_PREFIX.$key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addEnv(string $key, string $value): self
+    {
+        $this->envs[$this->generateEnvKey($key)] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return self
+     */
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param string $user
+     *
+     * @return self
+     */
+    public function setUser(string $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return self
+     */
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
     /**
@@ -125,7 +290,7 @@ class Project implements ProjectInterface
     private function getDockerSynchedServiceVolume(ServiceInterface $service): ?array
     {
         return [
-            'local' => 'docker-arch-'.$service->getIdentifier().'-sync',
+            'local' => sprintf('%s-%s-sync', $this->getIdentifier(), $service->getIdentifier()),
             'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
             'type' => 'nocopy',
         ];
@@ -138,12 +303,12 @@ class Project implements ProjectInterface
      */
     private function getClassicServiceVolume(ServiceInterface $service): ?array
     {
-        if (null === $localPath = $service->getLocalPath()) {
+        if (null === $path = $service->getPath()) {
             return null;
         }
 
         return [
-            'local' => $localPath,
+            'local' => $path,
             'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
             'type' => 'rw',
         ];

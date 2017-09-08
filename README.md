@@ -39,7 +39,7 @@ docker build --force-rm --no-cache -t ph3nol/docker-arch ./docker/phar/
 
 ## Build Docker environment
 
-Go to your project root directory, containing `.docker-arch.json` file [see examples](examples/).
+Go to your project root directory, containing `.docker-arch.yml` file [see examples](examples/).
 
 Generate Docker environment from installed package:
 
@@ -75,8 +75,8 @@ Then, from your project root directory:
 ## To do
 
 * Improve README and documentation
-* Implement a UI to generate JSON configuration, with all possible options
-* Add `.docker-arch.json` generation (from `docker-arch init`)
+* Implement a UI to generate YML configuration, with all possible options
+* Add `.docker-arch.yml` generation (from `docker-arch init`)
 * Publish official Docker ph3nol/docker-arch image
 * Add some services (ElasticSearch, RabbitMQ, MongoDB, etc.)
 * Write fucking unit Tests (Atoum powered)

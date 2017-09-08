@@ -18,19 +18,21 @@ class PhpService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'appType' => null,
-            'dotfiles' => true,
-            'cliOnly' => false,
+            'app_type' => null,
+            'dotfiles' => false,
+            'cli_only' => false,
             'zsh' => true,
-            'customZsh' => false,
+            'custom_zsh' => false,
+            'powerline' => false,
             'composer' => true,
             'extensions' => [],
             'config' => [],
         ]);
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['5.6', '7.0', '7.1', '7.2']);
         $resolver->setNormalizer('version', function (Options $options, $value) {
-            $dockerVersionSuffix = (true === $options['cliOnly']) ? '-cli' : '-fpm';
+            $dockerVersionSuffix = (true === $options['cli_only']) ? '-cli' : '-fpm';
 
             return $value.$dockerVersionSuffix;
         });
@@ -41,7 +43,7 @@ class PhpService extends AbstractService
                 'log_errors' => 'on',
             ];
 
-            if (false === $options['cliOnly']) {
+            if (false === $options['cli_only']) {
                 $defaultValue['error_log'] = '/var/log/fpm-php.www.log';
             }
 
@@ -57,5 +59,13 @@ class PhpService extends AbstractService
     public function allowedLinksExpression(): ?string
     {
         return '(mysql|mariadb|redis)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWebService(): bool
+    {
+        return true;
     }
 }

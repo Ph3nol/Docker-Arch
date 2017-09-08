@@ -17,16 +17,16 @@ class NodejsDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        parent::init();
+
         $service = $this->getService();
 
         $this
             ->setFrom(sprintf('node:%s', $service->getOptions()['version']))
-            ->setWorkingDir(sprintf(
-                '/apps/%s',
-                $service->getHost() ? : $service->getIdentifier()
-            ))
-            ->setEntryPoint('/root/entrypoint.sh')
-            ->applyShellConfiguration();
+            ->setEntryPoint('~/entrypoint.sh');
+
+        $this->applyWebServiceConfiguration();
+        $this->applyShellConfiguration();
 
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {
@@ -34,22 +34,15 @@ class NodejsDockerContainer extends DockerContainer
         }
 
         // Packages.
-        $this
-            ->addPackage('curl')
-            ->addPackage('vim')
-            ->addPackage('git');
-        if ($service->getOptions()['zsh']) {
-            $this->addPackage('zsh');
-        }
         if ($service->getOptions()['supervisor']) {
             $this->addPackage('supervisor');
         }
 
         // Commands.
-        $this->addCommand('chmod +x /root/entrypoint.sh');
+        $this->addCommand('chmod +x ~/entrypoint.sh');
         if (true === $service->getOptions()['bower']) {
             $this->addCommand('npm install -g bower');
-            $this->addCommand('echo \'{ "allow_root": true }\' > /root/.bowerrc');
+            $this->addCommand('echo \'{ "allow_root": true }\' > ~/.bowerrc');
         }
         if (true === $service->getOptions()['gulp']) {
             $this->addCommand('npm install -g gulp-cli');
@@ -58,7 +51,7 @@ class NodejsDockerContainer extends DockerContainer
         // Copy entries.
         $this->addCopyEntry([
             'local' => 'entrypoint.sh',
-            'remote' => '/root/entrypoint.sh',
+            'remote' => '~/entrypoint.sh',
         ]);
 
         // Templated files.

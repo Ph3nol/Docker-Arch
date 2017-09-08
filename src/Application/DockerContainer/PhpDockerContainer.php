@@ -17,15 +17,13 @@ class PhpDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        parent::init();
+
         $service = $this->getService();
 
-        $this
-            ->setFrom(sprintf('php:%s', $service->getOptions()['version']))
-            ->setWorkingDir(sprintf(
-                '/apps/%s',
-                $service->getHost() ? : $service->getIdentifier()
-            ))
-            ->applyShellConfiguration();
+        $this->setFrom(sprintf('php:%s', $service->getOptions()['version']));
+        $this->applyWebServiceConfiguration();
+        $this->applyShellConfiguration();
 
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {
@@ -33,14 +31,8 @@ class PhpDockerContainer extends DockerContainer
         }
 
         // Packages.
-        $this
-            ->addPackage('curl')
-            ->addPackage('vim')
-            ->addPackage('git');
-        if ($service->getOptions()['zsh']) {
-            $this->addPackage('zsh');
-        }
-        if ($service->getOptions()['extensions']['mysql'] ?? false) {
+        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
+            true === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
             $this
                 ->addPackage('libmcrypt-dev')
                 ->addPackage('mysql-client');
@@ -58,8 +50,7 @@ class PhpDockerContainer extends DockerContainer
         if (true === $service->getOptions()['composer']) {
             $this
                 ->addEnv('COMPOSER_ALLOW_SUPERUSER', '1')
-                ->addEnv('COMPOSER_HOME', '/tmp')
-                ->addEnv('PATH', '/root/.composer/vendor/bin:$PATH');
+                ->addEnv('COMPOSER_HOME', '/tmp');
         }
     }
 
@@ -71,6 +62,10 @@ class PhpDockerContainer extends DockerContainer
         $service = $this->getService();
 
         // PHP extensions part.
+        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
+            false === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
+            $service->getOptions()['extensions'][] = 'pdo_mysql';
+        }
         $dockerPHPExtensions = ['mcrypt', 'pdo_mysql', 'bcmath'];
         foreach ($service->getOptions()['extensions'] as $extension) {
             if (true === in_array($extension, $dockerPHPExtensions)) {
@@ -94,7 +89,7 @@ class PhpDockerContainer extends DockerContainer
 
         // Some configs.
         foreach ($service->getOptions()['config'] as $key => $value) {
-            if (true === $service->getOptions()['cliOnly']) {
+            if (true === $service->getOptions()['cli_only']) {
                 $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
             } else {
                 $this->addCommand('echo "php_admin_value['.$key.'] = '.$value.'" >> /usr/local/etc/php-fpm.d/www.conf');

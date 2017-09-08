@@ -1,0 +1,6 @@
+name: Docker Arch - Simple Web Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost

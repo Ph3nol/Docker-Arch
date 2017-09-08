@@ -1,5 +1,3 @@
-<?php define('DB_DOCKER_CONTAINER_NAME', 'mysql-598efd24a6323'); ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +23,7 @@
     <h2>MySQL part</h2>
     <?php
         try {
-            $connection = new \PDO('mysql:dbname=docker;host=' . DB_DOCKER_CONTAINER_NAME, 'docker', 'docker');
+            $connection = new \PDO('mysql:dbname=docker;host=mysql', 'docker', 'docker');
             $connectionStatus = $connection->getAttribute(\PDO::ATTR_CONNECTION_STATUS);
         } catch (\PDOException $pdoException) {
             $connectionStatus = $pdoException->getMessage();

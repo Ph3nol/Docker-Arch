@@ -18,16 +18,18 @@ class NodejsService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'cliOnly' => false,
-            'dotfiles' => true,
+            'cli_only' => false,
+            'dotfiles' => false,
             'zsh' => true,
-            'customZsh' => true,
+            'custom_zsh' => false,
+            'powerline' => false,
             'bower' => true,
             'gulp' => true,
-            'npmPackages' => [],
+            'npm_packages' => [],
             'supervisor' => false,
         ]);
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['0', '4', '6', '7', '8']);
 
         return $resolver;
@@ -39,5 +41,13 @@ class NodejsService extends AbstractService
     public function allowedLinksExpression(): ?string
     {
         return '(mysql|mariadb|redis)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWebService(): bool
+    {
+        return true;
     }
 }

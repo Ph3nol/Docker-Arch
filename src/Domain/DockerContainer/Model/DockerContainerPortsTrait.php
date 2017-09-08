@@ -21,12 +21,12 @@ trait DockerContainerPortsTrait
     }
 
     /**
-     * @param integer $from
-     * @param integer $to
+     * @param string $from
+     * @param string $to
      *
      * @return self
      */
-    public function addPort(int $from, int $to): self
+    public function addPort(string $from, string $to): self
     {
         $this->ports[$from] = $to;
 

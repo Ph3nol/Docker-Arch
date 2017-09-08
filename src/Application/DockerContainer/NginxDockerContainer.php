@@ -2,8 +2,10 @@
 
 namespace Ph3\DockerArch\Application\DockerContainer;
 
+use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\Service;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -17,11 +19,15 @@ class NginxDockerContainer extends DockerContainer
      */
     public function init(): void
     {
-        $this
-            ->setFrom('nginx:1-alpine')
-            ->setWorkingDir('/apps');
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
+        parent::init();
+
+        $this->setFrom('nginx:1-alpine');
+        $this->applyWebServiceConfiguration();
 
         $service = $this->getService();
+        $project = $service->getProject();
 
         // Templated files.
         $service->addTemplatedFile(new TemplatedFile(
@@ -40,6 +46,19 @@ class NginxDockerContainer extends DockerContainer
                 'remote' => '/etc/nginx/conf.d/',
             ]);
         }
+
+        // Volumes.
+        $project->addEnv('NGINX_LOGS_LOCATION', Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/logs/nginx');
+        $this
+            ->addVolume([
+                'local' => '${'.$project->generateEnvKey('NGINX_LOGS_LOCATION').'}',
+                'remote' => '/var/log/nginx',
+                'type' => 'rw',
+            ]);
+
+        // Ports.
+        $project->addEnv('NGINX_PORT', ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey('NGINX_PORT').'}', '80');
     }
 
     /**
@@ -47,11 +66,11 @@ class NginxDockerContainer extends DockerContainer
      */
     private function addVhostsTemplatedFiles(): bool
     {
-        $projectService = $this->getService();
+        $dockerContainerService = $this->getService();
 
         $vhostsServicesByHost = [];
-        foreach ($projectService->getProject()->getServices() as $k => $service) {
-            $isCliOnly = $service->getOptions()['cliOnly'] ?? false;
+        foreach ($dockerContainerService->getProject()->getServices() as $k => $service) {
+            $isCliOnly = $service->getOptions()['cli_only'] ?? false;
             if (false === $isCliOnly && null !== $service->getHost()) {
                 $vhostsServicesByHost[$service->getHost()] = $service;
             }
@@ -60,20 +79,20 @@ class NginxDockerContainer extends DockerContainer
         $hasGeneratedVhosts = false;
         $vhostIndex = 0;
         foreach ($vhostsServicesByHost as $host => $service) {
-            $vhostName = $service->getName();
-            $appType = $service->getOptions()['appType'] ?? null;
+            $appType = $service->getOptions()['app_type'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
-                $vhostName,
+                $service->getName(),
                 $appType ? '-'.$appType : null
             );
             $filePath = sprintf(
-                'conf.d/%s-%s.vhost.conf',
+                'conf.d/%s-%s%s.vhost.conf',
                 str_pad($vhostIndex + 10, 3, '0', STR_PAD_LEFT),
-                $service->getIdentifier()
+                $service->getIdentifier(),
+                $appType ? '-'.$appType : null
             );
 
-            $projectService->addTemplatedFile(new TemplatedFile($filePath, $templatePath, [
+            $dockerContainerService->addTemplatedFile(new TemplatedFile($filePath, $templatePath, [
                 'forService' => $service,
             ]));
 

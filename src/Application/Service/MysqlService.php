@@ -17,15 +17,8 @@ class MysqlService extends AbstractService
     public function getOptionsResolver(): Options
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'dataLocation' => null,
-            'rootPassword' => 'root',
-            'user' => 'docker',
-            'password' => 'docker',
-            'database' => 'docker',
-            'allowEmptyPassword' => true,
-        ]);
         $resolver->setRequired(['version']);
+        $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['5.5', '5.6', '5.7', '8.0']);
 
         return $resolver;

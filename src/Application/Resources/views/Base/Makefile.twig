@@ -5,7 +5,7 @@ OS := $(shell uname)
 create-volumes:
 {% if generator.project.dockerSynchedServices|length %}
 {% for serviceGenerator in generator.servicesGenerators if serviceGenerator.service.isDockerSynched == true %}
-	docker volume create --name=docker-arch-{{ serviceGenerator.service.identifier }}-sync
+	docker volume create --name={{ project.identifier }}-{{ serviceGenerator.service.identifier }}-sync
 {% endfor %}
 {% endif %}
 

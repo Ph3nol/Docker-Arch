@@ -2,8 +2,8 @@ version: "2"
 
 syncs:
 {% for service in project.dockerSynchedServices %}
-    docker-arch-{{ service.identifier }}-sync:
-        src: "{{ service.localPath }}"
+    {{ project.identifier }}-{{ service.identifier }}-sync:
+        src: "{{ service.path }}"
         sync_strategy: "unison"
         sync_userid: "33"
         sync_excludes:
