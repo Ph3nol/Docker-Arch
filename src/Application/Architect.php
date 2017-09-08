@@ -79,8 +79,8 @@ class Architect implements ArchitectInterface
         $this->fs->remove($tmpBuildDir);
 
         // Project files.
-        $project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/.gitignore.twig'));
-        $project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/.env.dist.twig'));
+        $project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
+        $project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
         $project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
         $project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
         $project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
