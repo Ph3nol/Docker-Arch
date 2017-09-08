@@ -68,6 +68,10 @@ class DockerContainer implements DockerContainerInterface
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true');
         }
 
+        $this
+            ->addPackage('git')
+            ->addPackage('openssh-client');
+
         $this->initLocale();
         $this->initUser();
     }
@@ -175,9 +179,9 @@ class DockerContainer implements DockerContainerInterface
      */
     protected function applyShellConfiguration(): void
     {
-        // Commands.
         if (true === $this->getService()->getOptions()['zsh']) {
             $this
+                ->addPackage('zsh')
                 ->addCommand('echo "\nsource ~/.shell.config" > ~/.zshrc')
                 ->addCommand('chsh -s /bin/zsh');
         } else {
@@ -201,16 +205,18 @@ class DockerContainer implements DockerContainerInterface
     /**
      * @return void
      */
-    protected function applyWebServiceWorkingDir(): void
+    protected function applyWebServiceConfiguration(): void
     {
-        if (null !== $this->getWorkingDir()) {
-            return ;
-        }
+        $this
+            ->addPackage('curl')
+            ->addPackage('vim');
 
-        $this->setWorkingDir(sprintf(
-            '/apps/%s',
-            $this->getService()->getHost() ? : $this->getService()->getIdentifier()
-        ));
+        if (null === $this->getWorkingDir()) {
+            $this->setWorkingDir(sprintf(
+                '/apps/%s',
+                $this->getService()->getHost() ? : $this->getService()->getIdentifier()
+            ));
+        }
     }
 
     /**

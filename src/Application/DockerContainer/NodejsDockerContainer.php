@@ -25,7 +25,7 @@ class NodejsDockerContainer extends DockerContainer
             ->setFrom(sprintf('node:%s', $service->getOptions()['version']))
             ->setEntryPoint('~/entrypoint.sh');
 
-        $this->applyWebServiceWorkingDir();
+        $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
 
         // Volumes.
@@ -34,13 +34,6 @@ class NodejsDockerContainer extends DockerContainer
         }
 
         // Packages.
-        $this
-            ->addPackage('curl')
-            ->addPackage('vim')
-            ->addPackage('git');
-        if ($service->getOptions()['zsh']) {
-            $this->addPackage('zsh');
-        }
         if ($service->getOptions()['supervisor']) {
             $this->addPackage('supervisor');
         }

@@ -24,7 +24,7 @@ class NginxDockerContainer extends DockerContainer
         parent::init();
 
         $this->setFrom('nginx:1-alpine');
-        $this->applyWebServiceWorkingDir();
+        $this->applyWebServiceConfiguration();
 
         $service = $this->getService();
         $project = $service->getProject();

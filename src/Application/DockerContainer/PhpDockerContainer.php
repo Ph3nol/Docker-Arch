@@ -22,7 +22,7 @@ class PhpDockerContainer extends DockerContainer
         $service = $this->getService();
 
         $this->setFrom(sprintf('php:%s', $service->getOptions()['version']));
-        $this->applyWebServiceWorkingDir();
+        $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
 
         // Volumes.
@@ -31,13 +31,6 @@ class PhpDockerContainer extends DockerContainer
         }
 
         // Packages.
-        $this
-            ->addPackage('curl')
-            ->addPackage('vim')
-            ->addPackage('git');
-        if ($service->getOptions()['zsh']) {
-            $this->addPackage('zsh');
-        }
         if (true === in_array('mysql', $service->getOptions()['extensions']) ||
             true === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
             $this
