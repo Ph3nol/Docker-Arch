@@ -291,7 +291,7 @@ class Project implements ProjectInterface
     {
         return [
             'local' => sprintf('%s-%s-sync', $this->getIdentifier(), $service->getIdentifier()),
-            'remote' => '/apps/'.($service->getIdentifier()),
+            'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
             'type' => 'nocopy',
         ];
     }
@@ -309,7 +309,7 @@ class Project implements ProjectInterface
 
         return [
             'local' => $path,
-            'remote' => '/apps/'.($service->getIdentifier()),
+            'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
             'type' => 'rw',
         ];
     }

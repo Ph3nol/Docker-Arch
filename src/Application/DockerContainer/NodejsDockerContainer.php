@@ -23,12 +23,10 @@ class NodejsDockerContainer extends DockerContainer
 
         $this
             ->setFrom(sprintf('node:%s', $service->getOptions()['version']))
-            ->setWorkingDir(sprintf(
-                '/apps/%s',
-                $service->getIdentifier()
-            ))
-            ->setEntryPoint('~/entrypoint.sh')
-            ->applyShellConfiguration();
+            ->setEntryPoint('~/entrypoint.sh');
+
+        $this->applyWebServiceWorkingDir();
+        $this->applyShellConfiguration();
 
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {

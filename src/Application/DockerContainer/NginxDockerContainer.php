@@ -23,9 +23,8 @@ class NginxDockerContainer extends DockerContainer
 
         parent::init();
 
-        $this
-            ->setFrom('nginx:1-alpine')
-            ->setWorkingDir('/apps');
+        $this->setFrom('nginx:1-alpine');
+        $this->applyWebServiceWorkingDir();
 
         $service = $this->getService();
         $project = $service->getProject();
@@ -67,10 +66,10 @@ class NginxDockerContainer extends DockerContainer
      */
     private function addVhostsTemplatedFiles(): bool
     {
-        $projectService = $this->getService();
+        $dockerContainerService = $this->getService();
 
         $vhostsServicesByHost = [];
-        foreach ($projectService->getProject()->getServices() as $k => $service) {
+        foreach ($dockerContainerService->getProject()->getServices() as $k => $service) {
             $isCliOnly = $service->getOptions()['cliOnly'] ?? false;
             if (false === $isCliOnly && null !== $service->getHost()) {
                 $vhostsServicesByHost[$service->getHost()] = $service;
@@ -80,11 +79,10 @@ class NginxDockerContainer extends DockerContainer
         $hasGeneratedVhosts = false;
         $vhostIndex = 0;
         foreach ($vhostsServicesByHost as $host => $service) {
-            $vhostName = $service->getName();
             $appType = $service->getOptions()['appType'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
-                $vhostName,
+                $service->getName(),
                 $appType ? '-'.$appType : null
             );
             $filePath = sprintf(
@@ -93,7 +91,7 @@ class NginxDockerContainer extends DockerContainer
                 $service->getIdentifier()
             );
 
-            $projectService->addTemplatedFile(new TemplatedFile($filePath, $templatePath, [
+            $dockerContainerService->addTemplatedFile(new TemplatedFile($filePath, $templatePath, [
                 'forService' => $service,
             ]));
 

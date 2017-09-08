@@ -21,13 +21,9 @@ class PhpDockerContainer extends DockerContainer
 
         $service = $this->getService();
 
-        $this
-            ->setFrom(sprintf('php:%s', $service->getOptions()['version']))
-            ->setWorkingDir(sprintf(
-                '/apps/%s',
-                $service->getIdentifier()
-            ))
-            ->applyShellConfiguration();
+        $this->setFrom(sprintf('php:%s', $service->getOptions()['version']));
+        $this->applyWebServiceWorkingDir();
+        $this->applyShellConfiguration();
 
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {

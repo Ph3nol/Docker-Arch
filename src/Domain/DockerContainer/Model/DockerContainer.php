@@ -201,23 +201,40 @@ class DockerContainer implements DockerContainerInterface
     /**
      * @return void
      */
+    protected function applyWebServiceWorkingDir(): void
+    {
+        if (null !== $this->getWorkingDir()) {
+            return ;
+        }
+
+        $this->setWorkingDir(sprintf(
+            '/apps/%s',
+            $this->getService()->getHost() ? : $this->getService()->getIdentifier()
+        ));
+    }
+
+    /**
+     * @return void
+     */
     private function initLocale(): void
     {
         $locale = $this->getService()->getProject()->getLocale();
 
-        $this
-            // Packages.
-            ->addPackage('locales')
-            ->addPackage('zlib1g-dev')
-            ->addPackage('libicu-dev')
-            ->addPackage('g++')
-            // Commands.
-            ->addCommand(sprintf('echo "%s.UTF-8 UTF-8" > /etc/locale.gen', $locale))
-            ->addCommand(sprintf('locale-gen %s.UTF-8', $locale))
-            ->addCommand('dpkg-reconfigure locales')
-            ->addCommand(sprintf('/usr/sbin/update-locale LANG=%s.UTF-8', $locale))
-            // Envs.
-            ->addEnv('LC_ALL', sprintf('%s.UTF-8', $locale));
+        if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APT)) {
+            $this
+                // Packages.
+                ->addPackage('locales')
+                ->addPackage('zlib1g-dev')
+                ->addPackage('libicu-dev')
+                ->addPackage('g++')
+                // Commands.
+                ->addCommand(sprintf('echo "%s.UTF-8 UTF-8" > /etc/locale.gen', $locale))
+                ->addCommand(sprintf('locale-gen %s.UTF-8', $locale))
+                ->addCommand('dpkg-reconfigure locales')
+                ->addCommand(sprintf('/usr/sbin/update-locale LANG=%s.UTF-8', $locale))
+                // Envs.
+                ->addEnv('LC_ALL', sprintf('%s.UTF-8', $locale));
+        }
     }
 
     /**
