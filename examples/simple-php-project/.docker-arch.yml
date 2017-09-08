@@ -1,0 +1,12 @@
+name: Docker Arch - Simple PHP Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../app
+    host: localhost
+    options:
+        version: "7.1"
