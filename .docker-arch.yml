@@ -11,3 +11,5 @@ services:
         composer: true
         config:
             phar.readonly: 0
+    # Mailcatcher tool
+  - type: mailcatcher

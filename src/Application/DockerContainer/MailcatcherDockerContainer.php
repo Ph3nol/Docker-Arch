@@ -10,7 +10,7 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class RedisDockerContainer extends DockerContainer
+class MailcatcherDockerContainer extends DockerContainer
 {
     /**
      * {@inheritdoc}
@@ -19,12 +19,12 @@ class RedisDockerContainer extends DockerContainer
     {
         parent::init();
 
-        $this->setFrom(sprintf('redis:%s-alpine', $this->getService()->getOptions()['version']));
+        $this->setFrom('schickling/mailcatcher');
 
         $project = $this->getService()->getProject();
 
         // Ports.
-        $project->addEnv('REDIS_PORT', ('77'.rand(11, 99)));
-        $this->addPort('${'.$project->generateEnvKey('REDIS_PORT').'}', '6379');
+        $project->addEnv('MAILCATCHER_PORT', ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey('MAILCATCHER_PORT').'}', '1080');
     }
 }

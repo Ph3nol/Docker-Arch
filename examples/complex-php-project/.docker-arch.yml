@@ -2,8 +2,7 @@ name: Docker Arch - Complex PHP Project
 services:
     # PHP Container
   - type: php
-    path: ../
-    host: localhost
+    path: ../app
     options:
         version: "7.1"
         cli_only: true

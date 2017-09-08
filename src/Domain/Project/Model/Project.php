@@ -118,6 +118,16 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasServiceForName(string $name): bool
+    {
+        return (0 < count($this->getServicesForName($name)));
+    }
+
+    /**
      * @param ServiceInterface $forService
      *
      * @return array
