@@ -60,10 +60,10 @@ RUN rm -rf /var/cache/apk/*
 RUN {{ command|raw }}
 {% endfor %}
 {# ----------------------------------------------------- Entry point (ENTRYPOINT) #}
-{% if dockerContainer.entry_point %}
+{% if dockerContainer.entryPoint %}
 
 # Entry point.
-ENTRYPOINT {{ dockerContainer.entry_point }}
+ENTRYPOINT {{ dockerContainer.entryPoint }}
 {% endif %}
 {# ----------------------------------------------------- Done #}
 

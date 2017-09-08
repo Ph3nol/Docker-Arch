@@ -45,7 +45,7 @@ class ProjectDataTransformer
         if ($data['user'] ?? null) {
             $project->setUser($data['user']);
         }
-        if ($logs_path = $data['logs_path'] ?? false) {
+        if ($data['logs_path'] ?? false) {
             $project->setLogsPath($data['logs_path']);
         }
         foreach ($data['services'] ?? [] as $serviceData) {

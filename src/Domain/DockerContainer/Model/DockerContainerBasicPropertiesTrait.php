@@ -25,7 +25,7 @@ trait DockerContainerBasicPropertiesTrait
     /**
      * @var string
      */
-    protected $entry_point;
+    protected $entryPoint;
 
     /**
      * @var string
@@ -77,17 +77,17 @@ trait DockerContainerBasicPropertiesTrait
      */
     public function getEntryPoint(): ?string
     {
-        return $this->entry_point;
+        return $this->entryPoint;
     }
 
     /**
-     * @param string $entry_point
+     * @param string $entryPoint
      *
      * @return self
      */
-    public function setEntryPoint(string $entry_point): self
+    public function setEntryPoint(string $entryPoint): self
     {
-        $this->entry_point = $entry_point;
+        $this->entryPoint = $entryPoint;
 
         return $this;
     }

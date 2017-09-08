@@ -1,4 +1,4 @@
-{% set docker_syncRequired = (project.dockerSynchedServices|length > 0) %}
+{% set dockerSyncRequired = (project.dockerSynchedServices|length > 0) %}
 #!/bin/bash
 
 INITIAL_DIR=$PWD
@@ -24,7 +24,7 @@ usage () {
     echo "Usage : $0 (build|start|shell|dc|stop|clean)"
 }
 
-{% if docker_syncRequired %}
+{% if dockerSyncRequired %}
 create_volumes () {
 {% for service in project.services if service.isDockerSynched == true %}
     $DOCKER_COMMAND volume create --name={{ project.identifier }}-{{ service.identifier }}-sync
@@ -33,7 +33,7 @@ create_volumes () {
 {% endif %}
 
 build () {
-{% if docker_syncRequired %}
+{% if dockerSyncRequired %}
 create_volumes
 $DOCKER_SYNC_COMMAND start
 {% endif %}
@@ -42,7 +42,7 @@ terminate
 }
 
 start () {
-{% if docker_syncRequired %}
+{% if dockerSyncRequired %}
 create_volumes
 $DOCKER_SYNC_COMMAND start
 {% endif %}
@@ -75,7 +75,7 @@ terminate
 }
 
 stop () {
-{% if docker_syncRequired %}
+{% if dockerSyncRequired %}
     $DOCKER_SYNC_COMMAND stop
     $DOCKER_COMPOSE_COMMAND stop
 {% endif %}
@@ -87,7 +87,7 @@ clean () {
 $DOCKER_COMPOSE_COMMAND rm --stop --force
 # $DOCKER_COMMAND stop $($DOCKER_COMMAND ps -a -q)
 # $DOCKER_COMMAND rm --force $($DOCKER_COMMAND ps -a -q)
-{% if docker_syncRequired %}
+{% if dockerSyncRequired %}
     $DOCKER_SYNC_COMMAND clean
 {% endif %}
 $DOCKER_COMMAND volume prune
