@@ -1,6 +1,6 @@
 {
     "name": "ph3nol/docker-arch",
-    "description": "Generate Web/CLI projects Dockerized environments, from 1 simple JSON file.",
+    "description": "Generate Web/CLI projects Dockerized environments, from 1 simple YAML file.",
     "keywords": ["docker", "docker-compose", "generator", "devops", "developer-tools"],
     "type": "standalone",
     "homepage": "https://github.com/Ph3nol/Docker-Arch",
