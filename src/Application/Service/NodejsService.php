@@ -18,14 +18,14 @@ class NodejsService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'cliOnly' => false,
+            'cli_only' => false,
             'dotfiles' => true,
             'zsh' => true,
-            'customZsh' => false,
+            'custom_zsh' => false,
             'powerline' => false,
             'bower' => true,
             'gulp' => true,
-            'npmPackages' => [],
+            'npm_packages' => [],
             'supervisor' => false,
         ]);
         $resolver->setRequired(['version']);

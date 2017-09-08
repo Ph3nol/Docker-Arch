@@ -22,7 +22,7 @@ class Architect implements ArchitectInterface
 {
     public const PROJECT_NAME = 'Docker Arch';
     public const PROJECT_URL = 'https://github.com/ph3nol/docker-arch';
-    public const PROJECT_CONFIG_FILENAME = '/.docker-arch.json';
+    public const PROJECT_CONFIG_FILENAME = '/.docker-arch.yml';
     public const PROJECT_CONFIG_DIRECTORY = '/.docker-arch';
     public const PROJECT_TMP_CONFIG_DIRECTORY = '/.docker-arch.tmp';
     public const GLOBAL_ABSOLUTE_TMP_DIRECTORY = '/tmp/.docker-arch';

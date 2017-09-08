@@ -13,6 +13,6 @@ fi
 
 {% if service.options.supervisor %}
 /usr/bin/supervisord
-{% elseif true == service.options.cliOnly %}
+{% elseif true == service.options.cli_only %}
 bash
 {% endif %}

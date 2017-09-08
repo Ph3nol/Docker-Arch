@@ -8,7 +8,7 @@ networks:
 {# ----------------------------------------------------- Volumes #}
 volumes:
     {{ project.identifier }}-logs:
-{% for service in project.dockerSynchedServices %}
+{% for service in project.docker_synchedServices %}
     {{ project.identifier }}-{{ service.identifier }}-sync:
         external: true
 {% endfor %}
@@ -53,10 +53,10 @@ services:
 {% if service.dockerContainer.isUserCreationEnabled == true %}
         user: {{ service.dockerContainer.user }}
 {% endif %}
-{% if service.dockerContainer.workingDir %}
-        working_dir: {{ service.dockerContainer.workingDir }}
+{% if service.dockerContainer.working_dir %}
+        working_dir: {{ service.dockerContainer.working_dir }}
 {% endif %}
-{% if true == service.isCli or true == service.options.cliOnly|default(false) %}
+{% if true == service.isCli or true == service.options.cli_only|default(false) %}
         stdin_open: true
         tty: true
 {% endif %}

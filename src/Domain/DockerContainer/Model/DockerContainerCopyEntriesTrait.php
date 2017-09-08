@@ -10,14 +10,14 @@ trait DockerContainerCopyEntriesTrait
     /**
      * @var array
      */
-    protected $copyEntries = [];
+    protected $copy_entries = [];
 
     /**
      * @return array
      */
     public function getCopyEntries(): array
     {
-        return $this->copyEntries;
+        return $this->copy_entries;
     }
 
     /**
@@ -27,19 +27,19 @@ trait DockerContainerCopyEntriesTrait
      */
     public function addCopyEntry(array $copyEntry): self
     {
-        $this->copyEntries[] = $copyEntry;
+        $this->copy_entries[] = $copyEntry;
 
         return $this;
     }
 
     /**
-     * @param array $copyEntries
+     * @param array $copy_entries
      *
      * @return self
      */
-    public function setCopyEntries(array $copyEntries): self
+    public function setCopyEntries(array $copy_entries): self
     {
-        $this->copyEntries = $copyEntries;
+        $this->copy_entries = $copy_entries;
 
         return $this;
     }

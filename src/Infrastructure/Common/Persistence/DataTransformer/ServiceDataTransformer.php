@@ -32,7 +32,7 @@ class ServiceDataTransformer
         if ($data['path'] ?? null) {
             $service->setPath($data['path']);
         }
-        if ($data['dockerSync'] ?? null) {
+        if ($data['docker_sync'] ?? null) {
             $service->withDockerSync();
         }
         if ($data['host'] ?? null) {

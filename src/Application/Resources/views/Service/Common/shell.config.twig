@@ -1,4 +1,4 @@
-{% if service.options.zsh|default(false) and service.options.customZsh|default(false) %}
+{% if service.options.zsh|default(false) and service.options.custom_zsh|default(false) %}
 # --- Antigen
 
 source ~/.antigen.zsh
@@ -30,7 +30,7 @@ antigen apply
 
 export EDITOR="vim"
 export GIT_EDITOR="vim"
-{% if service.options.zsh|default(false) and service.options.customZsh|default(false)
+{% if service.options.zsh|default(false) and service.options.custom_zsh|default(false)
     and service.options.powerline|default(false) %}
 POWERLEVEL9K_CUSTOM_DOCKER_CONTAINER="echo '🐳  {{ service.identifier }} @ {{ service.project.identifier }}'"
 POWERLEVEL9K_CUSTOM_DOCKER_CONTAINER_BACKGROUND=""
@@ -54,7 +54,7 @@ alias cho="chown -R www-data:www-data . && echo '> CHOWN applied for www-data'"
 alias composer="php -d memory_limit=-1 /bin/composer"
 alias fcomposer="php -d memory_limit=-1 -n /bin/composer"
 {% endif %}
-{% if service.options.appType|default(null) == 'symfony' %}
+{% if service.options.app_type|default(null) == 'symfony' %}
 alias sf="if [ -f \"$PWD/var/bootstrap.php.cache\" ]; then ./bin/console $*; else ./app/console $*; fi"
 alias sfcc="if [ -f \"$PWD/var/bootstrap.php.cache\" ]; then /bin/rm -rf var/cache/*; else /bin/rm -rf app/cache/*; fi && echo '> Cache cleared'"
 alias sfca="/bin/rm -rf web/bundles/* && sf assets:install --symlink"

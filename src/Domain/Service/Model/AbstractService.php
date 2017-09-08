@@ -36,7 +36,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @var boolean
      */
-    private $dockerSync = false;
+    private $docker_sync = false;
 
     /**
      * @var string
@@ -106,7 +106,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function withDockerSync(): self
     {
-        $this->dockerSync = true;
+        $this->docker_sync = true;
 
         return $this;
     }
@@ -116,7 +116,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function isDockerSynched(): bool
     {
-        return $this->dockerSync;
+        return $this->docker_sync;
     }
 
     /**

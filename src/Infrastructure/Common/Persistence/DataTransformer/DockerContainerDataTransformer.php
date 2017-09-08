@@ -22,11 +22,11 @@ class DockerContainerDataTransformer
             $dockerContainer = new DockerContainer();
         }
 
-        if ($data['entryPoint'] ?? null) {
-            $dockerContainer->setEntryPoint($data['entryPoint']);
+        if ($data['entry_point'] ?? null) {
+            $dockerContainer->setEntryPoint($data['entry_point']);
         }
-        if ($data['workingDir'] ?? null) {
-            $dockerContainer->setWorkingDir($data['workingDir']);
+        if ($data['working_dir'] ?? null) {
+            $dockerContainer->setWorkingDir($data['working_dir']);
         }
         foreach ($data['ports'] ?? [] as $from => $to) {
             $dockerContainer->addPort($from, $to);
@@ -37,7 +37,7 @@ class DockerContainerDataTransformer
         foreach ($data['commands'] ?? [] as $command) {
             $dockerContainer->addCommand($command);
         }
-        foreach ($data['copyEntries'] ?? [] as $copyEntry) {
+        foreach ($data['copy_entries'] ?? [] as $copyEntry) {
             $dockerContainer->addCopyEntry($copyEntry);
         }
         foreach ($data['volumes'] ?? [] as $volume) {

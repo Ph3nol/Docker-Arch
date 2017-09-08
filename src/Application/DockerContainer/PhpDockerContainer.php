@@ -91,7 +91,7 @@ class PhpDockerContainer extends DockerContainer
 
         // Some configs.
         foreach ($service->getOptions()['config'] as $key => $value) {
-            if (true === $service->getOptions()['cliOnly']) {
+            if (true === $service->getOptions()['cli_only']) {
                 $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
             } else {
                 $this->addCommand('echo "php_admin_value['.$key.'] = '.$value.'" >> /usr/local/etc/php-fpm.d/www.conf');

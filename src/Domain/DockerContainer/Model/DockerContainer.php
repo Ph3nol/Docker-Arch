@@ -184,7 +184,7 @@ class DockerContainer implements DockerContainerInterface
             $this->addCommand('echo "\nsource ~/.shell.config" > ~/.bashrc');
         }
         if (true === $this->getService()->getOptions()['zsh'] &&
-            true === $this->getService()->getOptions()['customZsh']) {
+            true === $this->getService()->getOptions()['custom_zsh']) {
             $this
                 ->addCommand('curl https://cdn.rawgit.com/zsh-users/antigen/v1.4.1/bin/antigen.zsh > ~/.antigen.zsh');
         }

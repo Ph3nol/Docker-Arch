@@ -41,7 +41,7 @@ class Project implements ProjectInterface
     /**
      * @var string
      */
-    private $logsPath = './.docker-arch/logs';
+    private $logs_path = './.docker-arch/logs';
 
     /**
      * @var ServiceInterface[]
@@ -179,17 +179,17 @@ class Project implements ProjectInterface
      */
     public function getLogsPath(): string
     {
-        return $this->logsPath;
+        return $this->logs_path;
     }
 
     /**
-     * @param string $logsPath
+     * @param string $logs_path
      *
      * @return self
      */
-    public function setLogsPath(string $logsPath)
+    public function setLogsPath(string $logs_path)
     {
-        $this->logsPath = $logsPath;
+        $this->logs_path = $logs_path;
 
         return $this;
     }

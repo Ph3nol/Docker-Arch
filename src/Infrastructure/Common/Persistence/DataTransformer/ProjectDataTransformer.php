@@ -8,6 +8,7 @@ use Ph3\DockerArch\Domain\Project\Model\Project;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\InvalidDataFileFormatException;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\ServiceDataTransformer;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Cédric Dugat <cedric@dugat.me>
@@ -23,7 +24,7 @@ class ProjectDataTransformer
     public function toModel($data, $jsonString = true): ProjectInterface
     {
         if (true === $jsonString) {
-            $data = json_decode($data, true);
+            $data = Yaml::parse($data);
         }
 
         if (null === $data || false === is_array($data)) {
@@ -44,8 +45,8 @@ class ProjectDataTransformer
         if ($data['user'] ?? null) {
             $project->setUser($data['user']);
         }
-        if ($logsPath = $data['logsPath'] ?? false) {
-            $project->setLogsPath($data['logsPath']);
+        if ($logs_path = $data['logs_path'] ?? false) {
+            $project->setLogsPath($data['logs_path']);
         }
         foreach ($data['services'] ?? [] as $serviceData) {
             $service = (new ServiceDataTransformer())->toModel($serviceData, $project);

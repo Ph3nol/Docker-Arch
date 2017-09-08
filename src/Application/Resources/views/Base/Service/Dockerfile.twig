@@ -26,11 +26,11 @@ LABEL maintainer="{{ dockerContainer.maintainer|raw }}"
 ENV {{ envKey }} {{ envValue }}
 {% endfor %}
 {# ----------------------------------------------------- To-copy entries (COPY part) #}
-{% if dockerContainer.copyEntries|length %}
+{% if dockerContainer.copy_entries|length %}
 
 # Copy some entries.
 {% endif %}
-{% for copyEntry in dockerContainer.copyEntries %}
+{% for copyEntry in dockerContainer.copy_entries %}
 COPY {{ copyEntry.local }} {{ copyEntry.remote }}
 {% endfor %}
 {# ----------------------------------------------------- Packages (RUN apt-get part) #}
@@ -60,10 +60,10 @@ RUN rm -rf /var/cache/apk/*
 RUN {{ command|raw }}
 {% endfor %}
 {# ----------------------------------------------------- Entry point (ENTRYPOINT) #}
-{% if dockerContainer.entryPoint %}
+{% if dockerContainer.entry_point %}
 
 # Entry point.
-ENTRYPOINT {{ dockerContainer.entryPoint }}
+ENTRYPOINT {{ dockerContainer.entry_point }}
 {% endif %}
 {# ----------------------------------------------------- Done #}
 

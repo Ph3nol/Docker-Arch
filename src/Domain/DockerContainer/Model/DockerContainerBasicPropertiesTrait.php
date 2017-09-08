@@ -20,12 +20,12 @@ trait DockerContainerBasicPropertiesTrait
     /**
      * @var string
      */
-    protected $workingDir;
+    protected $working_dir;
 
     /**
      * @var string
      */
-    protected $entryPoint;
+    protected $entry_point;
 
     /**
      * @var string
@@ -57,17 +57,17 @@ trait DockerContainerBasicPropertiesTrait
      */
     public function getWorkingDir(): ?string
     {
-        return $this->workingDir;
+        return $this->working_dir;
     }
 
     /**
-     * @param string $workingDir
+     * @param string $working_dir
      *
      * @return self
      */
-    public function setWorkingDir(string $workingDir): self
+    public function setWorkingDir(string $working_dir): self
     {
-        $this->workingDir = $workingDir;
+        $this->working_dir = $working_dir;
 
         return $this;
     }
@@ -77,17 +77,17 @@ trait DockerContainerBasicPropertiesTrait
      */
     public function getEntryPoint(): ?string
     {
-        return $this->entryPoint;
+        return $this->entry_point;
     }
 
     /**
-     * @param string $entryPoint
+     * @param string $entry_point
      *
      * @return self
      */
-    public function setEntryPoint(string $entryPoint): self
+    public function setEntryPoint(string $entry_point): self
     {
-        $this->entryPoint = $entryPoint;
+        $this->entry_point = $entry_point;
 
         return $this;
     }
