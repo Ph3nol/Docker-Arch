@@ -19,7 +19,7 @@ class PhpService extends AbstractService
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'app_type' => null,
-            'dotfiles' => true,
+            'dotfiles' => false,
             'cli_only' => false,
             'zsh' => true,
             'custom_zsh' => false,

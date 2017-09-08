@@ -1,0 +1,23 @@
+name: PnG
+user: png
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../
+    docker_sync: true
+    host: png.api
+    options:
+        app_type: symfony
+        version: "7.1"
+        extensions:
+            - pdo_mysql
+        zsh: true
+        custom_zsh: true
+    # MariaDB Container
+  - type: mariadb
+    options:
+        version: "10.3"

@@ -14,5 +14,5 @@ services:
         extensions:
             - gd
         config:
-            - phar.readonly: 0
-            - memory_limit: 512M
+            phar.readonly: 0
+            memory_limit: 512M

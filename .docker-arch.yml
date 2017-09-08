@@ -10,4 +10,4 @@ services:
         custom_zsh: true
         composer: true
         config:
-            - phar.readonly: 0
+            phar.readonly: 0

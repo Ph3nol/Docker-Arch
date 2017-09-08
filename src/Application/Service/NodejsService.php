@@ -19,7 +19,7 @@ class NodejsService extends AbstractService
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'cli_only' => false,
-            'dotfiles' => true,
+            'dotfiles' => false,
             'zsh' => true,
             'custom_zsh' => false,
             'powerline' => false,
