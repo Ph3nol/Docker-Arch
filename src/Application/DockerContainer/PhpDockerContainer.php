@@ -38,7 +38,8 @@ class PhpDockerContainer extends DockerContainer
         if ($service->getOptions()['zsh']) {
             $this->addPackage('zsh');
         }
-        if ($service->getOptions()['extensions']['mysql'] ?? false) {
+        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
+            true === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
             $this
                 ->addPackage('libmcrypt-dev')
                 ->addPackage('mysql-client');
@@ -68,6 +69,10 @@ class PhpDockerContainer extends DockerContainer
         $service = $this->getService();
 
         // PHP extensions part.
+        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
+            false === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
+            $service->getOptions()['extensions'][] = 'pdo_mysql';
+        }
         $dockerPHPExtensions = ['mcrypt', 'pdo_mysql', 'bcmath'];
         foreach ($service->getOptions()['extensions'] as $extension) {
             if (true === in_array($extension, $dockerPHPExtensions)) {
