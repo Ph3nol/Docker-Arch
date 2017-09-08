@@ -1,0 +1,13 @@
+name: Docker Arch
+services:
+    # PHP Container
+  - type: php
+    path: ../
+    options:
+        version: "7.1"
+        cli_only: true
+        zsh: true
+        custom_zsh: true
+        composer: true
+        config:
+            - phar.readonly: 0
