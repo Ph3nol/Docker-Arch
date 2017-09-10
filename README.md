@@ -23,7 +23,7 @@ chmod +x docker-arch-install
 ./docker-arch-install
 ```
 
-## Docker installation
+## Docker Architecture generation
 
 From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
 
@@ -31,29 +31,15 @@ From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
 docker pull ph3nol/docker-arch
 ```
 
-Build from local library Dockerfile:
+Go to your project root directory and create/edit `.docker-arch.yml` file [see examples](examples/).
 
+Then generate your Docker environment:
+ 
 ```
-docker build --force-rm --no-cache -t ph3nol/docker-arch ./docker/phar/
-```
-
-## Build Docker environment
-
-Go to your project root directory, containing `.docker-arch.yml` file [see examples](examples/).
-
-Generate Docker environment from installed package:
-
-```
-docker-arch generate
+docker run -it -v $(PWD):/destination ph3nol/docker-arch:latest generate /destination
 ```
 
-Or generate from Docker image:
-
-```
-docker run -it -v $(pwd):/destination ph3nol/docker-arch generate /destination
-```
-
-Then, from your project root directory:
+Finally, use `.docker-arch/do` script for somes actions:
 
 ```
 .docker-arch/do build    # Build containers (like `docker-compose up --build -d`)
@@ -62,21 +48,12 @@ Then, from your project root directory:
 .docker-arch/do dc       # Access `docker-compose` with your configuration, for specific requests
 .docker-arch/do stop     # Stop containers (like `docker-compose stop`)
 .docker-arch/do clean    # Stop/Remove containers and reset linked volumes
+...
 ```
-
-## Development
-
-* Install Docker Arch (see the installation dedicated part)
-* Clone this project from Github
-* `composer install`
-* Build Docker Arch environment with `docker-arch build` (library root directory)
-* Use `.docker-arch/do` (see the part above)
 
 ## To do
 
 * Improve README and documentation
 * Implement a UI to generate YML configuration, with all possible options
-* Add `.docker-arch.yml` generation (from `docker-arch init`)
-* Publish official Docker ph3nol/docker-arch image
 * Add some services (ElasticSearch, RabbitMQ, MongoDB, etc.)
 * Write fucking unit Tests (Atoum powered)
