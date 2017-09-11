@@ -53,7 +53,7 @@ class Architect implements ArchitectInterface
     public function __construct(TemplatedFileGeneratorInterface $templatedFileGenerator)
     {
         define('PROJECT_ROOT_DIR', __DIR__.'/../..');
-        define('PROJECT_APP_DIR', PROJECT_ROOT_DIR.'/app');
+        define('PROJECT_APP_DIR', PROJECT_ROOT_DIR.'/app1');
         define('PROJECT_SRC_DIR', PROJECT_ROOT_DIR.'/src');
 
         $this->templatedFileGenerator = $templatedFileGenerator;

@@ -15,6 +15,11 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 class NginxDockerContainer extends DockerContainer
 {
     /**
+     * @var array
+     */
+    private $vhostsServicesByHost = [];
+
+    /**
      * {@inheritdoc}
      */
     public function init(): void
@@ -56,6 +61,14 @@ class NginxDockerContainer extends DockerContainer
                 'type' => 'rw',
             ]);
 
+        // Networks.
+        $this->addNetwork(
+            self::DOCKER_MAIN_NETWORK,
+            array_filter(array_keys($this->vhostsServicesByHost), function (string $host): bool {
+                return ('localhost' !== $host);
+            })
+        );
+
         // Ports.
         $portKey = $service->generateEnvKey('NGINX_PORT');
         $project->addEnv($portKey, '8080');
@@ -69,16 +82,16 @@ class NginxDockerContainer extends DockerContainer
     {
         $dockerContainerService = $this->getService();
 
-        $vhostsServicesByHost = [];
+        $this->vhostsServicesByHost = [];
         foreach ($dockerContainerService->getProject()->getWebServices() as $k => $service) {
             if (false === $service->isCliOnly() && null !== $service->getHost()) {
-                $vhostsServicesByHost[$service->getHost()] = $service;
+                $this->vhostsServicesByHost[$service->getHost()] = $service;
             }
         }
 
         $hasGeneratedVhosts = false;
         $vhostIndex = 0;
-        foreach ($vhostsServicesByHost as $host => $service) {
+        foreach ($this->vhostsServicesByHost as $host => $service) {
             $appType = $service->getOptions()['app_type'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',

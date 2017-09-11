@@ -300,6 +300,29 @@ class Project implements ProjectInterface
         return $this;
     }
 
+
+    /**
+     * @return void
+     */
+    public function updateServicesIdentifiers(): void
+    {
+        $servicesCount = [];
+        foreach ($this->getServices() as $service) {
+            $servicesCount[$service->getName()] += 1;
+            if (1 < count($this->getServicesForName($service->getName()))) {
+                $serviceIdentifier = sprintf(
+                    '%s-%s',
+                    $service->getName(),
+                    $service->getHost() ? : $servicesCount[$service->getName()]
+                );
+            } else {
+                $serviceIdentifier = $service->getName();
+            }
+
+            $service->setIdentifier((new Slugify())->slugify($serviceIdentifier));
+        }
+    }
+
     /**
      * @param ServiceInterface $service
      *

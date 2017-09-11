@@ -61,7 +61,6 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
-        $this->initIdentifier();
     }
 
     /**
@@ -171,7 +170,6 @@ abstract class AbstractService implements ServiceInterface
     public function setHost($host): self
     {
         $this->host = $host;
-        $this->initIdentifier();
 
         return $this;
     }
@@ -252,18 +250,5 @@ abstract class AbstractService implements ServiceInterface
             $this->getHost() ? strtoupper($this->getHost()).'_' : '',
             $key
         );
-    }
-
-    /**
-     * @return void
-     */
-    private function initIdentifier(): void
-    {
-        if ($hostKey = $this->getHost()) {
-            $hostKey = (new Slugify())->slugify($hostKey);
-            $this->identifier = sprintf('%s-%s', $this->getName(), $hostKey);
-        } else {
-            $this->identifier = sprintf('%s-%s', $this->getName(), uniqid());
-        }
     }
 }

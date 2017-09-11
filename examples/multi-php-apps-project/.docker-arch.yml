@@ -1,0 +1,16 @@
+name: Docker Arch - Multi PHP Apps Project
+services:
+    # Nginx Container
+  - type: nginx
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../app1
+    host: app1.loc
+    options:
+        version: "7.1"
+  - type: php
+    path: ../app2
+    host: app2.loc
+    options:
+        version: "7.1"

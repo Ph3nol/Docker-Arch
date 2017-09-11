@@ -48,38 +48,20 @@ class ProjectDataTransformer
         if ($data['logs_path'] ?? false) {
             $project->setLogsPath($data['logs_path']);
         }
+        foreach ($data['envs'] ?? [] as $key => $value) {
+            $project->addEnv($key, $value);
+        }
         foreach ($data['services'] ?? [] as $serviceData) {
             $service = (new ServiceDataTransformer())->toModel($serviceData, $project);
             $project->addService($service);
         }
-        foreach ($data['envs'] ?? [] as $key => $value) {
-            $project->addEnv($key, $value);
-        }
-
-        $this->updateProjectServicesIdentifiers($project);
 
         // Project services Docker containers initialization.
+        $project->updateServicesIdentifiers();
         foreach ($project->getServices() as $service) {
             $service->getDockerContainer()->init();
         }
 
         return $project;
-    }
-
-    /**
-     * @param ProjectInterface $project
-     *
-     * @return void
-     */
-    private function updateProjectServicesIdentifiers(ProjectInterface $project): void
-    {
-        foreach ($project->getServices() as $service) {
-            $identicalNameServices = $project->getServicesForName($service->getName());
-            if (1 >= $identicalNameServices) {
-                $service->setIdentifier(
-                    (new Slugify())->slugify($service->getName())
-                );
-            }
-        }
     }
 }

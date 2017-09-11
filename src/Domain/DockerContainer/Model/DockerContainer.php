@@ -11,6 +11,7 @@ use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerCommandsTrait;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerEnvsTrait;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerPortsTrait;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerVolumesTrait;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerNetworksTrait;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerCopyEntriesTrait;
 
 /**
@@ -18,12 +19,15 @@ use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerCopyEntriesTrait;
  */
 class DockerContainer implements DockerContainerInterface
 {
+    public const DOCKER_MAIN_NETWORK = 'main-network';
+
     use DockerContainerBasicPropertiesTrait;
     use DockerContainerPackagesTrait;
     use DockerContainerCommandsTrait;
     use DockerContainerEnvsTrait;
     use DockerContainerPortsTrait;
     use DockerContainerVolumesTrait;
+    use DockerContainerNetworksTrait;
     use DockerContainerCopyEntriesTrait;
 
     /**
@@ -60,7 +64,8 @@ class DockerContainer implements DockerContainerInterface
         $this
             ->setMaintainer('Docker Arch <https://github.com/Ph3nol/Docker-Arch>')
             ->addEnv('DOCKER_CONTAINER_NAME', $this->getService()->getIdentifier())
-            ->addEnv('DEBIAN_FRONTEND', 'noninteractive');
+            ->addEnv('DEBIAN_FRONTEND', 'noninteractive')
+            ->addNetwork(self::DOCKER_MAIN_NETWORK);
 
         if ($this->getService()->isWebService()) {
             $this

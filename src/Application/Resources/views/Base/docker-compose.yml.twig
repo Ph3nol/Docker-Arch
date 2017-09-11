@@ -2,7 +2,7 @@ version: "3"
 
 {# ----------------------------------------------------- Networks #}
 networks:
-    main-network:
+    {{ constant('Ph3\\DockerArch\\Domain\\DockerContainer\\Model\\DockerContainer::DOCKER_MAIN_NETWORK') }}:
         driver: bridge
 
 {# ----------------------------------------------------- Volumes #}
@@ -19,8 +19,19 @@ services:
     {{ service.identifier }}:
         container_name: {{ project.identifier }}-{{ service.identifier }}
         build: ./{{ service.identifier }}
+{% set networks = service.dockerContainer.networks %}
+{% if networks|length %}
         networks:
-            - main-network
+{% for networkName, networkAliases in networks %}
+            {{ networkName }}:
+{% if networkAliases|length %}
+                aliases:
+{% for networkAlias in networkAliases %}
+                    - {{ networkAlias }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
 {% set links = project.getLinksForService(service) %}
 {% if links|length %}
         links:
