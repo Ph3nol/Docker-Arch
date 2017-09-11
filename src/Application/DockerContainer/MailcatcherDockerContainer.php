@@ -26,7 +26,7 @@ class MailcatcherDockerContainer extends DockerContainer
 
         // Ports.
         $portKey = $service->generateEnvKey('MAILCATCHER_PORT');
-        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $project->addEnv($portKey, '8880');
         $this->addPort('${'.$project->generateEnvKey($portKey).'}', '1080');
     }
 }

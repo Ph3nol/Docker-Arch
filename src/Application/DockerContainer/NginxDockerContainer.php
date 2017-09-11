@@ -58,7 +58,7 @@ class NginxDockerContainer extends DockerContainer
 
         // Ports.
         $portKey = $service->generateEnvKey('NGINX_PORT');
-        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $project->addEnv($portKey, '8080');
         $this->addPort('${'.$project->generateEnvKey($portKey).'}', '80');
     }
 

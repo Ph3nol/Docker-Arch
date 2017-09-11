@@ -34,7 +34,7 @@ class NodejsDockerContainer extends DockerContainer
 
         // Ports.
         $portKey = $service->generateEnvKey('NODEJS_PORT');
-        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $project->addEnv($portKey, '8090');
         $this->addPort('${'.$project->generateEnvKey($portKey).'}', '9000');
     }
 }
