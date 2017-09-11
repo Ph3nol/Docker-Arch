@@ -9,7 +9,7 @@
 
 ## Demonstration
 
-[![asciicast](https://asciinema.org/a/137142.png)](https://asciinema.org/a/137142?autoplay=1)
+[![asciicast](https://asciinema.org/a/137144.png)](https://asciinema.org/a/137144?autoplay=1)
 
 ## Local installation (PHP 7.1+ required)
 
