@@ -8,6 +8,7 @@ services:
         cli_only: true
         zsh: true
         custom_zsh: true
+        dotfiles: true
         composer: true
         config:
             phar.readonly: 0

@@ -39,7 +39,7 @@ Then generate your Docker environment:
 docker run -it -v $(PWD):/destination ph3nol/docker-arch:latest generate /destination
 ```
 
-Finally, use `.docker-arch/do` script for somes actions:
+Finally, use `.docker-arch/do` script, from the project, for somes actions:
 
 ```
 .docker-arch/do build    # Build containers (like `docker-compose up --build -d`)
@@ -49,6 +49,23 @@ Finally, use `.docker-arch/do` script for somes actions:
 .docker-arch/do stop     # Stop containers (like `docker-compose stop`)
 .docker-arch/do clean    # Stop/Remove containers and reset linked volumes
 ...
+```
+
+To use the Docker image so fast, you can use these aliases/functions:
+
+```
+function docker-arch {
+    case "$1" in
+        *)
+            if [ -z $2 ]; then DESTINATION_PATH=$PWD; else DESTINATION_PATH=$2; fi
+            if [[ "$DESTINATION_PATH" == "." ]]; then DESTINATION_PATH=$PWD; fi
+
+            docker run -it -v $DESTINATION_PATH:/destination ph3nol/docker-arch:latest generate /destination
+            ;;
+    esac
+}
+alias dag="docker-arch generate"
+alias dad=".docker-arch/do"
 ```
 
 ## To do
