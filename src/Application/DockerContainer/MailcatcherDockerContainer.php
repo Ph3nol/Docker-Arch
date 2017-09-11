@@ -21,10 +21,12 @@ class MailcatcherDockerContainer extends DockerContainer
 
         $this->setFrom('schickling/mailcatcher');
 
+        $service = $this->getService();
         $project = $this->getService()->getProject();
 
         // Ports.
-        $project->addEnv('MAILCATCHER_PORT', ('77'.rand(11, 99)));
-        $this->addPort('${'.$project->generateEnvKey('MAILCATCHER_PORT').'}', '1080');
+        $portKey = $service->generateEnvKey('MAILCATCHER_PORT');
+        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '1080');
     }
 }

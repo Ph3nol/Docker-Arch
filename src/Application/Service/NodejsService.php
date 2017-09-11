@@ -50,4 +50,12 @@ class NodejsService extends AbstractService
     {
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCli(): bool
+    {
+        return true;
+    }
 }

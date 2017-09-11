@@ -50,7 +50,8 @@ class MysqlDockerContainer extends DockerContainer
             ]);
 
         // Ports.
-        $project->addEnv('MYSQL_PORT', ('77'.rand(11, 99)));
-        $this->addPort('${'.$project->generateEnvKey('MYSQL_PORT').'}', '3306');
+        $portKey = $service->generateEnvKey('MYSQL_PORT');
+        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '3306');
     }
 }

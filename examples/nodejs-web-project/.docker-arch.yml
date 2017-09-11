@@ -1,0 +1,14 @@
+name: Docker Arch - NodeJS Web Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # PHP Container
+  - type: nodejs
+    path: ../app
+    host: localhost
+    options:
+        version: "8"
+    container:
+        entry_point: npm start

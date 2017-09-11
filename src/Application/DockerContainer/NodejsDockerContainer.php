@@ -20,10 +20,9 @@ class NodejsDockerContainer extends DockerContainer
         parent::init();
 
         $service = $this->getService();
+        $project = $service->getProject();
 
-        $this
-            ->setFrom(sprintf('node:%s', $service->getOptions()['version']))
-            ->setEntryPoint('~/entrypoint.sh');
+        $this->setFrom(sprintf('node:%s', $service->getOptions()['version']));
 
         $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
@@ -33,31 +32,9 @@ class NodejsDockerContainer extends DockerContainer
             $this->applyDotfiles();
         }
 
-        // Packages.
-        if ($service->getOptions()['supervisor']) {
-            $this->addPackage('supervisor');
-        }
-
-        // Commands.
-        $this->addCommand('chmod +x ~/entrypoint.sh');
-        if (true === $service->getOptions()['bower']) {
-            $this->addCommand('npm install -g bower');
-            $this->addCommand('echo \'{ "allow_root": true }\' > ~/.bowerrc');
-        }
-        if (true === $service->getOptions()['gulp']) {
-            $this->addCommand('npm install -g gulp-cli');
-        }
-
-        // Copy entries.
-        $this->addCopyEntry([
-            'local' => 'entrypoint.sh',
-            'remote' => '~/entrypoint.sh',
-        ]);
-
-        // Templated files.
-        $service->addTemplatedFile(new TemplatedFile(
-            'entrypoint.sh',
-            'Service/Nodejs/entrypoint.sh.twig'
-        ));
+        // Ports.
+        $portKey = $service->generateEnvKey('NODEJS_PORT');
+        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '9000');
     }
 }

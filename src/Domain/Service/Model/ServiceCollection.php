@@ -41,6 +41,21 @@ class ServiceCollection extends \ArrayObject
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getWebServices(): ServiceCollection
+    {
+        $webServices = [];
+        foreach ($this as $service) {
+            if (true === $service->isWebService()) {
+                $webServices[] = $service;
+            }
+        }
+
+        return new ServiceCollection($webServices);
+    }
+
+    /**
      * @param ServiceInterface $refService
      *
      * @return ServiceInterface[]

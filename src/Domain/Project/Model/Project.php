@@ -108,6 +108,14 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getWebServices(): ServiceCollection
+    {
+        return $this->getServices()->getWebServices();
+    }
+
+    /**
      * @param string $name
      *
      * @return ServiceInterface[]

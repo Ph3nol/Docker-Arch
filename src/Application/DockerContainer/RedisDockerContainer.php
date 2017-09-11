@@ -24,7 +24,8 @@ class RedisDockerContainer extends DockerContainer
         $project = $this->getService()->getProject();
 
         // Ports.
-        $project->addEnv('REDIS_PORT', ('77'.rand(11, 99)));
-        $this->addPort('${'.$project->generateEnvKey('REDIS_PORT').'}', '6379');
+        $portKey = $service->generateEnvKey('REDIS_PORT');
+        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '6379');
     }
 }

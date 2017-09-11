@@ -221,6 +221,14 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function isCliOnly(): bool
+    {
+        return $this->getOptions()['cli_only'] ?? false;
+    }
+
+    /**
      * @param string $identifier
      *
      * @return self
@@ -230,6 +238,20 @@ abstract class AbstractService implements ServiceInterface
         $this->identifier = $identifier;
 
         return $this;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
+    public function generateEnvKey(string $key): string
+    {
+        return sprintf(
+            '%s%s',
+            $this->getHost() ? strtoupper($this->getHost()).'_' : '',
+            $key
+        );
     }
 
     /**

@@ -57,8 +57,9 @@ class NginxDockerContainer extends DockerContainer
             ]);
 
         // Ports.
-        $project->addEnv('NGINX_PORT', ('77'.rand(11, 99)));
-        $this->addPort('${'.$project->generateEnvKey('NGINX_PORT').'}', '80');
+        $portKey = $service->generateEnvKey('NGINX_PORT');
+        $project->addEnv($portKey, ('77'.rand(11, 99)));
+        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '80');
     }
 
     /**
@@ -69,9 +70,8 @@ class NginxDockerContainer extends DockerContainer
         $dockerContainerService = $this->getService();
 
         $vhostsServicesByHost = [];
-        foreach ($dockerContainerService->getProject()->getServices() as $k => $service) {
-            $isCliOnly = $service->getOptions()['cli_only'] ?? false;
-            if (false === $isCliOnly && null !== $service->getHost()) {
+        foreach ($dockerContainerService->getProject()->getWebServices() as $k => $service) {
+            if (false === $service->isCliOnly() && null !== $service->getHost()) {
                 $vhostsServicesByHost[$service->getHost()] = $service;
             }
         }
