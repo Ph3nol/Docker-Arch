@@ -11,7 +11,15 @@
 
 [![asciicast](https://asciinema.org/a/137144.png)](https://asciinema.org/a/137144?autoplay=1)
 
-## Local installation (PHP 7.1+ required)
+## User Docker-Arch from dedicated Docker image (recommanded)
+
+From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
+
+``` shell
+docker pull ph3nol/docker-arch
+```
+
+## Use Docker-Arch from local installation (PHP 7.1+ required)
 
 To install, just get `install.sh` file, and launch it.
 Here is an example with `curl` usage:
@@ -23,13 +31,7 @@ chmod +x docker-arch-install
 ./docker-arch-install
 ```
 
-## Docker Architecture generation
-
-From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
-
-``` shell
-docker pull ph3nol/docker-arch
-```
+## Docker-Arch environment generation
 
 Go to your project root directory and create/edit `.docker-arch.yml` file [see examples](examples/).
 
