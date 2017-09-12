@@ -38,10 +38,10 @@ class DockerContainerDataTransformer
             $dockerContainer->addCommand($command);
         }
         foreach ($data['copy_entries'] ?? [] as $copyEntry) {
-            $dockerContainer->addCopyEntry($copyEntry);
+            $dockerContainer->addCopyEntryFromString($copyEntry);
         }
         foreach ($data['volumes'] ?? [] as $volume) {
-            $dockerContainer->addVolume($volume);
+            $dockerContainer->addVolumeFromString($volume);
         }
 
         return $dockerContainer;

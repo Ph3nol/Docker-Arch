@@ -33,6 +33,22 @@ trait DockerContainerCopyEntriesTrait
     }
 
     /**
+     * @param string $copyEntry
+     *
+     * @return self
+     */
+    public function addCopyEntryFromString(string $copyEntry): self
+    {
+        $copyEntry = explode(':', $copyEntry);
+        $this->addCopyEntry([
+            'local' => $copyEntry[0],
+            'remote' => $copyEntry[1],
+        ]);
+
+        return $this;
+    }
+
+    /**
      * @param array $copyEntries
      *
      * @return self

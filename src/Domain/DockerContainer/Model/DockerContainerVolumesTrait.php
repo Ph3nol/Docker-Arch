@@ -33,6 +33,23 @@ trait DockerContainerVolumesTrait
     }
 
     /**
+     * @param string $volume
+     *
+     * @return self
+     */
+    public function addVolumeFromString(string $volume): self
+    {
+        $volume = explode(':', $volume);
+        $this->addVolume([
+            'local' => $volume[0],
+            'remote' => $volume[1],
+            'type' => $volume[2] ?? 'ro',
+        ]);
+
+        return $this;
+    }
+
+    /**
      * @param array $volumes
      *
      * @return self

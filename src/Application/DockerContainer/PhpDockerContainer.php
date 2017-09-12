@@ -66,11 +66,8 @@ class PhpDockerContainer extends DockerContainer
             false === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
             $service->getOptions()['extensions'][] = 'pdo_mysql';
         }
-        $dockerPHPExtensions = ['mcrypt', 'pdo_mysql', 'bcmath'];
         foreach ($service->getOptions()['extensions'] as $extension) {
-            if (true === in_array($extension, $dockerPHPExtensions)) {
-                $this->addCommand('docker-php-ext-install '.$extension);
-            }
+            $this->addCommand('docker-php-ext-install '.$extension);
         }
 
         // XDebug part.
