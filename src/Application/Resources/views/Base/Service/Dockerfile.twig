@@ -42,6 +42,7 @@ COPY {{ copyEntry.local }} {{ copyEntry.remote }}
 # Packages installation.
 RUN set -xe && apt-get update
 RUN apt-get install -y --no-install-recommends {{ dockerContainer.packages|join(" \\\n    ") }}
+RUN apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
 {% endif %}
 {% if dockerContainer.packages|length and
     dockerContainer.isPackageManager(

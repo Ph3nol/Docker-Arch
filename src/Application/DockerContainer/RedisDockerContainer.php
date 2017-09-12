@@ -17,6 +17,8 @@ class RedisDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
         parent::init();
 
         $this->setFrom(sprintf('redis:%s-alpine', $this->getService()->getOptions()['version']));

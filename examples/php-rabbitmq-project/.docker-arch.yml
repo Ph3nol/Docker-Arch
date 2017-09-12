@@ -1,0 +1,20 @@
+name: Docker Arch - Simple PHP RabbitMQ Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../app
+    host: localhost
+    options:
+        version: "7.1"
+        extensions:
+            - bcmath
+    container:
+        volumes:
+            - "../docker:/docker:ro"
+        entry_point: "/bin/sh /docker/php/entrypoint.sh"
+    # RabbitMQ Container
+  - type: rabbitmq

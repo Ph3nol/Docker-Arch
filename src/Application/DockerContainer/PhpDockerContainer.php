@@ -61,27 +61,32 @@ class PhpDockerContainer extends DockerContainer
     {
         $service = $this->getService();
 
-        // PHP extensions part.
-        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
-            false === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
-            $service->getOptions()['extensions'][] = 'pdo_mysql';
+        $extensions = $service->getOptions()['extensions'];
+        if (true === in_array('mysql', $extensions)) {
+            unset($extensions[array_search('mysql', $extensions)]);
+            $extensions[] = 'pdo_mysql';
         }
-        foreach ($service->getOptions()['extensions'] as $extension) {
-            $this->addCommand('docker-php-ext-install '.$extension);
-        }
-
-        // XDebug part.
         if (true === in_array('xdebug', $service->getOptions()['extensions'])) {
-            $this->addCommand('pecl install -o -f xdebug');
-            $this->addCommand('rm -rf /tmp/pear');
-            $this->addCommand('echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini');
-            $this->addCommand('echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/xdebug.ini');
+            unset($extensions[array_search('xdebug', $extensions)]);
+            $this
+                ->addCommand('pecl install -o -f xdebug')
+                ->addCommand('rm -rf /tmp/pear')
+                ->addCommand('echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini')
+                ->addCommand('echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/xdebug.ini');
         }
-
-        // Redis part.
-        if (true === in_array('redis', $service->getOptions()['extensions'])) {
-            $this->addCommand('pecl install redis');
-            $this->addCommand('docker-php-ext-enable redis');
+        if (true === in_array('redis', $extensions)) {
+            unset($extensions[array_search('redis', $extensions)]);
+            $this
+                ->addCommand('pecl install redis')
+                ->addCommand('docker-php-ext-enable redis');
+        }
+        if (true === in_array('pdo_mysql', $extensions)) {
+            $this
+                ->addPackage('libmcrypt-dev')
+                ->addPackage('mysql-client');
+        }
+        foreach (array_unique($extensions) as $extension) {
+            $this->addCommand('docker-php-ext-install '.$extension);
         }
 
         // Some configs.

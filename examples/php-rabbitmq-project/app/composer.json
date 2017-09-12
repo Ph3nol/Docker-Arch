@@ -1,0 +1,7 @@
+{
+    "name": "ph3/docker-arch-demo",
+    "description": "Docker Arch demo.",
+    "require": {
+        "php-amqplib/php-amqplib": "2.6.*"
+    }
+}
