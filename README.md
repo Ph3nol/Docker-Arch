@@ -16,7 +16,7 @@
 To install, just get `install.sh` file, and launch it.
 Here is an example with `curl` usage:
 
-```
+``` shell
 curl -L -s -o docker-arch-install \
     https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh
 chmod +x docker-arch-install
@@ -27,21 +27,21 @@ chmod +x docker-arch-install
 
 From dedicated [Docker image](https://hub.docker.com/r/ph3nol/docker-arch/).
 
-```
+``` shell
 docker pull ph3nol/docker-arch
 ```
 
 Go to your project root directory and create/edit `.docker-arch.yml` file [see examples](examples/).
 
 Then generate your Docker environment:
- 
-```
+
+``` shell
 docker run -it -v $(PWD):/destination ph3nol/docker-arch:latest generate /destination
 ```
 
 Finally, use `.docker-arch/do` script, from the project, for somes actions:
 
-```
+``` shell
 .docker-arch/do build    # Build containers (like `docker-compose up --build -d`)
 .docker-arch/do start    # Start containers (like `docker-compose up -d`)
 .docker-arch/do shell    # Access a container Shell
@@ -53,7 +53,7 @@ Finally, use `.docker-arch/do` script, from the project, for somes actions:
 
 To use the Docker image so fast, you can use these aliases/functions:
 
-```
+``` bash
 function docker-arch {
     case "$1" in
         *)
