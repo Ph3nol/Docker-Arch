@@ -1,4 +1,6 @@
 name: Docker Arch - Complex PHP Project
+envs:
+    GLOBAL_PRECIOUS_TOKEN: 44db67f4-8caa-46d1-bd68-fa4bc0200299-from-env-config
 services:
     # PHP Container
   - type: php
@@ -11,7 +13,21 @@ services:
         powerline: true
         composer: true
         extensions:
-            - gd
+            - intl
         config:
             phar.readonly: 0
             memory_limit: 512M
+    container:
+        envs:
+            GLOBAL_PRECIOUS_TOKEN: ${DOCKER_CONFIG_GLOBAL_PRECIOUS_TOKEN}
+            OTHER_TOKEN: 32e07814-1226-4c5c-8583-9780564ea7a4-from-container
+        commands:
+            - "echo $GLOBAL_PRECIOUS_TOKEN >> ~/.my-precious-token"
+            - "echo $OTHER_TOKEN >> ~/.my-precious-token"
+        packages:
+            - htop
+            - mtop
+        volumes:
+            - "../data:/data:rw"
+            - "../docker:/docker:ro"
+        entry_point: "/bin/sh /docker/php/entrypoint.sh"
