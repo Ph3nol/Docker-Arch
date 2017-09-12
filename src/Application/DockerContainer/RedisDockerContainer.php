@@ -21,7 +21,8 @@ class RedisDockerContainer extends DockerContainer
 
         $this->setFrom(sprintf('redis:%s-alpine', $this->getService()->getOptions()['version']));
 
-        $project = $this->getService()->getProject();
+        $service = $this->getService();
+        $project = $service->getProject();
 
         // Ports.
         $portKey = $service->generateEnvKey('REDIS_PORT');
