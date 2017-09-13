@@ -9,7 +9,7 @@
 
 ## Demonstration
 
-[![asciicast](https://asciinema.org/a/137144.png)](https://asciinema.org/a/137144?autoplay=1)
+![Basic Demo](https://github.com/Ph3nol/Docker-Arch/raw/master/examples/basic-demo.gif "Basic Demo")
 
 ## User Docker-Arch from dedicated Docker image (recommanded)
 
