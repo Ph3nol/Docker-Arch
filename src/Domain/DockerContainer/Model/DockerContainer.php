@@ -152,6 +152,8 @@ class DockerContainer implements DockerContainerInterface
     /**
      * @param string $envProperty
      * @param array  $port
+     *
+     * @return self
      */
     public function addEnvPort(string $envProperty, array $port): self
     {
