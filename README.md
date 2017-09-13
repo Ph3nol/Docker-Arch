@@ -72,7 +72,6 @@ alias dad=".docker-arch/do"
 
 ## To do
 
-* Improve README and documentation
-* Implement a UI to generate YML configuration, with all possible options
-* Add some services (ElasticSearch, RabbitMQ, MongoDB, etc.)
+* Improve documentation
+* Add some services (ElasticSearch, MongoDB and many others!) - Feel free to contribute!
 * Write fucking unit Tests (Atoum powered)
