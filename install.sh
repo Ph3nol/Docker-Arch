@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 GITHUB_LAST_RELEASE_ENDPOINT="https://api.github.com/repos/Ph3nol/Docker-Arch/releases/tags/latest"
 DESTINATION_BIN_PATH="/usr/local/bin/docker-arch"
 
