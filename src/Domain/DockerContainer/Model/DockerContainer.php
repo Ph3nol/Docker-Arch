@@ -150,6 +150,33 @@ class DockerContainer implements DockerContainerInterface
     }
 
     /**
+     * @param string $envProperty
+     * @param array  $port
+     */
+    public function addEnvPort(string $envProperty, array $port): self
+    {
+        $service = $this->getService();
+        $project = $service->getProject();
+
+        $portKey = $service->generateEnvKey($envProperty.'_PORT');
+        $project->addEnv($portKey, $port['from']);
+        $port['from'] = '${'.$project->generateEnvKey($portKey).'}';
+        $this->addPort($port);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPortsWithUI(): array
+    {
+        return array_filter($this->getPorts(), function (array $port) {
+            return true === $port['ui'];
+        });
+    }
+
+    /**
      * @return ServiceInterface
      */
     public function getService(): ServiceInterface

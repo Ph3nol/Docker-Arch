@@ -57,8 +57,8 @@ services:
 {% set ports = service.dockerContainer.ports %}
 {% if ports|length %}
         ports:
-{% for publicPort, internalPort in ports %}
-            - {{ publicPort }}:{{ internalPort }}
+{% for port in ports %}
+            - {{ port.from }}:{{ port.to }}
 {% endfor %}
 {% endif %}
 {% if service.dockerContainer.isUserCreationEnabled == true %}

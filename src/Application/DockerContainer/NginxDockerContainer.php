@@ -70,9 +70,12 @@ class NginxDockerContainer extends DockerContainer
         );
 
         // Ports.
-        $portKey = $service->generateEnvKey('NGINX_PORT');
-        $project->addEnv($portKey, '8080');
-        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '80');
+        $this->addEnvPort('NGINX', [
+            'from' => '8080',
+            'to' => '80',
+            'ui' => true,
+            'label' => 'Web Access',
+        ]);
     }
 
     /**

@@ -21,14 +21,13 @@ trait DockerContainerPortsTrait
     }
 
     /**
-     * @param string $from
-     * @param string $to
+     * @param array $port
      *
      * @return self
      */
-    public function addPort(string $from, string $to): self
+    public function addPort(array $port): self
     {
-        $this->ports[$from] = $to;
+        $this->ports[$port['from']] = $port;
 
         return $this;
     }

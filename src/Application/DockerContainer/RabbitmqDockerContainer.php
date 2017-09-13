@@ -40,12 +40,8 @@ class RabbitmqDockerContainer extends DockerContainer
 
         // Ports.
         if (true === $this->getService()->getOptions()['with_management']) {
-            $portKey = $service->generateEnvKey('RABBITMQ_PORT');
-            $project->addEnv($portKey, '18072');
-            $this->addPort('${'.$project->generateEnvKey($portKey).'}', '15672');
+            $this->addEnvPort('RABBITMQ', ['from' => '18072', 'to' => '15672']);
         }
-        $portKey = $service->generateEnvKey('RABBITMQ_MANAGEMENT_PORT');
-        $project->addEnv($portKey, '8072');
-        $this->addPort('${'.$project->generateEnvKey($portKey).'}', '5672');
+        $this->addEnvPort('RABBITMQ_MANAGEMENT', ['from' => '8072', 'to' => '5672']);
     }
 }
