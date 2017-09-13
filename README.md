@@ -24,13 +24,13 @@ docker pull ph3nol/docker-arch
 Using `curl`:
 
 ``` shell
-curl -sSL https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install | bash
+curl -sSL https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh | bash
 ```
 
 Using `wget`:
 
 ``` shell
-wget -qO - https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install | bash
+wget -qO - https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh | bash
 ```
 
 ## Docker-Arch environment generation
