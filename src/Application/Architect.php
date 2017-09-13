@@ -13,6 +13,8 @@ use Ph3\DockerArch\Infrastructure\Common\Persistence\Exception\NoPersisterFileEx
 use Ph3\DockerArch\Infrastructure\Common\Persistence\Persister;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\PersisterInterface;
 use Ph3\DockerArch\Infrastructure\Project\Repository\ProjectRepository;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -33,9 +35,24 @@ class Architect implements ArchitectInterface
     protected $templatedFileGenerator;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @var string
      */
     private $projectPath;
+
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    /**
+     * @var ProjectInterface
+     */
+    private $project;
 
     /**
      * @var PersisterInterface
@@ -53,15 +70,22 @@ class Architect implements ArchitectInterface
     private $tmpBuildDir;
 
     /**
-     * @param TemplatedFileGeneratorInterface $templatedFileGenerator
+     * @var string
      */
-    public function __construct(TemplatedFileGeneratorInterface $templatedFileGenerator)
+    private $generatedUIPath;
+
+    /**
+     * @param TemplatedFileGeneratorInterface $templatedFileGenerator
+     * @param LoggerInterface                 $logger
+     */
+    public function __construct(TemplatedFileGeneratorInterface $templatedFileGenerator, LoggerInterface $logger = null)
     {
         define('PROJECT_ROOT_DIR', __DIR__.'/../..');
         define('PROJECT_APP_DIR', PROJECT_ROOT_DIR.'/app');
         define('PROJECT_SRC_DIR', PROJECT_ROOT_DIR.'/src');
 
         $this->templatedFileGenerator = $templatedFileGenerator;
+        $this->logger = $logger ?: new NullLogger();
         $this->fs = new Filesystem();
     }
 
@@ -78,37 +102,69 @@ class Architect implements ArchitectInterface
      */
     public function generate($projectPath): void
     {
+        $this->logger->info('Initializing project...');
         $this->initProject($projectPath);
 
         $this->tmpBuildDir = $this->projectPath.self::PROJECT_TMP_CONFIG_DIRECTORY;
         $this->fs->remove($this->tmpBuildDir);
 
+        $this->logger->info('Generating project files...');
         $this->generateMainProjectFiles();
+        $this->logger->info('Dumping project files...');
         $this->dumpMainProjectFiles();
+        $this->logger->info('Generating/Dumping project services files...');
         $this->generateAndDumpProjectServicesFiles();
 
-        $projectDir = $this->projectPath.self::PROJECT_CONFIG_DIRECTORY;
+        $this->projectDir = $this->projectPath.self::PROJECT_CONFIG_DIRECTORY;
 
         // Backup some resources.
-        $dotEnvFilePath = $projectDir.'/.env';
+        $dotEnvFilePath = $this->projectDir.'/.env';
         $initialDotEnvContent = null;
         if (file_exists($dotEnvFilePath)) {
             $initialDotEnvContent = file_get_contents($dotEnvFilePath);
         }
 
+        $this->logger->info('Exporting configuration...');
         // Export Docker configuration and clean.
-        $this->fs->remove($projectDir);
-        $this->fs->mirror($this->tmpBuildDir, $projectDir);
+        $this->fs->remove($this->projectDir);
+        $this->fs->mirror($this->tmpBuildDir, $this->projectDir);
         $this->fs->remove($this->tmpBuildDir);
 
+        $this->logger->info('Creating .env/.env.dist files...');
         // Recreate backuped resources.
         if (null !== $initialDotEnvContent) {
             $this->fs->dumpFile($dotEnvFilePath, $initialDotEnvContent);
         } else {
-            $this->fs->dumpFile($dotEnvFilePath, file_get_contents($projectDir.'/.env.dist'));
+            $this->fs->dumpFile($dotEnvFilePath, file_get_contents($this->projectDir.'/.env.dist'));
         }
 
-        $this->generateUI($projectDir);
+        $this->logger->info('Generating UI...');
+        $this->generatedUIPath = $this->projectDir.'/index.html';
+        $this->generateUI();
+    }
+
+    /**
+     * @return ProjectInterface
+     */
+    public function getProject(): ?ProjectInterface
+    {
+        return $this->project;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeneratedUIPath(): string
+    {
+        return $this->generatedUIPath;
     }
 
     /**
@@ -135,13 +191,22 @@ class Architect implements ArchitectInterface
      */
     private function generateMainProjectFiles(): void
     {
-        $this->project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
+        $templatedFiles = [
+            new TemplatedFile('.gitignore', 'Base/gitignore.twig'),
+            new TemplatedFile('.env.dist', 'Base/env.dist.twig'),
+            new TemplatedFile('Makefile', 'Base/Makefile.twig'),
+            new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'),
+            new TemplatedFile('do', 'Base/do.twig', [], 0755),
+        ];
+
+        foreach ($templatedFiles as $templatedFile) {
+            $this->project->addTemplatedFile($templatedFile);
+            $this->logger->debug('    + '.$templatedFile->getRemotePath().' file added');
+        }
         if (0 < count($this->project->getDockerSynchedServices())) {
-            $this->project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
+            $templatedFile = new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig');
+            $this->project->addTemplatedFile($templatedFile);
+            $this->logger->debug('    + '.$templatedFile->getRemotePath().' file added (Docker-Sync enabled)');
         }
     }
 
@@ -159,6 +224,7 @@ class Architect implements ArchitectInterface
             if ($chmod = $templatedFile->getChmod()) {
                 $this->fs->chmod($this->tmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
             }
+            $this->logger->debug('    + '.$templatedFile->getRemotePath().' dumped');
         }
     }
 
@@ -168,9 +234,12 @@ class Architect implements ArchitectInterface
     private function generateAndDumpProjectServicesFiles(): void
     {
         foreach ($this->project->getServices() as $service) {
+            $this->logger->debug('    @ Service '.$service);
             $serviceTmpBuildDir = sprintf('%s/%s', $this->tmpBuildDir, $service->getIdentifier());
 
-            $service->addTemplatedFile(new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig'));
+            $templatedFile = new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig');
+            $service->addTemplatedFile($templatedFile);
+            $this->logger->debug('        + '.$templatedFile->getRemotePath().' added');
 
             foreach ($service->getTemplatedFiles() as $templatedFile) {
                 $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
@@ -181,23 +250,23 @@ class Architect implements ArchitectInterface
                 if ($chmod = $templatedFile->getChmod()) {
                     $this->fs->chmod($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
                 }
+                $this->logger->debug('        + '.$templatedFile->getRemotePath().' dumped');
             }
         }
     }
 
     /**
-     * @param string $projectDir
-     *
      * @return void
      */
-    private function generateUI(string $projectDir): void
+    private function generateUI(): void
     {
         $indexContent = $this->getTemplatedFileGenerator()->render('UI/index.html.twig', [
-            'projectDir' => $projectDir,
+            'projectDir' => $this->projectDir,
             'project' => $this->project,
-            'dotEnvFileContent' => file_get_contents($projectDir.'/.env'),
+            'dotEnvFileContent' => file_get_contents($this->projectDir.'/.env'),
         ]);
 
-        $this->fs->dumpFile($projectDir.'/index.html', $indexContent);
+        $this->fs->dumpFile($this->getGeneratedUIPath(), $indexContent);
+        $this->logger->debug('    + Dumped into '.$this->getGeneratedUIPath());
     }
 }

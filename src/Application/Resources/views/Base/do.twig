@@ -21,7 +21,7 @@ if [ ! -f "$DIR/.env" ]; then
 fi
 
 usage () {
-    echo "Usage : $0 (build|start|shell|dc|stop|clean)"
+    echo "Usage : $0 (build|start|shell|ui|dc|stop|clean)"
 }
 
 {% if dockerSyncRequired %}
@@ -38,6 +38,7 @@ create_volumes
 $DOCKER_SYNC_COMMAND start
 {% endif %}
 $DOCKER_COMPOSE_COMMAND up --build -d
+ui
 terminate
 }
 
@@ -74,6 +75,11 @@ $DOCKER_COMPOSE_COMMAND exec ${DOCKER_CLI_CONTAINERS_IDENTIFIERS[$DOCKER_CONTAIN
 terminate
 }
 
+ui () {
+open "$DIR/index.html"
+terminate
+}
+
 stop () {
 {% if dockerSyncRequired %}
     $DOCKER_SYNC_COMMAND stop
@@ -103,6 +109,8 @@ start) start
 dc) compose $*
     ;;
 shell) shell $*
+    ;;
+ui) ui
     ;;
 stop) stop
     ;;
