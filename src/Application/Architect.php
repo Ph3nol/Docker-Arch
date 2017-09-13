@@ -73,25 +73,25 @@ class Architect implements ArchitectInterface
      */
     public function generate($projectPath): void
     {
-        $project = $this->initProject($projectPath);
+        $this->initProject($projectPath);
 
         $tmpBuildDir = $this->projectPath.self::PROJECT_TMP_CONFIG_DIRECTORY;
         $this->fs->remove($tmpBuildDir);
 
         // Project files.
-        $project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
-        $project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
-        $project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
-        $project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
-        $project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
-        if (0 < count($project->getDockerSynchedServices())) {
-            $project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
+        if (0 < count($this->project->getDockerSynchedServices())) {
+            $this->project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
         }
 
         // Project files dump.
-        foreach ($project->getTemplatedFiles() as $templatedFile) {
+        foreach ($this->project->getTemplatedFiles() as $templatedFile) {
             $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
-                ['project' => $project],
+                ['project' => $this->project],
                 $templatedFile->getParameters()
             ));
             $this->fs->dumpFile($tmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
@@ -101,14 +101,14 @@ class Architect implements ArchitectInterface
         }
 
         // Project services files, with dump.
-        foreach ($project->getServices() as $service) {
+        foreach ($this->project->getServices() as $service) {
             $serviceTmpBuildDir = sprintf('%s/%s', $tmpBuildDir, $service->getIdentifier());
 
             $service->addTemplatedFile(new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig'));
 
             foreach ($service->getTemplatedFiles() as $templatedFile) {
                 $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
-                    ['project' => $project, 'service' => $service],
+                    ['project' => $this->project, 'service' => $service],
                     $templatedFile->getParameters()
                 ));
                 $this->fs->dumpFile($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
@@ -138,14 +138,32 @@ class Architect implements ArchitectInterface
         } else {
             $this->fs->dumpFile($dotEnvFilePath, file_get_contents($projectDir.'/.env.dist'));
         }
+
+        $this->generateUI($projectDir);
+    }
+
+    /**
+     * @param string $projectDir
+     *
+     * @return void
+     */
+    public function generateUI(string $projectDir): void
+    {
+        $indexContent = $this->getTemplatedFileGenerator()->render('UI/index.html.twig', [
+            'projectDir' => $projectDir,
+            'project' => $this->project,
+            'dotEnvFileContent' => file_get_contents($projectDir.'/.env'),
+        ]);
+
+        $this->fs->dumpFile($projectDir.'/index.html', $indexContent);
     }
 
     /**
      * @param string $projectPath
      *
-     * @return ProjectInterface
+     * @return void
      */
-    private function initProject($projectPath): ?ProjectInterface
+    private function initProject($projectPath): void
     {
         $this->projectPath = $projectPath;
 
@@ -155,9 +173,7 @@ class Architect implements ArchitectInterface
             $this->persister = Persister::init($this->projectPath);
         }
 
-        $project = (new ProjectRepository($this->persister))->getProject();
-        $project->setPath($this->projectPath);
-
-        return $project;
+        $this->project = (new ProjectRepository($this->persister))->getProject();
+        $this->project->setPath($this->projectPath);
     }
 }

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ project.label }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <style type="text/css">
+        body { padding: 40px; }
+        pre { font-size: .8em; }
+        .uppercase { text-transform: uppercase; }
+        .tab-content { padding-top: 20px; }
+        .popover-content { font-size: .8em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1 class="text-success">{{ project.label }}</h1>
+        </header>
+        <hr>
+        <div class="row">
+            <h2 class="text-info">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                &nbsp;
+                Project informations
+            </h2>
+            <div class="col-md-6">
+                <h3>Global</h3>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <i class="fa fa-flag" aria-hidden="true"></i>
+                        &nbsp;
+                        Locale
+                        <span class="pull-right">
+                            <strong>{{ project.locale }}</strong>
+                        </span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        &nbsp;
+                        User
+                        <span class="pull-right">
+                            {% if project.user %}
+                                <strong>{{ project.user }}</strong>
+                            {% else %}
+                                <i class="fa fa-ban text-muted"></i>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-cogs" aria-hidden="true"></i>
+                        &nbsp;
+                        Services
+                        <span class="pull-right">
+                            <strong><span class="badge badge-success">{{ project.services|length }}</span></strong>
+                        </span>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-terminal" aria-hidden="true"></i>
+                        &nbsp;
+                        Path (generated from)
+                        <br>
+                        <strong class="text-muted">{{ project.path }}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        &nbsp;
+                        {{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }}
+                        directory
+                        <br>
+                        <strong class="text-muted">{{ projectDir }}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        &nbsp;
+                        Logs path
+                        <br>
+                        <strong class="text-muted">{{ project.logsPath }}</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3>Current .env file content</h3>
+                <pre>{{ dotEnvFileContent|trim }}</pre>
+                <div class="alert alert-info">
+                    These parameters can be changed with updating
+                    {{ projectDir }}/.env configuration file.
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h2 class="text-info">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            &nbsp;
+            Services properties
+        </h2>
+        <div>
+            <ul class="nav nav-tabs services-tabs" role="tablist">
+            {% for service in project.services %}
+            <li role="presentation" {% if loop.first %} class="active"{% endif %}>
+                <a href="#{{ service.identifier }}" aria-controls="{{ service.identifier }}" role="tab" data-toggle="tab">
+                    <i class="fa fa-cube" aria-hidden="true"></i>
+                    &nbsp;
+                    <strong class="uppercase">{{ service.name }}</strong>
+                    ({{ service.identifier }})
+                </a>
+            </li>
+            {% endfor %}
+            </ul>
+            <div class="tab-content">
+            {% for service in project.services %}
+            <div role="tabpanel" class="tab-pane {% if loop.first %}active{% endif %}" id="{{ service.identifier }}">
+                <div class="row">
+                    {% set ports = service.dockerContainer.portsWithUI %}
+                    {% if ports|length %}
+                        <div class="col-md-12 text-center contains-envs">
+                        {% for port in ports %}
+                            <a href="http://localhost:{{ port.from }}" class="btn btn-default btn-sm" target="_blank">
+                                {{ port.label|default('Access') }}
+                            </a>
+                        {% endfor %}
+                        <hr>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <i class="fa fa-tag" aria-hidden="true"></i>
+                                &nbsp;
+                                ID
+                                <span class="pull-right">
+                                    <strong>{{ service.identifier }}</strong>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-cube" aria-hidden="true"></i>
+                                &nbsp;
+                                Inherited image
+                                <span class="pull-right">
+                                    <strong>{{ service.dockerContainer.from }}</strong>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-at" aria-hidden="true"></i>
+                                &nbsp;
+                                Host
+                                {% if service.host %}
+                                    <span class="pull-right text-success">
+                                        <strong>{{ service.host }}</strong>
+                                    </span>
+                                {% else %}
+                                    <span class="pull-right text-muted">
+                                        <i class="fa fa-ban text-muted"></i>
+                                    </span>
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                                &nbsp;
+                                Docker-Sync
+                                <span class="pull-right">
+                                    {% if service.isDockerSynched %}
+                                        <i class="fa fa-check-circle text-success"></i>
+                                    {% else %}
+                                        <i class="fa fa-ban text-muted"></i>
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-terminal" aria-hidden="true"></i>
+                                &nbsp;
+                                Path
+                                <span class="pull-right">
+                                    <strong>{{ service.path }}</strong>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>
+                            <i class="fa fa-hdd-o" aria-hidden="true"></i>
+                            &nbsp;
+                            Volumes
+                        </h4>
+                        {% set volumes = project.getVolumesForService(service) %}
+                        {% if volumes|length %}
+                            <ul class="contains-envs with-popover">
+                            {% for volume in volumes %}
+                                <li>{{ volume.local }} -> {{ volume.remote }} ({{ volume.type }})</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No volume.</p>
+                        {% endif %}
+                        <hr>
+                        <h4>
+                            <i class="fa fa-link" aria-hidden="true"></i>
+                            &nbsp;
+                            Links
+                        </h4>
+                        {% set links = project.getLinksForService(service) %}
+                        {% if links|length %}
+                            <ul class="contains-envs with-popover">
+                            {% for link in links %}
+                                <li>{{ link }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No link.</p>
+                        {% endif %}
+                        <hr>
+                        <h4>
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            &nbsp;
+                            Exposed ports
+                        </h4>
+                        {% set ports = service.dockerContainer.ports %}
+                        {% if ports|length %}
+                            <ul class="contains-envs with-popover">
+                            {% for port in ports %}
+                                <li>
+                                    {{ port.from }} <span class="label label-success">public</span>
+                                    -> {{ port.to }} <span class="label label-warning">internal</span>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No exposed port.</p>
+                        {% endif %}
+                        <hr>
+                        <h4>
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            &nbsp;
+                            Environment globals
+                        </h4>
+                        {% set envs = service.dockerContainer.envs %}
+                        {% if envs|length %}
+                            <ul class="contains-envs with-popover">
+                            {% for key, value in envs %}
+                                <li>{{ key }} = {{ value }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No environment globals.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <footer class="text-center">
+            Generated by
+            <a href="{{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_URL') }}"
+                title="{{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }}">
+                {{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }}
+            </a>
+            open source project.
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        String.prototype.replaceAll = function(searchStr, replaceStr) {
+            var str = this;
+            if(str.indexOf(searchStr) === -1) {
+                return str;
+            }
+
+            return (str.replace(searchStr, replaceStr)).replaceAll(searchStr, replaceStr);
+        }
+
+        var projectEnvs = {{ project.envs|json_encode|raw }};
+
+        $('.contains-envs').each(function () {
+            var content = $(this).html();
+            if ($(this).hasClass('with-popover')) {
+                $.each(projectEnvs, function (index, value) {
+                    content = content.replaceAll(
+                        '${' + index + '}',
+                        '<a href="javascript:;" data-toggle="popover" ' +
+                            'data-trigger="hover" ' +
+                            'data-placement="top" ' +
+                            'data-content="<strong>' + index + '</strong> ' +
+                                '<span class=\'text-muted\'>(from {{ projectDir }}/.env configuration file)</span>" ' +
+                            'data-html="true" ' +
+                            '>' + value + '</a>'
+                    );
+                });
+            } else {
+                $.each(projectEnvs, function (index, value) {
+                    content = content.replaceAll(
+                        '${' + index + '}',
+                        value
+                    );
+                });
+            }
+            $(this).html(content);
+        });
+
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+</body>
+</html>
