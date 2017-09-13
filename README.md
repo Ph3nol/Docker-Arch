@@ -21,14 +21,16 @@ docker pull ph3nol/docker-arch
 
 ## Use Docker-Arch from local installation (PHP 7.1+ required)
 
-To install, just get `install.sh` file, and launch it.
-Here is an example with `curl` usage:
+Using `curl`:
 
 ``` shell
-curl -L -s -o docker-arch-install \
-    https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh
-chmod +x docker-arch-install
-./docker-arch-install
+curl -sSL https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install | bash
+```
+
+Using `wget`:
+
+``` shell
+wget -qO - https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install | bash
 ```
 
 ## Docker-Arch environment generation
@@ -47,6 +49,7 @@ Finally, use `.docker-arch/do` script, from the project, for somes actions:
 .docker-arch/do build    # Build containers (like `docker-compose up --build -d`)
 .docker-arch/do start    # Start containers (like `docker-compose up -d`)
 .docker-arch/do shell    # Access a container Shell
+.docker-arch/do ui       # Access generated UI that provides you Docker environment informations
 .docker-arch/do dc       # Access `docker-compose` with your configuration, for specific requests
 .docker-arch/do stop     # Stop containers (like `docker-compose stop`)
 .docker-arch/do clean    # Stop/Remove containers and reset linked volumes
@@ -66,8 +69,6 @@ function docker-arch {
             ;;
     esac
 }
-alias dag="docker-arch generate"
-alias dad=".docker-arch/do"
 ```
 
 ## To do
