@@ -4,6 +4,7 @@ namespace Ph3\DockerArch\Application\DockerContainer;
 
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\Service;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -17,16 +18,19 @@ class MailcatcherDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
         parent::init();
 
-        $this->setFrom('schickling/mailcatcher');
+        $this->setFrom('tophfr/mailcatcher');
 
         // Ports.
-        $port = $this->addEnvPort('MAILCATCHER', ['from' => '8880', 'to' => '1080']);
+        $clientPort = $this->addEnvPort('MAILCATCHER_CLIENT', ['from' => '8880', 'to' => '80']);
+        $this->addEnvPort('MAILCATCHER_SMTP', ['from' => '8825', 'to' => '25']);
 
         // UI.
         $this->getService()->addUIAccess([
-            'port' => $port['from'],
+            'port' => $clientPort['from'],
             'label' => 'MailCatcher Web Client',
         ]);
     }

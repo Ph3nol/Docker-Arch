@@ -4,6 +4,7 @@ namespace Ph3\DockerArch\Application\DockerContainer;
 
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\Service;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -17,11 +18,13 @@ class PhpDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
         parent::init();
 
         $service = $this->getService();
 
-        $this->setFrom(sprintf('php:%s', $service->getOptions()['version']));
+        $this->setFrom(sprintf('php:%s-alpine', $service->getOptions()['version']));
         $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
 
@@ -31,12 +34,6 @@ class PhpDockerContainer extends DockerContainer
         }
 
         // Packages.
-        if (true === in_array('mysql', $service->getOptions()['extensions']) ||
-            true === in_array('pdo_mysql', $service->getOptions()['extensions'])) {
-            $this
-                ->addPackage('libmcrypt-dev')
-                ->addPackage('mysql-client');
-        }
         if (true === $service->getOptions()['composer']) {
             $this
                 ->addPackage('zip')
@@ -84,6 +81,12 @@ class PhpDockerContainer extends DockerContainer
             $this
                 ->addPackage('libmcrypt-dev')
                 ->addPackage('mysql-client');
+        }
+        if (true === in_array('intl', $extensions)) {
+            $this
+                ->addPackage('icu')
+                ->addPackage('icu-libs')
+                ->addPackage('icu-dev');
         }
         foreach (array_unique($extensions) as $extension) {
             $this->addCommand('docker-php-ext-install '.$extension);

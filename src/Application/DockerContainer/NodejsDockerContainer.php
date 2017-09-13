@@ -4,6 +4,7 @@ namespace Ph3\DockerArch\Application\DockerContainer;
 
 use Ph3\DockerArch\Application\DockerContainerInflector;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\Service;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -17,12 +18,14 @@ class NodejsDockerContainer extends DockerContainer
      */
     public function init(): void
     {
+        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+
         parent::init();
 
         $service = $this->getService();
         $project = $service->getProject();
 
-        $this->setFrom(sprintf('node:%s', $service->getOptions()['version']));
+        $this->setFrom(sprintf('node:%s-alpine', $service->getOptions()['version']));
 
         $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
