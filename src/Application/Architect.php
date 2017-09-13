@@ -48,6 +48,11 @@ class Architect implements ArchitectInterface
     private $fs;
 
     /**
+     * @var string
+     */
+    private $tmpBuildDir;
+
+    /**
      * @param TemplatedFileGeneratorInterface $templatedFileGenerator
      */
     public function __construct(TemplatedFileGeneratorInterface $templatedFileGenerator)
@@ -75,48 +80,12 @@ class Architect implements ArchitectInterface
     {
         $this->initProject($projectPath);
 
-        $tmpBuildDir = $this->projectPath.self::PROJECT_TMP_CONFIG_DIRECTORY;
-        $this->fs->remove($tmpBuildDir);
+        $this->tmpBuildDir = $this->projectPath.self::PROJECT_TMP_CONFIG_DIRECTORY;
+        $this->fs->remove($this->tmpBuildDir);
 
-        // Project files.
-        $this->project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
-        $this->project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
-        if (0 < count($this->project->getDockerSynchedServices())) {
-            $this->project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
-        }
-
-        // Project files dump.
-        foreach ($this->project->getTemplatedFiles() as $templatedFile) {
-            $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
-                ['project' => $this->project],
-                $templatedFile->getParameters()
-            ));
-            $this->fs->dumpFile($tmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
-            if ($chmod = $templatedFile->getChmod()) {
-                $this->fs->chmod($tmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
-            }
-        }
-
-        // Project services files, with dump.
-        foreach ($this->project->getServices() as $service) {
-            $serviceTmpBuildDir = sprintf('%s/%s', $tmpBuildDir, $service->getIdentifier());
-
-            $service->addTemplatedFile(new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig'));
-
-            foreach ($service->getTemplatedFiles() as $templatedFile) {
-                $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
-                    ['project' => $this->project, 'service' => $service],
-                    $templatedFile->getParameters()
-                ));
-                $this->fs->dumpFile($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
-                if ($chmod = $templatedFile->getChmod()) {
-                    $this->fs->chmod($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
-                }
-            }
-        }
+        $this->generateMainProjectFiles();
+        $this->dumpMainProjectFiles();
+        $this->generateAndDumpProjectServicesFiles();
 
         $projectDir = $this->projectPath.self::PROJECT_CONFIG_DIRECTORY;
 
@@ -129,8 +98,8 @@ class Architect implements ArchitectInterface
 
         // Export Docker configuration and clean.
         $this->fs->remove($projectDir);
-        $this->fs->mirror($tmpBuildDir, $projectDir);
-        $this->fs->remove($tmpBuildDir);
+        $this->fs->mirror($this->tmpBuildDir, $projectDir);
+        $this->fs->remove($this->tmpBuildDir);
 
         // Recreate backuped resources.
         if (null !== $initialDotEnvContent) {
@@ -140,22 +109,6 @@ class Architect implements ArchitectInterface
         }
 
         $this->generateUI($projectDir);
-    }
-
-    /**
-     * @param string $projectDir
-     *
-     * @return void
-     */
-    public function generateUI(string $projectDir): void
-    {
-        $indexContent = $this->getTemplatedFileGenerator()->render('UI/index.html.twig', [
-            'projectDir' => $projectDir,
-            'project' => $this->project,
-            'dotEnvFileContent' => file_get_contents($projectDir.'/.env'),
-        ]);
-
-        $this->fs->dumpFile($projectDir.'/index.html', $indexContent);
     }
 
     /**
@@ -175,5 +128,76 @@ class Architect implements ArchitectInterface
 
         $this->project = (new ProjectRepository($this->persister))->getProject();
         $this->project->setPath($this->projectPath);
+    }
+
+    /**
+     * @return void
+     */
+    private function generateMainProjectFiles(): void
+    {
+        $this->project->addTemplatedFile(new TemplatedFile('.gitignore', 'Base/gitignore.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('.env.dist', 'Base/env.dist.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('Makefile', 'Base/Makefile.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('docker-compose.yml', 'Base/docker-compose.yml.twig'));
+        $this->project->addTemplatedFile(new TemplatedFile('do', 'Base/do.twig', [], 0755));
+        if (0 < count($this->project->getDockerSynchedServices())) {
+            $this->project->addTemplatedFile(new TemplatedFile('docker-sync.yml', 'Base/docker-sync.yml.twig'));
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function dumpMainProjectFiles(): void
+    {
+        foreach ($this->project->getTemplatedFiles() as $templatedFile) {
+            $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
+                ['project' => $this->project],
+                $templatedFile->getParameters()
+            ));
+            $this->fs->dumpFile($this->tmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
+            if ($chmod = $templatedFile->getChmod()) {
+                $this->fs->chmod($this->tmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function generateAndDumpProjectServicesFiles(): void
+    {
+        foreach ($this->project->getServices() as $service) {
+            $serviceTmpBuildDir = sprintf('%s/%s', $this->tmpBuildDir, $service->getIdentifier());
+
+            $service->addTemplatedFile(new TemplatedFile('Dockerfile', 'Base/Service/Dockerfile.twig'));
+
+            foreach ($service->getTemplatedFiles() as $templatedFile) {
+                $fileContent = $this->getTemplatedFileGenerator()->render($templatedFile->getViewPath(), array_merge(
+                    ['project' => $this->project, 'service' => $service],
+                    $templatedFile->getParameters()
+                ));
+                $this->fs->dumpFile($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $fileContent);
+                if ($chmod = $templatedFile->getChmod()) {
+                    $this->fs->chmod($serviceTmpBuildDir.'/'.$templatedFile->getRemotePath(), $chmod);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $projectDir
+     *
+     * @return void
+     */
+    private function generateUI(string $projectDir): void
+    {
+        $indexContent = $this->getTemplatedFileGenerator()->render('UI/index.html.twig', [
+            'projectDir' => $projectDir,
+            'project' => $this->project,
+            'dotEnvFileContent' => file_get_contents($projectDir.'/.env'),
+        ]);
+
+        $this->fs->dumpFile($projectDir.'/index.html', $indexContent);
     }
 }
