@@ -31,3 +31,4 @@ services:
             - "../data:/data:rw"
             - "../docker:/docker:ro"
         entry_point: "/bin/sh /docker/php/entrypoint.sh"
+  - type: mailcatcher
