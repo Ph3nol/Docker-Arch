@@ -103,8 +103,8 @@
                 <a href="#{{ service.identifier }}" aria-controls="{{ service.identifier }}" role="tab" data-toggle="tab">
                     <i class="fa fa-cube" aria-hidden="true"></i>
                     &nbsp;
-                    <strong class="uppercase">{{ service.name }}</strong>
-                    ({{ service.identifier }})
+                    <strong class="uppercase">{{ service.name }}</strong><br>
+                    <small class="text-muted">({{ service.identifier }})</small>
                 </a>
             </li>
             {% endfor %}
@@ -113,12 +113,12 @@
             {% for service in project.services %}
             <div role="tabpanel" class="tab-pane {% if loop.first %}active{% endif %}" id="{{ service.identifier }}">
                 <div class="row">
-                    {% set ports = service.dockerContainer.portsWithUI %}
-                    {% if ports|length %}
+                    {% set accesses = service.uiAccesses %}
+                    {% if accesses|length %}
                         <div class="col-md-12 text-center contains-envs">
-                        {% for port in ports %}
-                            <a href="http://localhost:{{ port.from }}" class="btn btn-default btn-sm" target="_blank">
-                                {{ port.label|default('Access') }}
+                        {% for access in accesses %}
+                            <a href="http://{{ access.host }}:{{ access.port }}" class="btn btn-default btn-sm" target="_blank">
+                                {{ access.label|default(access.host) }}
                             </a>
                         {% endfor %}
                         <hr>

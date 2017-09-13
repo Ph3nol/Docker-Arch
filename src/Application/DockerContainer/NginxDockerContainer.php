@@ -70,12 +70,20 @@ class NginxDockerContainer extends DockerContainer
         );
 
         // Ports.
-        $this->addEnvPort('NGINX', [
-            'from' => '8080',
-            'to' => '80',
-            'ui' => true,
-            'label' => 'Web Access',
-        ]);
+        $port = $this->addEnvPort('NGINX', ['from' => '8080', 'to' => '80']);
+
+        // UI.
+        foreach ($this->vhostsServicesByHost as $vhostService) {
+            if (null === $vhostService->getHost()) {
+                continue;
+            }
+
+            $service->addUIAccess([
+                'host' => $vhostService->getHost(),
+                'port' => $port['from'],
+                'label' => 'Web Access ('.$vhostService->getHost().')',
+            ]);
+        }
     }
 
     /**

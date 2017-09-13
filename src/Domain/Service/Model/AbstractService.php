@@ -54,6 +54,11 @@ abstract class AbstractService implements ServiceInterface
     private $options = [];
 
     /**
+     * @var array
+     */
+    private $uiAccesses = [];
+
+    /**
      * @param ProjectInterface $project
      * @param array            $options
      */
@@ -250,5 +255,29 @@ abstract class AbstractService implements ServiceInterface
             $this->getHost() ? strtoupper($this->getHost()).'_' : '',
             $key
         );
+    }
+
+    /**
+     * @param array $access
+     *
+     * @return self
+     */
+    public function addUIAccess(array $access): self
+    {
+        $this->uiAccesses[] = array_merge([
+            'label' => null,
+            'host' => $this->getHost() ? : 'localhost',
+            'port' => null,
+        ], $access);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUIAccesses(): array
+    {
+        return $this->uiAccesses;
     }
 }
