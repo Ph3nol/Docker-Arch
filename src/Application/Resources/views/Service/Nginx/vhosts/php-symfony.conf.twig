@@ -3,7 +3,7 @@ server {
     server_name {{ host }};
     root /apps/{{ host }}/web;
 
-    index index.html index.htm index.php;
+    index index.php index.html index.htm;
 
     access_log /var/log/nginx/{{ host }}-access.log;
     error_log /var/log/nginx/{{ host }}-error.log;
