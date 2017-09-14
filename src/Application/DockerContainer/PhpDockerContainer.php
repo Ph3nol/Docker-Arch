@@ -28,6 +28,20 @@ class PhpDockerContainer extends DockerContainer
         $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
 
+        // EntryPoint.
+        $service
+            ->addTemplatedFile(new TemplatedFile(
+                'entrypoint.sh',
+                'Service/Php/entrypoint.sh.twig'
+            ));
+        $this
+            ->addCopyEntry([
+                'local' => 'entrypoint.sh',
+                'remote' => '/root/entrypoint.sh',
+            ])
+            ->addCommand('chmod +x /root/entrypoint.sh')
+            ->setEntryPoint('/root/entrypoint.sh');
+
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {
             $this->applyDotfiles();

@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+{% if service.dockerContainer.workingDir %}
+chown -R www-data:www-data {{ service.dockerContainer.workingDir }}
+{% endif %}
+
+{% if service.options.cli_only == true %}
+docker-php-entrypoint php -a
+{% else %}
+docker-php-entrypoint php-fpm
+{% endif %}
+
+exec "$@"
