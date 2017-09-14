@@ -117,8 +117,8 @@
                     {% if accesses|length %}
                         <div class="col-md-12 text-center contains-envs">
                         {% for access in accesses %}
-                            <a href="http://{{ access.host }}:{{ access.port }}" class="btn btn-default btn-sm" target="_blank">
-                                {{ access.label|default(access.host) }}
+                            <a href="http://{{ access.host }}:{{ access.port }}{{ access.uri }}" class="btn btn-default btn-sm" target="_blank">
+                                {{ access.label|default(access.host ~ ':' ~ access.port ~ access.uri) }}
                             </a>
                         {% endfor %}
                         <hr>

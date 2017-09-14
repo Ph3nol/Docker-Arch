@@ -74,7 +74,10 @@ class DockerContainer implements DockerContainerInterface
         }
 
         $this
+            ->addPackage('vim')
             ->addPackage('git')
+            ->addPackage('wget')
+            ->addPackage('curl')
             ->addPackage('openssh-client');
 
         $this->initLocale();
@@ -230,10 +233,6 @@ class DockerContainer implements DockerContainerInterface
      */
     protected function applyWebServiceConfiguration(): void
     {
-        $this
-            ->addPackage('curl')
-            ->addPackage('vim');
-
         if (null === $this->getWorkingDir()) {
             $this->setWorkingDir(sprintf(
                 '/apps/%s',

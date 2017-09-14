@@ -39,14 +39,17 @@ class RabbitmqDockerContainer extends DockerContainer
             ->addEnvFromProject('RABBITMQ_DEFAULT_VHOST');
 
         // Ports.
-        if (true === $this->getService()->getOptions()['with_management']) {
-            $this->addEnvPort('RABBITMQ', ['from' => '18072', 'to' => '15672']);
+        $this->addEnvPort('RABBITMQ', ['from' => '18072', 'to' => '15672']);
+        if (true === $service->getOptions()['with_management']) {
+            $managementPort = $this->addEnvPort('RABBITMQ_MANAGEMENT', ['from' => '8072', 'to' => '5672']);
         }
-        $this->addEnvPort('RABBITMQ_MANAGEMENT', [
-            'from' => '8072',
-            'to' => '5672',
-            'ui' => true,
-            'label' => 'RabbitMQ Management UI',
-        ]);
+
+        // UI.
+        if (true === $service->getOptions()['with_management']) {
+            $this->getService()->addUIAccess([
+                'port' => $managementPort['from'],
+                'label' => 'Management UI',
+            ]);
+        }
     }
 }

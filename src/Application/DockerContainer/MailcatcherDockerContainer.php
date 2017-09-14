@@ -31,7 +31,7 @@ class MailcatcherDockerContainer extends DockerContainer
         // UI.
         $this->getService()->addUIAccess([
             'port' => $clientPort['from'],
-            'label' => 'MailCatcher Web Client',
+            'label' => 'Web Client',
         ]);
     }
 }

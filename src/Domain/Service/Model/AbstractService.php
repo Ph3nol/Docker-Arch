@@ -266,6 +266,7 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->uiAccesses[] = array_merge([
             'label' => null,
+            'uri' => null,
             'host' => $this->getHost() ? : 'localhost',
             'port' => null,
         ], $access);
