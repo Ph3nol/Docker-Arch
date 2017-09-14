@@ -74,5 +74,5 @@ function docker-arch {
 ## To do
 
 * Improve documentation
-* Add some services (ElasticSearch, MongoDB and many others!) - Feel free to contribute!
+* Add new Services/DockerContainers - Feel free to contribute! :)
 * Write fucking unit Tests (Atoum powered)
