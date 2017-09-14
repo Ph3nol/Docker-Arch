@@ -1,0 +1,18 @@
+name: Docker Arch - Simple PHP MySQL Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../app
+    host: localhost
+    options:
+        version: "7.1"
+        extensions:
+            - pdo_mysql
+    # MariaDB Container
+  - type: mariadb
+    options:
+        version: "10.3"
