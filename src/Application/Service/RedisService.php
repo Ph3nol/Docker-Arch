@@ -18,6 +18,7 @@ class RedisService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['version']);
+        $resolver->setDefault('version', '4.0');
         $resolver->setAllowedValues('version', ['3.2', '4.0']);
 
         return $resolver;
