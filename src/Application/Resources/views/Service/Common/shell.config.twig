@@ -24,8 +24,16 @@ antigen theme nebirhos
 {% endif %}
 
 antigen apply
-
 {% endif %}
+
+{% if service.dockerContainer.isPackageManager(
+        constant('Ph3\\DockerArch\\Domain\\DockerContainer\\Model\\DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK')
+    ) %}
+### --- Alpine tricks.
+
+unalias grep
+{% endif %}
+
 ### --- Envs.
 
 export EDITOR="vim"
