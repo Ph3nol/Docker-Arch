@@ -67,20 +67,18 @@ class DockerContainer implements DockerContainerInterface
             ->addEnv('DEBIAN_FRONTEND', 'noninteractive')
             ->addNetwork(self::DOCKER_MAIN_NETWORK);
 
-        if ($this->getService()->isWebService()) {
+        $this->addPackage('vim');
+
+        if (true == $this->getService()->isWebService()) {
             $this
                 ->addEnv('TERM', 'xterm-256color')
-                ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true');
-        }
-
-        $this->addPackage('vim');
-        if (true === $this->isWebService()) {
-            $this
+                ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true')
                 ->addPackage('git')
                 ->addPackage('wget')
                 ->addPackage('curl')
                 ->addPackage('openssh-client');
         }
+
         if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {
             $this->addPackage('findutils');
         }
