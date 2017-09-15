@@ -73,12 +73,17 @@ class DockerContainer implements DockerContainerInterface
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true');
         }
 
-        $this
-            ->addPackage('vim')
-            ->addPackage('git')
-            ->addPackage('wget')
-            ->addPackage('curl')
-            ->addPackage('openssh-client');
+        $this->addPackage('vim');
+        if (true === $this->isWebService()) {
+            $this
+                ->addPackage('git')
+                ->addPackage('wget')
+                ->addPackage('curl')
+                ->addPackage('openssh-client');
+        }
+        if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {
+            $this->addPackage('findutils');
+        }
 
         $this->initLocale();
         $this->initUser();

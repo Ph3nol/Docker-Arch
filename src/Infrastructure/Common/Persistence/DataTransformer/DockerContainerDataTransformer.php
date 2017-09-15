@@ -37,6 +37,9 @@ class DockerContainerDataTransformer
         foreach ($data['envs'] ?? [] as $key => $value) {
             $dockerContainer->addEnv($key, $value);
         }
+        foreach ($data['packages'] ?? [] as $package) {
+            $dockerContainer->addPackage($package);
+        }
         foreach ($data['commands'] ?? [] as $command) {
             $dockerContainer->addCommand($command);
         }
