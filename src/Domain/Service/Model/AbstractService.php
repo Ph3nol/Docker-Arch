@@ -288,7 +288,9 @@ abstract class AbstractService implements ServiceInterface
      */
     protected static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
     {
-        $instance = new static($service->getProject());
+        $instance = new static(
+            $service->getProject()
+        );
         $dockerContainerFqcn = str_replace('Service', 'DockerContainer', get_called_class());
         if (false === class_exists($dockerContainerFqcn)) {
             throw new DockerContainerNotFoundException($dockerContainerFqcn.' DockerContainer not found');

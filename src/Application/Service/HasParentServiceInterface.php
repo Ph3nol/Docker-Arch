@@ -7,7 +7,7 @@ use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-interface HasParentService
+interface HasParentServiceInterface
 {
     /**
      * @param ServiceInterface $service
