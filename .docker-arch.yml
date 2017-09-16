@@ -3,6 +3,9 @@ services:
     # PHP Container
   - type: php
     path: ../
+    container:
+        packages:
+            - make
     options:
         version: "7.1"
         cli_only: true
