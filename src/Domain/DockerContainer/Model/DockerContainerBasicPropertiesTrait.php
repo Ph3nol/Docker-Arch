@@ -30,6 +30,11 @@ trait DockerContainerBasicPropertiesTrait
     /**
      * @var string
      */
+    protected $cmd;
+
+    /**
+     * @var string
+     */
     protected $user;
 
     /**
@@ -88,6 +93,26 @@ trait DockerContainerBasicPropertiesTrait
     public function setEntryPoint(string $entryPoint): self
     {
         $this->entryPoint = $entryPoint;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCmd(): ?string
+    {
+        return $this->cmd;
+    }
+
+    /**
+     * @param string $cmd
+     *
+     * @return self
+     */
+    public function setCmd(string $cmd): self
+    {
+        $this->cmd = $cmd;
 
         return $this;
     }
