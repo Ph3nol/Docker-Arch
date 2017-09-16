@@ -17,20 +17,20 @@ class ProjectDataTransformer
 {
     /**
      * @param array   $data
-     * @param boolean $jsonString
+     * @param boolean $yamlString
      *
      * @return ProjectInterface
      */
-    public function toModel($data, $jsonString = true): ProjectInterface
+    public function toModel($data, $yamlString = true): ProjectInterface
     {
-        if (true === $jsonString) {
+        if (true === $yamlString) {
             $data = Yaml::parse($data);
         }
 
         if (null === $data || false === is_array($data)) {
             throw new InvalidDataFileFormatException(
                 sprintf(
-                    'Project `%s` JSON content seem to be invalid',
+                    'Project `%s` YAML content seem to be invalid',
                     Architect::PROJECT_CONFIG_FILENAME
                 )
             );
