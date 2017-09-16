@@ -58,7 +58,7 @@ class PhpService extends AbstractService
      */
     public function allowedLinksExpression(): ?string
     {
-        return '(mysql|mariadb|redis|rabbitmq)';
+        return '(mysql|mariadb|redis|rabbitmq|elasticsearch)';
     }
 
     /**
