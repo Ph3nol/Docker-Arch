@@ -81,6 +81,7 @@ class DockerContainer implements DockerContainerInterface
 
         if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {
             $this
+                ->addPackage('bash')
                 ->addPackage('findutils')
                 ->addPackage('ca-certificates')
                 ->addPackage('openssl')
