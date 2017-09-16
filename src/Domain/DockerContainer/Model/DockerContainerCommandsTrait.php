@@ -37,6 +37,16 @@ trait DockerContainerCommandsTrait
      *
      * @return self
      */
+    public function addConsecutiveCommands(array $commands): self
+    {
+        return $this->addCommand(implode(" && \\\n    ", $commands));
+    }
+
+    /**
+     * @param array $commands
+     *
+     * @return self
+     */
     public function setCommands(array $commands): self
     {
         $this->commands = $commands;
