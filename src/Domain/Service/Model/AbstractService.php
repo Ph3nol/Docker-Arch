@@ -3,6 +3,7 @@
 namespace Ph3\DockerArch\Domain\Service\Model;
 
 use Cocur\Slugify\Slugify;
+use Ph3\DockerArch\Domain\DockerContainer\Exception\NotFoundException as DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
@@ -280,5 +281,29 @@ abstract class AbstractService implements ServiceInterface
     public function getUIAccesses(): array
     {
         return $this->uiAccesses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
+    {
+        $instance = new static($service->getProject());
+        $dockerContainerFqcn = str_replace('Service', 'DockerContainer', get_called_class());
+        if (false === class_exists($dockerContainerFqcn)) {
+            throw new DockerContainerNotFoundException($dockerContainerFqcn.' DockerContainer not found');
+        }
+        $dockerContainer = new $dockerContainerFqcn($instance);
+
+        $instance
+            ->setParentService($service)
+            ->setDockerContainer($dockerContainer)
+            ->setIdentifier(sprintf(
+                '%s-%s',
+                $instance->getName(),
+                $service->getIdentifier()
+            ));
+
+        return $instance;
     }
 }

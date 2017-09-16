@@ -98,7 +98,7 @@
         </h2>
         <div>
             <ul class="nav nav-tabs services-tabs" role="tablist">
-            {% for service in project.services %}
+            {% for service in project.services if not service.hasParentService %}
             <li role="presentation" {% if loop.first %} class="active"{% endif %}>
                 <a href="#{{ service.identifier }}" aria-controls="{{ service.identifier }}" role="tab" data-toggle="tab">
                     <i class="fa fa-cube" aria-hidden="true"></i>
@@ -110,7 +110,7 @@
             {% endfor %}
             </ul>
             <div class="tab-content">
-            {% for service in project.services %}
+            {% for service in project.services if not service.hasParentService %}
             <div role="tabpanel" class="tab-pane {% if loop.first %}active{% endif %}" id="{{ service.identifier }}">
                 <div class="row">
                     {% set accesses = service.uiAccesses %}

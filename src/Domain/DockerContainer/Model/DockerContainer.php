@@ -80,7 +80,11 @@ class DockerContainer implements DockerContainerInterface
         }
 
         if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {
-            $this->addPackage('findutils');
+            $this
+                ->addPackage('findutils')
+                ->addPackage('ca-certificates')
+                ->addPackage('openssl')
+                ->addCommand('update-ca-certificates');
         }
 
         $this->initLocale();
