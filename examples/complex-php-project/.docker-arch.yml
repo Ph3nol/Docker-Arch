@@ -26,7 +26,6 @@ services:
             - "echo $OTHER_TOKEN >> ~/.my-precious-token"
         packages:
             - htop
-            - mtop
         volumes:
             - "../data:/data:rw"
             - "../docker:/docker:ro"
