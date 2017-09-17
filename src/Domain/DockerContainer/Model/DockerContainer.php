@@ -60,7 +60,7 @@ class DockerContainer implements DockerContainerInterface
 
         $this->addPackage('vim');
 
-        if (true == $this->getService()->isWebService()) {
+        if (true === $this->getService()->isWebService()) {
             $this
                 ->addEnv('TERM', 'xterm-256color')
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true')
