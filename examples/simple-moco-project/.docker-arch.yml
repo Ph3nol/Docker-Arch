@@ -1,0 +1,7 @@
+name: Docker Arch - Simple Moco Project
+services:
+    # Moco Container
+  - type: moco
+    path: ../mocks
+    options:
+        mock_filename: "moco.json"
