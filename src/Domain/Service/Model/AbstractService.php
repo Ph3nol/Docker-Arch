@@ -2,12 +2,9 @@
 
 namespace Ph3\DockerArch\Domain\Service\Model;
 
-use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Domain\DockerContainer\Exception\NotFoundException as DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
-use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
-use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFileInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;

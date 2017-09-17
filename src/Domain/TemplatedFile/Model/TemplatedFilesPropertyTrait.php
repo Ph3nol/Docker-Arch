@@ -2,8 +2,6 @@
 
 namespace Ph3\DockerArch\Domain\TemplatedFile\Model;
 
-use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
-
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */

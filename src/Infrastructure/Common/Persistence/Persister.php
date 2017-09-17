@@ -5,7 +5,6 @@ namespace Ph3\DockerArch\Infrastructure\Common\Persistence;
 use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\Exception\NoPersisterFileException;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\Exception\PersisterFileAlreadyExistsException;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

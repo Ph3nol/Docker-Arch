@@ -2,9 +2,6 @@
 
 namespace Ph3\DockerArch\Domain\Service\Model;
 
-use Ph3\DockerArch\Domain\Service\Model\ServiceCollection;
-use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
-
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */

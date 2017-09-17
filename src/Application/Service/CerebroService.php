@@ -2,9 +2,6 @@
 
 namespace Ph3\DockerArch\Application\Service;
 
-use Ph3\DockerArch\Application\DockerContainer\CerebroDockerContainer;
-use Ph3\DockerArch\Application\Service\HasParentServiceInterface;
-use Ph3\DockerArch\Application\Service\ParentServiceTrait;
 use Ph3\DockerArch\Domain\Service\Model\AbstractService;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Symfony\Component\OptionsResolver\Options;
