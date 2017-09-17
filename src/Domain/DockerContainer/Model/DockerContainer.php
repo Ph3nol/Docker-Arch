@@ -80,7 +80,11 @@ class DockerContainer implements DockerContainerInterface
         }
 
         $this->initLocale();
-        $this->initUser();
+        /**
+         * Set as `root` for instant.
+         * Will be generated from self::initUser() lately.
+         */
+        $this->setUser('root');
     }
 
     /**
@@ -269,13 +273,6 @@ class DockerContainer implements DockerContainerInterface
      */
     private function initUser(): void
     {
-        /**
-         * @todo Manage it, from each container requirements.
-         */
-        $this->setUser('root');
-
-        return ;
-
         // User actions.
         $user = $this->getService()->getProject()->getUser();
         if (null === $user) {
