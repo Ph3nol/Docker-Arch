@@ -2,8 +2,6 @@
 
 namespace Ph3\DockerArch\Application;
 
-use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
-
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */

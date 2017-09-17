@@ -2,12 +2,10 @@
 
 namespace Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer;
 
-use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Domain\Project\Model\Project;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\InvalidDataFileFormatException;
-use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\ServiceDataTransformer;
 use Symfony\Component\Yaml\Yaml;
 
 /**
