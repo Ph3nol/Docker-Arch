@@ -68,4 +68,12 @@ class PhpService extends AbstractService
     {
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVhostService(): bool
+    {
+        return true;
+    }
 }

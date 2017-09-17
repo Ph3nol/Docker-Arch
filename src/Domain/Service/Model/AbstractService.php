@@ -224,6 +224,14 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @return boolean
      */
+    public function isVhostService(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isCliOnly(): bool
     {
         return $this->getOptions()['cli_only'] ?? false;
@@ -248,9 +256,11 @@ abstract class AbstractService implements ServiceInterface
      */
     public function generateEnvKey(string $key): string
     {
+        $host = (new Slugify())->slugify($this->getHost(), '_');
+
         return sprintf(
             '%s%s',
-            $this->getHost() ? strtoupper($this->getHost()).'_' : '',
+            $this->getHost() ? strtoupper($host).'_' : '',
             $key
         );
     }

@@ -9,30 +9,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class NginxService extends AbstractService
+class AtmoService extends AbstractService
 {
     /**
      * {@inheritdoc}
      */
     public function getOptionsResolver(): Options
     {
-        return new OptionsResolver();
-    }
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['mock_file_path']);
+        $resolver->setAllowedTypes('mock_file_path', 'string');
 
-    /**
-     * {@inheritdoc}
-     */
-    public function allowedLinksExpression(): ?string
-    {
-        return '(php|nodejs|atmo)';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isWebService(): bool
-    {
-        return true;
+        return $resolver;
     }
 
     /**

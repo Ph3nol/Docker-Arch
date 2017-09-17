@@ -1,0 +1,20 @@
+name: Docker Arch - Simple PHP Atmo Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # PHP Container
+  - type: php
+    path: ../app
+    host: localhost
+    options:
+        version: "7.1"
+    container:
+        envs:
+            DOCKER_CONFIG_LOCALHOST_NGINX_PORT: ${DOCKER_CONFIG_LOCALHOST_NGINX_PORT}
+    # Atmo Container
+  - type: atmo
+    host: atmo.api
+    options:
+        mock_file_path: ../resources/api-mock.json
