@@ -2,17 +2,8 @@
 
 namespace Ph3\DockerArch\Domain\DockerContainer\Model;
 
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerBasicPropertiesTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerPackagesTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerCommandsTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerEnvsTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerPortsTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerVolumesTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerNetworksTrait;
-use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerCopyEntriesTrait;
 
 /**
  * @author Cédric Dugat <cedric@dugat.me>
