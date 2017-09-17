@@ -20,7 +20,6 @@ class NodejsDockerContainer extends DockerContainer
         parent::init();
 
         $service = $this->getService();
-        $project = $service->getProject();
 
         $this->setFrom(sprintf('node:%s-alpine', $service->getOptions()['version']));
 

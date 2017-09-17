@@ -22,25 +22,19 @@
         <hr>
         <div class="row">
             <h2 class="text-info">
-                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                &nbsp;
-                Project informations
+                <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Project informations
             </h2>
             <div class="col-md-6">
                 <h3>Global</h3>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <i class="fa fa-flag" aria-hidden="true"></i>
-                        &nbsp;
-                        Locale
+                        <i class="fa fa-flag" aria-hidden="true"></i> &nbsp; Locale
                         <span class="pull-right">
                             <strong>{{ project.locale }}</strong>
                         </span>
                     </li>
                     <li class="list-group-item">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        &nbsp;
-                        User
+                        <i class="fa fa-user" aria-hidden="true"></i> &nbsp; User
                         <span class="pull-right">
                             {% if project.user %}
                                 <strong>{{ project.user }}</strong>
@@ -50,32 +44,24 @@
                         </span>
                     </li>
                     <li class="list-group-item">
-                        <i class="fa fa-cogs" aria-hidden="true"></i>
-                        &nbsp;
-                        Services
+                        <i class="fa fa-cogs" aria-hidden="true"></i> &nbsp; Services
                         <span class="pull-right">
                             <strong><span class="badge badge-success">{{ project.services|length }}</span></strong>
                         </span>
                     </li>
                     <li class="list-group-item">
-                        <i class="fa fa-terminal" aria-hidden="true"></i>
-                        &nbsp;
-                        Path (generated from)
+                        <i class="fa fa-terminal" aria-hidden="true"></i> &nbsp; Path (generated from)
                         <br>
                         <strong class="text-muted">{{ project.path }}</strong>
                     </li>
                     <li class="list-group-item">
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        &nbsp;
-                        {{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }}
-                        directory
+                        &nbsp; {{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }} directory
                         <br>
                         <strong class="text-muted">{{ projectDir }}</strong>
                     </li>
                     <li class="list-group-item">
-                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                        &nbsp;
-                        Logs path
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i> &nbsp; Logs path
                         <br>
                         <strong class="text-muted">{{ project.logsPath }}</strong>
                     </li>
@@ -92,9 +78,7 @@
         </div>
         <hr>
         <h2 class="text-info">
-            <i class="fa fa-cogs" aria-hidden="true"></i>
-            &nbsp;
-            Services properties
+            <i class="fa fa-cogs" aria-hidden="true"></i> &nbsp; Services properties
         </h2>
         <div>
             <ul class="nav nav-tabs services-tabs" role="tablist">
@@ -127,25 +111,19 @@
                     <div class="col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item">
-                                <i class="fa fa-tag" aria-hidden="true"></i>
-                                &nbsp;
-                                ID
+                                <i class="fa fa-tag" aria-hidden="true"></i> &nbsp; ID
                                 <span class="pull-right">
                                     <strong>{{ service.identifier }}</strong>
                                 </span>
                             </li>
                             <li class="list-group-item">
-                                <i class="fa fa-cube" aria-hidden="true"></i>
-                                &nbsp;
-                                Inherited image
+                                <i class="fa fa-cube" aria-hidden="true"></i> &nbsp; Inherited image
                                 <span class="pull-right">
                                     <strong>{{ service.dockerContainer.from }}</strong>
                                 </span>
                             </li>
                             <li class="list-group-item">
-                                <i class="fa fa-at" aria-hidden="true"></i>
-                                &nbsp;
-                                Host
+                                <i class="fa fa-at" aria-hidden="true"></i> &nbsp; Host
                                 {% if service.host %}
                                     <span class="pull-right text-success">
                                         <strong>{{ service.host }}</strong>
@@ -157,9 +135,7 @@
                                 {% endif %}
                             </li>
                             <li class="list-group-item">
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                                &nbsp;
-                                Docker-Sync
+                                <i class="fa fa-refresh" aria-hidden="true"></i> &nbsp; Docker-Sync
                                 <span class="pull-right">
                                     {% if service.isDockerSynched %}
                                         <i class="fa fa-check-circle text-success"></i>
@@ -169,9 +145,7 @@
                                 </span>
                             </li>
                             <li class="list-group-item">
-                                <i class="fa fa-terminal" aria-hidden="true"></i>
-                                &nbsp;
-                                Path
+                                <i class="fa fa-terminal" aria-hidden="true"></i> &nbsp; Path
                                 <span class="pull-right">
                                     <strong>{{ service.path }}</strong>
                                 </span>
@@ -180,9 +154,7 @@
                     </div>
                     <div class="col-md-6">
                         <h4>
-                            <i class="fa fa-hdd-o" aria-hidden="true"></i>
-                            &nbsp;
-                            Volumes
+                            <i class="fa fa-hdd-o" aria-hidden="true"></i> &nbsp; Volumes
                         </h4>
                         {% set volumes = project.getVolumesForService(service) %}
                         {% if volumes|length %}
@@ -196,9 +168,7 @@
                         {% endif %}
                         <hr>
                         <h4>
-                            <i class="fa fa-link" aria-hidden="true"></i>
-                            &nbsp;
-                            Links
+                            <i class="fa fa-link" aria-hidden="true"></i> &nbsp; Links
                         </h4>
                         {% set links = project.getLinksForService(service) %}
                         {% if links|length %}
@@ -212,9 +182,7 @@
                         {% endif %}
                         <hr>
                         <h4>
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                            &nbsp;
-                            Exposed ports
+                            <i class="fa fa-globe" aria-hidden="true"></i> &nbsp; Exposed ports
                         </h4>
                         {% set ports = service.dockerContainer.ports %}
                         {% if ports|length %}
@@ -231,9 +199,7 @@
                         {% endif %}
                         <hr>
                         <h4>
-                            <i class="fa fa-list" aria-hidden="true"></i>
-                            &nbsp;
-                            Environment globals
+                            <i class="fa fa-list" aria-hidden="true"></i> &nbsp; Environment globals
                         </h4>
                         {% set envs = service.dockerContainer.envs %}
                         {% if envs|length %}
