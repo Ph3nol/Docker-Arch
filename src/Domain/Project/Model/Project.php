@@ -116,6 +116,14 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getVhostServices(): ServiceCollection
+    {
+        return $this->getServices()->getVhostServices();
+    }
+
+    /**
      * @param string $name
      *
      * @return ServiceInterface[]

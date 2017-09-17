@@ -54,6 +54,14 @@ class NodejsService extends AbstractService
     /**
      * {@inheritdoc}
      */
+    public function isVhostService(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCli(): bool
     {
         return true;

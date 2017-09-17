@@ -53,6 +53,21 @@ class ServiceCollection extends \ArrayObject
     }
 
     /**
+     * @return ServiceInterface[]
+     */
+    public function getVhostServices(): ServiceCollection
+    {
+        $vhostServices = [];
+        foreach ($this as $service) {
+            if (true === $service->isVhostService()) {
+                $vhostServices[] = $service;
+            }
+        }
+
+        return new ServiceCollection($vhostServices);
+    }
+
+    /**
      * @param ServiceInterface $refService
      *
      * @return ServiceInterface[]

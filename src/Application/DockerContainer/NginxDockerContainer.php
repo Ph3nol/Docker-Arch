@@ -92,7 +92,7 @@ class NginxDockerContainer extends DockerContainer
         $dockerContainerService = $this->getService();
 
         $this->vhostsServicesByHost = [];
-        foreach ($dockerContainerService->getProject()->getWebServices() as $k => $service) {
+        foreach ($dockerContainerService->getProject()->getVhostServices() as $k => $service) {
             if (false === $service->isCliOnly() && null !== $service->getHost()) {
                 $this->vhostsServicesByHost[$service->getHost()] = $service;
             }
