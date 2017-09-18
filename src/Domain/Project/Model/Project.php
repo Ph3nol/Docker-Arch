@@ -13,7 +13,7 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
  */
 class Project implements ProjectInterface
 {
-    public const DOCKER_ENV_CONFIGURATION_PREFIX = 'DOCKER_CONFIG_';
+    const DOCKER_ENV_CONFIGURATION_PREFIX = 'DOCKER_CONFIG_';
 
     use TemplatedFilesPropertyTrait;
     use DockerContainerEnvsTrait;

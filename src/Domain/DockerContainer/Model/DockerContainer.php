@@ -10,7 +10,7 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
  */
 class DockerContainer implements DockerContainerInterface
 {
-    public const DOCKER_MAIN_NETWORK = 'main-network';
+    const DOCKER_MAIN_NETWORK = 'main-network';
 
     use DockerContainerBasicPropertiesTrait;
     use DockerContainerPackagesTrait;
@@ -80,11 +80,7 @@ class DockerContainer implements DockerContainerInterface
         }
 
         $this->initLocale();
-        /**
-         * Set as `root` for instant.
-         * Will be generated from self::initUser() lately.
-         */
-        $this->setUser('root');
+        $this->initUser();
     }
 
     /**
@@ -199,9 +195,15 @@ class DockerContainer implements DockerContainerInterface
     {
         // Volumes.
         $this
-            ->addVolume(['local' => '~/.ssh', 'remote' => $this->getAbsoluteUserPath('~/.ssh'), 'type' => 'ro'])
-            ->addVolume(['local' => '~/.gitconfig', 'remote' => $this->getAbsoluteUserPath('~/.gitconfig'), 'type' => 'ro'])
-            ->addVolume(['local' => '~/.gitignore', 'remote' => $this->getAbsoluteUserPath('~/.gitignore'), 'type' => 'ro']);
+            ->addVolume([
+                'local' => '~/.ssh', 'remote' => $this->getAbsoluteUserPath('~/.ssh'), 'type' => 'ro'
+            ])
+            ->addVolume([
+                'local' => '~/.gitconfig', 'remote' => $this->getAbsoluteUserPath('~/.gitconfig'), 'type' => 'ro'
+            ])
+            ->addVolume([
+                'local' => '~/.gitignore', 'remote' => $this->getAbsoluteUserPath('~/.gitignore'), 'type' => 'ro'
+            ]);
     }
 
     /**
@@ -273,6 +275,14 @@ class DockerContainer implements DockerContainerInterface
      */
     private function initUser(): void
     {
+        /**
+         * Set as `root` for instant.
+         * Will be generated from self::initUser() lately.
+         */
+        $this->setUser('root');
+
+        return ;
+
         // User actions.
         $user = $this->getService()->getProject()->getUser();
         if (null === $user) {

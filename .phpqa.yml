@@ -1,0 +1,5 @@
+phpcs:
+  standard: PSR2
+
+phpmd:
+  standard: config/qa/phpmd.xml

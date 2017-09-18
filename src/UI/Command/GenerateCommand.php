@@ -47,7 +47,9 @@ class GenerateCommand extends Command
         $logger = new Logger('Docker-Arch.command.generate');
         $simpleLineFormatter = new LineFormatter("    • %message%\n");
 
-        $logger->pushHandler(new StreamHandler(Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/docker-arch.log', Logger::DEBUG));
+        $logger->pushHandler(
+            new StreamHandler(Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/docker-arch.log', Logger::DEBUG)
+        );
 
         $stdOutHandler = new StreamHandler('php://stdout', Logger::INFO);
         $stdOutHandler->setFormatter($simpleLineFormatter);
