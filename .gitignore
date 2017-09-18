@@ -3,3 +3,5 @@ vendor/
 bin/atoum
 bin/coke
 bin/php*
+bin/pdepend
+bin/robo
