@@ -6,7 +6,7 @@ server {
     error_log /var/log/nginx/{{ host }}-error.log;
 
     location / {
-        proxy_pass http://{{ forService.identifier }}:9000;
+        proxy_pass http://{{ forService.identifier }}:1337;
 
         add_header 'Access-Control-Allow-Origin' "$http_origin";
         add_header 'Access-Control-Allow-Credentials' 'true';

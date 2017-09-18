@@ -44,7 +44,7 @@ class AtmoDockerContainer extends DockerContainer
             ->setCmd(['start']);
 
         // Ports.
-        $port = $this->addEnvPort('ATMO', ['from' => '9999', 'to' => '9000']);
+        $port = $this->addEnvPort('ATMO', ['from' => '9999', 'to' => '1337']);
 
         // UI.
         $service->addUIAccess([
