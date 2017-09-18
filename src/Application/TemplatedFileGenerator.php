@@ -2,9 +2,10 @@
 
 namespace Ph3\DockerArch\Application;
 
-use Twig_Loader_Filesystem;
+use Ph3\DockerArch\Application\Twig\Extension\DockerfileExtension;
 use Twig_Environment;
 use Twig_Extension_Debug;
+use Twig_Loader_Filesystem;
 
 /**
  * @author Cédric Dugat <cedric@dugat.me>
@@ -24,6 +25,7 @@ class TemplatedFileGenerator implements TemplatedFileGeneratorInterface
         $loader = new Twig_Loader_Filesystem(__DIR__.'/Resources/views');
         $this->templateEngine = new Twig_Environment($loader, ['debug' => true]);
         $this->templateEngine->addExtension(new Twig_Extension_Debug());
+        $this->templateEngine->addExtension(new DockerfileExtension());
     }
 
     /**

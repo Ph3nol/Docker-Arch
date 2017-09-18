@@ -53,7 +53,7 @@ class CerebroDockerContainer extends DockerContainer
                 'mv /tmp/cerebro-application.conf /usr/share/cerebro/conf/application.conf',
             ])
             ->setWorkingDir('/usr/share')
-            ->setEntryPoint('/usr/share/cerebro/bin/cerebro');
+            ->setEntryPoint(['/usr/share/cerebro/bin/cerebro']);
 
         // Ports.
         $port = $this->addEnvPort('CEREBRO', ['from' => '8021', 'to' => '9000']);
