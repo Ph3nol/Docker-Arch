@@ -31,7 +31,7 @@ class MocoDockerContainer extends DockerContainer
             'label' => 'Base URL',
         ]);
 
-        $this->setEntryPoint('/usr/local/bin/moco');
+        $this->setEntryPoint(['/usr/local/bin/moco']);
 
         $mockFilename = $this->getService()->getOptions()['mock_filename'];
         $this->setCmd([

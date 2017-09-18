@@ -38,7 +38,7 @@ class PhpDockerContainer extends DockerContainer
                 'remote' => '/root/entrypoint.sh',
             ])
             ->addCommand('chmod +x /root/entrypoint.sh')
-            ->setEntryPoint('/root/entrypoint.sh');
+            ->setEntryPoint(['/root/entrypoint.sh']);
 
         // Volumes.
         if (true === $service->getOptions()['dotfiles']) {
