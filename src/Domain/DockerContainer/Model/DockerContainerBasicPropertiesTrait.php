@@ -78,40 +78,48 @@ trait DockerContainerBasicPropertiesTrait
     }
 
     /**
-     * @return string
+     * @return string|array
      */
-    public function getEntryPoint(): ?string
+    public function getEntryPoint()
     {
         return $this->entryPoint;
     }
 
     /**
-     * @param string $entryPoint
+     * @param string|array $entryPoint
      *
      * @return self
      */
-    public function setEntryPoint(string $entryPoint): self
+    public function setEntryPoint($entryPoint): self
     {
+        if (true === is_string($entryPoint)) {
+            $entryPoint = [$entryPoint];
+        }
+
         $this->entryPoint = $entryPoint;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|array
      */
-    public function getCmd(): ?string
+    public function getCmd()
     {
         return $this->cmd;
     }
 
     /**
-     * @param string $cmd
+     * @param string|array $cmd
      *
      * @return self
      */
-    public function setCmd(string $cmd): self
+    public function setCmd($cmd): self
     {
+        if (true === is_string($cmd)) {
+            $cmd = [$cmd];
+        }
+
         $this->cmd = $cmd;
 
         return $this;

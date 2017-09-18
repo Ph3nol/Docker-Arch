@@ -34,12 +34,12 @@ class MocoDockerContainer extends DockerContainer
         $this->setEntryPoint('/usr/local/bin/moco');
 
         $mockFilename = $this->getService()->getOptions()['mock_filename'];
-        $cmd = sprintf(
-            '["start", "-p", "%s", "-c", "%s/%s"]',
+        $this->setCmd([
+            'start',
+            '-p',
             self::MOCO_INTERNAL_PORT,
-            $this->getWorkingDir(),
-            $mockFilename
-        );
-        $this->setCmd($cmd);
+            '-c',
+            sprintf('%s/%s', $this->getWorkingDir(), $mockFilename)
+        ]);
     }
 }

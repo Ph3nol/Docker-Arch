@@ -63,14 +63,14 @@ RUN {{ command|raw }}
 {# ----------------------------------------------------- Entry point (ENTRYPOINT) #}
 {% if dockerContainer.entryPoint %}
 
-# Entry point.
-ENTRYPOINT ["{{ dockerContainer.entryPoint }}"]
+# EntryPoint.
+ENTRYPOINT {{ dockerContainer.entryPoint|chained_elements_string }}
 {% endif %}
 {# ----------------------------------------------------- CMD #}
 {% if dockerContainer.cmd %}
 
-# CMD
-CMD {{ dockerContainer.cmd|raw }}
+# CMD.
+CMD {{ dockerContainer.cmd|chained_elements_string }}
 {% endif %}
 {# ----------------------------------------------------- Done #}
 
