@@ -1,7 +1,7 @@
 .PHONY: test lint
 
-lint:
-	bin/coke
+qa:
+	bin/phpqa --analyzedDirs src,tests --output cli
 
 test:
 	bin/atoum -v # To do: write tests!

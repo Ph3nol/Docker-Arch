@@ -47,7 +47,7 @@
     "require-dev": {
         "atoum/atoum": "^3.0",
         "atoum/stubs": "*",
-        "m6web/coke": "^2.1",
-        "m6web/symfony2-coding-standard": "^3.3"
+        "m6web/symfony2-coding-standard": "^3.3",
+        "edgedesign/phpqa": "^1.13"
     }
 }

@@ -31,6 +31,9 @@ class CerebroDockerContainer extends DockerContainer
                 'Service/Cerebro/application.conf.twig'
             ));
 
+        $tarUrl = 'https://github.com/lmenezes/cerebro/releases/download'
+            .'/v${CEREBRO_VERSION}/cerebro-${CEREBRO_VERSION}.tgz';
+
         $this
             ->addCopyEntry([
                 'local' => 'cerebro/application.conf',
@@ -39,7 +42,7 @@ class CerebroDockerContainer extends DockerContainer
             ->addEnv('CEREBRO_VERSION', '0.6.6')
             ->addConsecutiveCommands([
                 'cd /usr/share',
-                'wget -qO cerebro-${CEREBRO_VERSION}.tgz https://github.com/lmenezes/cerebro/releases/download/v${CEREBRO_VERSION}/cerebro-${CEREBRO_VERSION}.tgz',
+                'wget -qO cerebro-${CEREBRO_VERSION}.tgz '.$tarUrl,
                 'tar zxf cerebro-${CEREBRO_VERSION}.tgz',
                 'rm cerebro-${CEREBRO_VERSION}.tgz',
                 'mkdir cerebro-${CEREBRO_VERSION}/logs',

@@ -80,7 +80,10 @@ class PhpDockerContainer extends DockerContainer
             $this
                 ->addCommand('pecl install -o -f xdebug')
                 ->addCommand('rm -rf /tmp/pear')
-                ->addCommand('echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini')
+                ->addCommand(
+                    'echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" '
+                    .'> /usr/local/etc/php/conf.d/xdebug.ini'
+                )
                 ->addCommand('echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/xdebug.ini');
         }
         if (true === in_array('redis', $extensions)) {
@@ -115,7 +118,9 @@ class PhpDockerContainer extends DockerContainer
 
         // Composer part.
         if (true === $service->getOptions()['composer']) {
-            $this->addCommand('curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/bin');
+            $this->addCommand(
+                'curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/bin'
+            );
         }
     }
 }
