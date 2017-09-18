@@ -1,0 +1,7 @@
+name: Docker Arch - Web Docker-Synched Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    docker_sync: true

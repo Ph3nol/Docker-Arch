@@ -359,7 +359,7 @@ class Project implements ProjectInterface
         return [
             'local' => $path,
             'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
-            'type' => 'rw',
+            'type' => 'cached',
         ];
     }
 }
