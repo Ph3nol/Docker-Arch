@@ -65,6 +65,7 @@ class DockerContainer implements DockerContainerInterface
                 ->addEnv('TERM', 'xterm-256color')
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true')
                 ->addPackage('git')
+                ->addPackage('less')
                 ->addPackage('wget')
                 ->addPackage('curl')
                 ->addPackage('openssh-client');
