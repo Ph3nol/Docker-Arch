@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple PHP Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
+    <title>PHP Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
 </head>
 <body>
-    <h1>Simple PHP Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
+    <h1>PHP Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
 
     <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit.

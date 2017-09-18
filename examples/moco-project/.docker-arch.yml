@@ -1,4 +1,4 @@
-name: Docker Arch - Simple Moco Project
+name: Docker Arch - Moco Project
 services:
     # Moco Container
   - type: moco

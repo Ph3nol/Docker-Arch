@@ -1,4 +1,4 @@
-name: Docker Arch - Simple PHP Atmo Project
+name: Docker Arch - PHP Atmo Project
 services:
     # Nginx Container
   - type: nginx

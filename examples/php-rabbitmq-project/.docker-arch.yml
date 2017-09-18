@@ -1,4 +1,4 @@
-name: Docker Arch - Simple PHP RabbitMQ Project
+name: Docker Arch - PHP RabbitMQ Project
 services:
     # Nginx Container
   - type: nginx

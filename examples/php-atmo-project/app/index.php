@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple PHP/Atmo Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
+    <title>PHP/Atmo Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
 </head>
 <body>
-    <h1>Simple PHP/Atmo Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
+    <h1>PHP/Atmo Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
 
     <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -12,7 +12,15 @@
         laboriosam dolores ea quia, rem possimus quae autem aut, iusto placeat aspernatur.
     </p>
 
+    <ul>
+        <li>System informations: <?php print exec('uname -a') ?></li>
+        <li>Remote address: <?php echo $_SERVER['REMOTE_ADDR'] ?></li>
+        <li>Hostname: <?php echo $_SERVER['HOSTNAME'] ?></li>
+        <li>PHP version: <?php echo $_SERVER['PHP_VERSION'] ?></li>
+    </ul>
+
     <h2>Places list (from Atmo example endpoint)</h2>
+
     <p>Here are some places:</p>
     <ul id="fast-foods-list"></ul>
     <p><em id="xhr-request"></em></p>

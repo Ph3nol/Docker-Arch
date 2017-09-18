@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple PHP/ElasticSearch Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
+    <title>PHP/ElasticSearch Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</title>
 </head>
 <body>
-    <h1>Simple PHP/ElasticSearch Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
+    <h1>PHP/ElasticSearch Project (<?php echo $_ENV['DOCKER_CONTAINER_NAME'] ?>)</h1>
 
     <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -17,7 +17,6 @@
         <li>Remote address: <?php echo $_SERVER['REMOTE_ADDR'] ?></li>
         <li>Hostname: <?php echo $_SERVER['HOSTNAME'] ?></li>
         <li>PHP version: <?php echo $_SERVER['PHP_VERSION'] ?></li>
-        <li><a href="phpinfo.php" title="PHP configuration">PHP configuration</a></li>
     </ul>
 
     <h2>ElasticSearch part</h2>

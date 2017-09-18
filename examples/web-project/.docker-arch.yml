@@ -1,4 +1,4 @@
-name: Docker Arch - Simple Web Project
+name: Docker Arch - Web Project
 services:
     # Nginx Container
   - type: nginx

@@ -1,4 +1,4 @@
-name: Docker Arch - Simple PHP ElasticSearch Project
+name: Docker Arch - PHP ElasticSearch Project
 services:
     # Nginx Container
   - type: nginx

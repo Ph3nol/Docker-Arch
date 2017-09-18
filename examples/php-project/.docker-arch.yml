@@ -1,4 +1,4 @@
-name: Docker Arch - Simple PHP Project
+name: Docker Arch - PHP Project
 services:
     # Nginx Container
   - type: nginx

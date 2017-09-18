@@ -1,4 +1,4 @@
-name: Docker Arch - Simple PHP MySQL Project
+name: Docker Arch - PHP/MariaDB Project
 services:
     # Nginx Container
   - type: nginx
@@ -12,7 +12,7 @@ services:
         version: "7.1"
         extensions:
             - pdo_mysql
-    # MySQL Container
-  - type: mysql
+    # MariaDB Container
+  - type: mariadb
     options:
-        version: "5.7"
+        version: "10.3"
