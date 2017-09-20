@@ -295,7 +295,7 @@ abstract class AbstractService implements ServiceInterface
     /**
      * {@inheritdoc}
      */
-    protected static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
+    public static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
     {
         $instance = new static(
             $service->getProject()
@@ -306,14 +306,13 @@ abstract class AbstractService implements ServiceInterface
         }
         $dockerContainer = new $dockerContainerFqcn($instance);
 
+        $identifier = sprintf('%s-%s', $instance->getName(), $service->getIdentifier());
+        $identifier = (new Slugify())->slugify($identifier, '-');
+
         $instance
             ->setParentService($service)
             ->setDockerContainer($dockerContainer)
-            ->setIdentifier(sprintf(
-                '%s-%s',
-                $instance->getName(),
-                $service->getIdentifier()
-            ));
+            ->setIdentifier($identifier);
 
         return $instance;
     }

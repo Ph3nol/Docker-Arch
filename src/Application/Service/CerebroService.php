@@ -21,14 +21,4 @@ class CerebroService extends AbstractService implements HasParentServiceInterfac
     {
         return new OptionsResolver();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
-    {
-        $instance = parent::getInstanceForParentService($service);
-
-        return $instance;
-    }
 }

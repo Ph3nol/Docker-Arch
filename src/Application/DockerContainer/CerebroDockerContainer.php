@@ -8,7 +8,6 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
 /**
  * @author Cédric Dugat <cedric@dugat.me>
- * @see https://hub.docker.com/r/yannart/cerebro
  */
 class CerebroDockerContainer extends DockerContainer
 {
@@ -56,7 +55,7 @@ class CerebroDockerContainer extends DockerContainer
             ->setEntryPoint(['/usr/share/cerebro/bin/cerebro']);
 
         // Ports.
-        $port = $this->addEnvPort('CEREBRO', ['from' => '8021', 'to' => '9000']);
+        $port = $this->addEnvPort('ELASTIC_SEARCH_CEREBRO', ['from' => '8021', 'to' => '9000']);
 
         // UI.
         $service->getParentService()->addUIAccess([
