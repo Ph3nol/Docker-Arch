@@ -2,6 +2,8 @@
 
 namespace Ph3\DockerArch\Domain\Service\Model;
 
+use Cocur\Slugify\Slugify;
+
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
@@ -99,5 +101,27 @@ class ServiceCollection extends \ArrayObject
         }
 
         return new ServiceCollection($services);
+    }
+
+    /**
+     * @return void
+     */
+    public function updateIdentifiers(): void
+    {
+        $servicesCount = [];
+        foreach ($this as $service) {
+            $servicesCount[$service->getName()] += 1;
+            if (1 < count($this->getServicesForName($service->getName()))) {
+                $serviceIdentifier = sprintf(
+                    '%s-%s',
+                    $service->getName(),
+                    $service->getHost() ? : $servicesCount[$service->getName()]
+                );
+            } else {
+                $serviceIdentifier = $service->getName();
+            }
+
+            $service->setIdentifier((new Slugify())->slugify($serviceIdentifier));
+        }
     }
 }

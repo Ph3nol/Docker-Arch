@@ -314,21 +314,7 @@ class Project implements ProjectInterface
      */
     public function updateServicesIdentifiers(): void
     {
-        $servicesCount = [];
-        foreach ($this->getServices() as $service) {
-            $servicesCount[$service->getName()] += 1;
-            if (1 < count($this->getServicesForName($service->getName()))) {
-                $serviceIdentifier = sprintf(
-                    '%s-%s',
-                    $service->getName(),
-                    $service->getHost() ? : $servicesCount[$service->getName()]
-                );
-            } else {
-                $serviceIdentifier = $service->getName();
-            }
-
-            $service->setIdentifier((new Slugify())->slugify($serviceIdentifier));
-        }
+        $this->getServices()->updateIdentifiers();
     }
 
     /**
