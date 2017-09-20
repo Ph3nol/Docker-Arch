@@ -15,7 +15,7 @@ services:
     container:
         volumes:
             - "../docker:/docker:ro"
-        entry_point: "/bin/sh /docker/php/entrypoint.sh"
+        entry_point: ["/docker/php/entrypoint.sh"]
     # ElasticSearch Container
   - type: elasticsearch
     options:

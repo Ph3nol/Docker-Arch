@@ -241,7 +241,7 @@
             return (str.replace(searchStr, replaceStr)).replaceAll(searchStr, replaceStr);
         }
 
-        var projectEnvs = {{ project.envs|json_encode|raw }};
+        var projectEnvs = {{ dotEnvFileParameters|json_encode|raw }};
 
         $('.contains-envs').each(function () {
             var content = $(this).html();

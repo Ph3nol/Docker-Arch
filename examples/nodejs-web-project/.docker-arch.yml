@@ -11,4 +11,4 @@ services:
     options:
         version: "8"
     container:
-        entry_point: npm start
+        entry_point: ["npm start"]

@@ -24,7 +24,8 @@
         "symfony/options-resolver": "^3.3",
         "twig/twig": "^1.0||^2.0",
         "cocur/slugify": "^3.0",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "symfony/dotenv": "^3.3"
     },
     "autoload": {
         "psr-4": { "Ph3\\DockerArch\\": "src/" }
