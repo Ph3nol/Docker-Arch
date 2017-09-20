@@ -26,7 +26,6 @@ class PhpDockerContainer extends DockerContainer
         $this->applyWebServiceConfiguration();
         $this->applyShellConfiguration();
 
-        // EntryPoint.
         $service
             ->addTemplatedFile(new TemplatedFile(
                 'entrypoint.sh',
@@ -46,6 +45,12 @@ class PhpDockerContainer extends DockerContainer
         }
 
         // Packages.
+        $this
+            ->addPackage('autoconf')
+            ->addPackage('gcc')
+            ->addPackage('make')
+            ->addPackage('g++')
+            ->addPackage('zlib-dev');
         if (true === $service->getOptions()['composer']) {
             $this
                 ->addPackage('zip')
