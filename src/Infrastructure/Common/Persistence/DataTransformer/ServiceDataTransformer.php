@@ -26,8 +26,6 @@ class ServiceDataTransformer
         }
 
         $serviceFqcn = $this->getServiceFqcn($data['type']);
-        $containerFqcn = $this->getDockerContainerFqcn($data['type']);
-
         $service = new $serviceFqcn($project, $data['options'] ? : []);
         if ($data['path'] ?? null) {
             $service->setPath($data['path']);
@@ -38,10 +36,6 @@ class ServiceDataTransformer
         if ($data['host'] ?? null) {
             $service->setHost($data['host']);
         }
-
-        $dockerContainer = new $containerFqcn($service);
-        $dockerContainer = (new DockerContainerDataTransformer())->toModel($data['container'] ?? [], $dockerContainer);
-        $service->setDockerContainer($dockerContainer);
 
         return $service;
     }
@@ -60,26 +54,6 @@ class ServiceDataTransformer
         if (false === class_exists($fqcn)) {
             throw new ServiceNotFoundException(
                 'Service '.$fqcn.' does not exist'
-            );
-        }
-
-        return $fqcn;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return string
-     */
-    private function getDockerContainerFqcn(string $type): string
-    {
-        $fqcn = sprintf(
-            '\\Ph3\\DockerArch\\Application\\DockerContainer\\%sDockerContainer',
-            ucfirst($type)
-        );
-        if (false === class_exists($fqcn)) {
-            throw new DockerContainerNotFoundException(
-                'DockerContainer '.$fqcn.' does not exist'
             );
         }
 

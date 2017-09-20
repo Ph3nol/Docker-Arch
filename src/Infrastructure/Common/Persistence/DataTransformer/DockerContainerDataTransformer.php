@@ -4,6 +4,8 @@ namespace Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer;
 
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
+use Ph3\DockerArch\Domain\Service\Model\DockerContainerNotFoundException;
+use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 
 /**
  * @author Cédric Dugat <cedric@dugat.me>
@@ -11,19 +13,21 @@ use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 class DockerContainerDataTransformer
 {
     /**
-     * @param array                    $data
-     * @param DockerContainerInterface $dockerContainer
+     * @param ServiceInterface $data
      *
      * @return DockerContainerInterface
      */
-    public function toModel(array $data, DockerContainerInterface $dockerContainer = null): ?DockerContainerInterface
+    public function toModel(ServiceInterface $service, array $data): DockerContainerInterface
     {
-        if (null === $dockerContainer) {
-            $dockerContainer = new DockerContainer();
-        }
+        $containerFqcn = $this->getDockerContainerFqcn($service->getName());
+        $dockerContainer = new $containerFqcn($service);
+        $dockerContainer->init();
 
         if ($data['entry_point'] ?? null) {
             $dockerContainer->setEntryPoint($data['entry_point']);
+        }
+        if ($data['cmd'] ?? null) {
+            $dockerContainer->setCmd($data['cmd']);
         }
         if ($data['working_dir'] ?? null) {
             $dockerContainer->setWorkingDir($data['working_dir']);
@@ -51,5 +55,25 @@ class DockerContainerDataTransformer
         }
 
         return $dockerContainer;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    private function getDockerContainerFqcn(string $type): string
+    {
+        $fqcn = sprintf(
+            '\\Ph3\\DockerArch\\Application\\DockerContainer\\%sDockerContainer',
+            ucfirst($type)
+        );
+        if (false === class_exists($fqcn)) {
+            throw new DockerContainerNotFoundException(
+                'DockerContainer '.$fqcn.' does not exist'
+            );
+        }
+
+        return $fqcn;
     }
 }

@@ -49,15 +49,19 @@ class ProjectDataTransformer
         foreach ($data['envs'] ?? [] as $key => $value) {
             $project->addEnv($key, $value);
         }
+
+        // Services.
         foreach ($data['services'] ?? [] as $serviceData) {
             $service = (new ServiceDataTransformer())->toModel($serviceData, $project);
             $project->addService($service);
         }
-
-        // Project services Docker containers initialization.
         $project->updateServicesIdentifiers();
-        foreach ($project->getServices() as $service) {
-            $service->getDockerContainer()->init();
+
+        // Services DockerContainers.
+        foreach ($project->getServices() as $k => $service) {
+            $dockerContainer = (new DockerContainerDataTransformer())
+                ->toModel($service, $data['services'][$k]['container'] ?? []);
+            $service->setDockerContainer($dockerContainer);
         }
 
         return $project;
