@@ -65,6 +65,7 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
+        $this->setIdentifier(uniqid());
     }
 
     /**
