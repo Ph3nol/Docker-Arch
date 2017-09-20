@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class CerebroService extends AbstractService implements HasParentServiceInterface
+class ElasticsearchHeadService extends AbstractService implements HasParentServiceInterface
 {
     use ParentServiceTrait;
 
