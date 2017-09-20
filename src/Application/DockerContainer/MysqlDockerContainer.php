@@ -47,6 +47,6 @@ class MysqlDockerContainer extends DockerContainer
             ]);
 
         // Ports.
-        $this->addEnvPort('MYSQL', ['from' => '8006', 'to' => '3006']);
+        $this->addEnvPort('MYSQL', ['from' => '8006', 'to' => '3306']);
     }
 }
