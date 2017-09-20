@@ -10,6 +10,7 @@ use Ph3\DockerArch\Infrastructure\Common\Persistence\PersisterInterface;
 use Ph3\DockerArch\Infrastructure\Project\Repository\ProjectRepository;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -255,10 +256,19 @@ class Architect implements ArchitectInterface
      */
     private function generateUI(): void
     {
+        $dotEnv = new Dotenv();
+        $dotEnv->load($this->projectDir.'/.env');
+
+        $envProperties = [];
+        foreach (explode(',', getenv('SYMFONY_DOTENV_VARS')) as $envProperty) {
+            $envProperties[$envProperty] = getenv($envProperty);
+        }
+
         $indexContent = $this->getTemplatedFileGenerator()->render('UI/index.html.twig', [
             'projectDir' => $this->projectDir,
             'project' => $this->project,
             'dotEnvFileContent' => file_get_contents($this->projectDir.'/.env'),
+            'dotEnvFileParameters' => $envProperties,
         ]);
 
         $this->fs->dumpFile($this->getGeneratedUIPath(), $indexContent);
