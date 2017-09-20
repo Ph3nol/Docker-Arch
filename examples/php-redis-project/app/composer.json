@@ -1,0 +1,7 @@
+{
+    "name": "ph3/docker-arch-demo",
+    "description": "Docker Arch demo.",
+    "require": {
+        "predis/predis": "^1.1"
+    }
+}
