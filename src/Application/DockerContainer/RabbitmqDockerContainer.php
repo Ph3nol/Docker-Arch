@@ -53,7 +53,7 @@ class RabbitmqDockerContainer extends DockerContainer
     {
         // UI.
         $port = end($this->getService()->getDockerContainer()->getPorts());
-        if (true === $service->getOptions()['with_management']) {
+        if (true === $this->getService()->getOptions()['with_management']) {
             $this->getService()->addUIAccess([
                 'port' => $port['from'],
                 'label' => 'Management UI',

@@ -25,8 +25,6 @@ class ElasticsearchHeadDockerContainer extends DockerContainer
      */
     public function execute(): void
     {
-        $service = $this->getService();
-
         $this->setFrom('mobz/elasticsearch-head:5-alpine');
 
         // Ports.
