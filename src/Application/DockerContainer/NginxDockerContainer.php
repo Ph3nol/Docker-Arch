@@ -20,12 +20,16 @@ class NginxDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function init(): void
+    public function getPackageManager(): string
     {
-        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+        return DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK;
+    }
 
-        parent::init();
-
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(): void
+    {
         $this->setFrom('nginx:1-alpine');
         $this->applyWebServiceConfiguration();
 

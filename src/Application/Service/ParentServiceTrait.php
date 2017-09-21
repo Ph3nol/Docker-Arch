@@ -17,7 +17,7 @@ trait ParentServiceTrait
     /**
      * {@inheritdoc}
      */
-    public function getParentService(): ServiceInterface
+    public function getParentService(): ?ServiceInterface
     {
         return $this->parentService;
     }

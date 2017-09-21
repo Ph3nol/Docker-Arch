@@ -15,26 +15,39 @@ class ElasticsearchDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function init(): void
+    public function getPackageManager(): string
     {
-        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+        return DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK;
+    }
 
-        parent::init();
-
-        $this->setFrom(sprintf('blacktop/elasticsearch:%s', $this->getService()->getOptions()['version']));
-
+    /**
+     * {@inheritdoc}
+     */
+    public function preExecute(): void
+    {
         $service = $this->getService();
-        $project = $service->getProject();
+        if (true === $service->getOptions()['with_management']) {
+            $service
+                ->getProject()
+                ->addService(CerebroService::getInstanceForParentService($service))
+                ->addService(ElasticsearchHeadService::getInstanceForParentService($service));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(): void
+    {
+        $service = $this->getService();
+
+        $this->setFrom(sprintf('blacktop/elasticsearch:%s', $service->getOptions()['version']));
 
         // Commands.
         if (true === $service->getOptions()['with_management']) {
             $this
                 ->addCommand('echo "http.cors.enabled: true" >> /usr/share/elasticsearch/config/elasticsearch.yml')
                 ->addCommand('echo "http.cors.allow-origin: \\"*\\"" >> /usr/share/elasticsearch/config/elasticsearch.yml');
-
-            $project
-                ->addService(CerebroService::getInstanceForParentService($this->getService()))
-                ->addService(ElasticsearchHeadService::getInstanceForParentService($this->getService()));
         }
 
         // Ports.

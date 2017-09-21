@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Application\DockerContainer;
 
+use Ph3\DockerArch\Application\Service\NginxService;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
@@ -14,13 +15,18 @@ class ElasticsearchHeadDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function init(): void
+    public function getPackageManager(): string
     {
-        $this->setPackageManager(DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK);
+        return DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK;
+    }
 
-        parent::init();
-
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(): void
+    {
         $service = $this->getService();
+        $project = $service->getProject();
 
         $this->setFrom('mobz/elasticsearch-head:5-alpine');
 
