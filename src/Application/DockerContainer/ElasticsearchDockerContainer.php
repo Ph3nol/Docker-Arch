@@ -47,7 +47,9 @@ class ElasticsearchDockerContainer extends DockerContainer
         if (true === $service->getOptions()['with_management']) {
             $this
                 ->addCommand('echo "http.cors.enabled: true" >> /usr/share/elasticsearch/config/elasticsearch.yml')
-                ->addCommand('echo "http.cors.allow-origin: \\"*\\"" >> /usr/share/elasticsearch/config/elasticsearch.yml');
+                ->addCommand(
+                    'echo "http.cors.allow-origin: \\"*\\"" >> /usr/share/elasticsearch/config/elasticsearch.yml'
+                );
         }
 
         // Ports.

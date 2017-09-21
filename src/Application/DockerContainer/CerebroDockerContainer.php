@@ -33,7 +33,6 @@ class CerebroDockerContainer extends DockerContainer
     public function execute(): void
     {
         $service = $this->getService();
-        $project = $service->getProject();
 
         $this->setFrom('openjdk:8-jre-alpine');
 
