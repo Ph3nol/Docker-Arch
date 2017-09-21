@@ -30,12 +30,19 @@ class ElasticsearchHeadDockerContainer extends DockerContainer
         $this->setFrom('mobz/elasticsearch-head:5-alpine');
 
         // Ports.
-        $port = $this->addEnvPort('ELASTIC_SEARCH_HEAD', ['from' => '8022', 'to' => '9100']);
+        $this->addEnvPort('ELASTIC_SEARCH_HEAD', ['from' => '8022', 'to' => '9100']);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
         // UI.
-        $elasticSearchPorts = $service->getParentService()->getDockerContainer()->getPorts();
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
+        $elasticSearchPorts = $this->getService()->getParentService()->getDockerContainer()->getPorts();
         $elasticSearchPort = reset($elasticSearchPorts)['from'];
-        $service->getParentService()->addUIAccess([
+        $this->getService()->getParentService()->addUIAccess([
             'url' => 'localhost',
             'uri' => '?base_uri=http://localhost:'.$elasticSearchPort.'/',
             'port' => $port['from'],

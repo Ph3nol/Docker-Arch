@@ -53,11 +53,18 @@ class ElasticsearchDockerContainer extends DockerContainer
         }
 
         // Ports.
-        $mainPort = $this->addEnvPort('ELASTIC_SEARCH', ['from' => '8020', 'to' => '9200']);
+        $this->addEnvPort('ELASTIC_SEARCH', ['from' => '8020', 'to' => '9200']);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
         // UI.
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
         $this->getService()->addUIAccess([
-            'port' => $mainPort['from'],
+            'port' => $port['from'],
             'label' => 'ElasticSearch Main Endpoint',
         ]);
     }

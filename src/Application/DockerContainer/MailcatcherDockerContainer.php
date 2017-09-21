@@ -26,12 +26,19 @@ class MailcatcherDockerContainer extends DockerContainer
         $this->setFrom('tophfr/mailcatcher');
 
         // Ports.
-        $clientPort = $this->addEnvPort('MAILCATCHER_CLIENT', ['from' => '8880', 'to' => '80']);
+        $this->addEnvPort('MAILCATCHER_CLIENT', ['from' => '8880', 'to' => '80']);
         $this->addEnvPort('MAILCATCHER_SMTP', ['from' => '8825', 'to' => '25']);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
         // UI.
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
         $this->getService()->addUIAccess([
-            'port' => $clientPort['from'],
+            'port' => $port['from'],
             'label' => 'Web Client',
         ]);
     }

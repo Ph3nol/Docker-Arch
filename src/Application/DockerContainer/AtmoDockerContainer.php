@@ -48,10 +48,17 @@ class AtmoDockerContainer extends DockerContainer
             ->setCmd(['start']);
 
         // Ports.
-        $port = $this->addEnvPort('ATMO', ['from' => '9999', 'to' => '1337']);
+        $this->addEnvPort('ATMO', ['from' => '9999', 'to' => '1337']);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
         // UI.
-        $service->addUIAccess([
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
+        $this->getService()->addUIAccess([
             'url' => 'localhost',
             'port' => $port['from'],
             'label' => 'Base URL',
