@@ -5,3 +5,4 @@ bin/coke
 bin/php*
 bin/pdepend
 bin/robo
+dist/
