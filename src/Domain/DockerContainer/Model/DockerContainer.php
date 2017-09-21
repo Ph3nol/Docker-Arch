@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Domain\DockerContainer\Model;
 
+use Ph3\DockerArch\Domain\Service\Model\DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -24,7 +25,7 @@ class DockerContainer implements DockerContainerInterface
     /**
      * @var string
      */
-    private $packageManager = 'apt';
+    private $packageManager = DockerContainerInterface::PACKAGE_MANAGER_TYPE_APT;
 
     /**
      * `false` for instant.
@@ -45,12 +46,13 @@ class DockerContainer implements DockerContainerInterface
     public function __construct(ServiceInterface $service)
     {
         $this->service = $service;
+        $this->init();
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function init(): void
+    private function init(): void
     {
         $this
             ->setMaintainer('Docker Arch <https://github.com/Ph3nol/Docker-Arch>')
@@ -82,6 +84,28 @@ class DockerContainer implements DockerContainerInterface
 
         $this->initLocale();
         $this->initUser();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preExecute(): void
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(): void
+    {
+        $this->execute();
     }
 
     /**
@@ -177,6 +201,21 @@ class DockerContainer implements DockerContainerInterface
     public function getService(): ServiceInterface
     {
         return $this->service;
+    }
+
+    /**
+     * @param ServiceInterface $service
+     *
+     * @return DockerContainerInterface
+     */
+    public function getInstanceForService(ServiceInterface $service): DockerContainerInterface
+    {
+        $dockerContainerFqcn = str_replace('Service', 'DockerContainer', get_class($service));
+        if (false === class_exists($dockerContainerFqcn)) {
+            throw new DockerContainerNotFoundException($dockerContainerFqcn.' DockerContainer not found');
+        }
+
+        return new $dockerContainerFqcn($service);
     }
 
     /**

@@ -24,7 +24,7 @@ class NginxService extends AbstractService
      */
     public function allowedLinksExpression(): ?string
     {
-        return '(php|nodejs|atmo)';
+        return '(php|nodejs|atmo|cerebro|elasticsearchHead)';
     }
 
     /**

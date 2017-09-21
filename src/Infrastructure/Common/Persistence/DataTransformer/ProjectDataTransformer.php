@@ -52,16 +52,26 @@ class ProjectDataTransformer
 
         // Services.
         foreach ($data['services'] ?? [] as $serviceData) {
-            $service = (new ServiceDataTransformer())->toModel($serviceData, $project);
+            $service = (new ServiceDataTransformer())->toModel($project, $serviceData);
             $project->addService($service);
         }
         $project->updateServicesIdentifiers();
 
         // Services DockerContainers.
+        // Pre.
         foreach ($project->getServices() as $k => $service) {
-            $dockerContainer = (new DockerContainerDataTransformer())
-                ->toModel($service, $data['services'][$k]['container'] ?? []);
-            $service->setDockerContainer($dockerContainer);
+            $service->getDockerContainer()->preExecute();
+        }
+        // Execution.
+        foreach ($project->getServices() as $k => $service) {
+            $dockerContainer = $service->getDockerContainer();
+            $dockerContainer->execute();
+            (new DockerContainerDataTransformer())
+                ->updateModel($dockerContainer, $data['services'][$k]['container'] ?? []);
+        }
+        // Post.
+        foreach ($project->getServices() as $k => $service) {
+            $service->getDockerContainer()->postExecute();
         }
 
         return $project;

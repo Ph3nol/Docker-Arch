@@ -13,10 +13,8 @@ class MysqlDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function init(): void
+    public function execute(): void
     {
-        parent::init();
-
         $service = $this->getService();
         $project = $service->getProject();
 

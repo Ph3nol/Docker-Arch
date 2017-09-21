@@ -14,5 +14,15 @@ interface DockerContainerInterface
     /**
      * @return void
      */
-    public function init(): void;
+    public function preExecute(): void;
+
+    /**
+     * @return void
+     */
+    public function execute(): void;
+
+    /**
+     * @return void
+     */
+    public function postExecute(): void;
 }

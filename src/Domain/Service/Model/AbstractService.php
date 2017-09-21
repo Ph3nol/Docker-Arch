@@ -4,6 +4,7 @@ namespace Ph3\DockerArch\Domain\Service\Model;
 
 use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Domain\DockerContainer\Exception\NotFoundException as DockerContainerNotFoundException;
+use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
@@ -65,7 +66,10 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
-        $this->setIdentifier(uniqid());
+        $this->setIdentifierAsName();
+        $this->setDockerContainer(
+            DockerContainer::getInstanceForService($this)
+        );
     }
 
     /**
@@ -91,8 +95,7 @@ abstract class AbstractService implements ServiceInterface
     {
         preg_match('/(\w+)Service$/i', get_called_class(), $matches);
 
-
-        return lcfirst($matches[1]);
+        return (new Slugify())->slugify($matches[1], '-');
     }
 
     /**
@@ -252,6 +255,14 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @return void
+     */
+    public function setIdentifierAsName(): void
+    {
+        $this->setIdentifier($this->getName());
+    }
+
+    /**
      * @param string $key
      *
      * @return string
@@ -297,21 +308,13 @@ abstract class AbstractService implements ServiceInterface
      */
     public static function getInstanceForParentService(ServiceInterface $service): ServiceInterface
     {
-        $instance = new static(
-            $service->getProject()
-        );
-        $dockerContainerFqcn = str_replace('Service', 'DockerContainer', get_called_class());
-        if (false === class_exists($dockerContainerFqcn)) {
-            throw new DockerContainerNotFoundException($dockerContainerFqcn.' DockerContainer not found');
-        }
-        $dockerContainer = new $dockerContainerFqcn($instance);
+        $instance = new static($service->getProject());
 
-        $identifier = sprintf('%s-%s', $instance->getName(), $service->getIdentifier());
+        $identifier = sprintf('%s-for-%s', $instance->getName(), $service->getIdentifier());
         $identifier = (new Slugify())->slugify($identifier, '-');
 
         $instance
             ->setParentService($service)
-            ->setDockerContainer($dockerContainer)
             ->setIdentifier($identifier);
 
         return $instance;

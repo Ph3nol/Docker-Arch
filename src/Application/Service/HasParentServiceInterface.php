@@ -19,7 +19,7 @@ interface HasParentServiceInterface
     /**
      * @return ServiceInterface
      */
-    public function getParentService(): ServiceInterface;
+    public function getParentService(): ?ServiceInterface;
 
     /**
      * @return boolean

@@ -14,12 +14,12 @@ use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\S
 class ServiceDataTransformer
 {
     /**
-     * @param array            $data
      * @param ProjectInterface $project
+     * @param array            $data
      *
      * @return ServiceInterface
      */
-    public function toModel(array $data, ProjectInterface $project): ServiceInterface
+    public function toModel(ProjectInterface $project, array $data): ServiceInterface
     {
         if (false === ($data['type'] ?? false)) {
             throw new ServiceWithNoTypeException();

@@ -13,16 +13,13 @@ use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 class DockerContainerDataTransformer
 {
     /**
-     * @param ServiceInterface $data
+     * @param DockerContainerInterface $dockerContainer
+     * @param array                    $data
      *
      * @return DockerContainerInterface
      */
-    public function toModel(ServiceInterface $service, array $data): DockerContainerInterface
+    public function updateModel(DockerContainerInterface $dockerContainer, array $data): DockerContainerInterface
     {
-        $containerFqcn = $this->getDockerContainerFqcn($service->getName());
-        $dockerContainer = new $containerFqcn($service);
-        $dockerContainer->init();
-
         if ($data['entry_point'] ?? null) {
             $dockerContainer->setEntryPoint($data['entry_point']);
         }
@@ -55,25 +52,5 @@ class DockerContainerDataTransformer
         }
 
         return $dockerContainer;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return string
-     */
-    private function getDockerContainerFqcn(string $type): string
-    {
-        $fqcn = sprintf(
-            '\\Ph3\\DockerArch\\Application\\DockerContainer\\%sDockerContainer',
-            ucfirst($type)
-        );
-        if (false === class_exists($fqcn)) {
-            throw new DockerContainerNotFoundException(
-                'DockerContainer '.$fqcn.' does not exist'
-            );
-        }
-
-        return $fqcn;
     }
 }
