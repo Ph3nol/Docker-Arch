@@ -23,13 +23,6 @@ class CerebroDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function preExecute(): void
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(): void
     {
         $service = $this->getService();
@@ -67,10 +60,17 @@ class CerebroDockerContainer extends DockerContainer
             ->setEntryPoint(['/usr/share/cerebro/bin/cerebro']);
 
         // Ports.
-        $port = $this->addEnvPort('ELASTIC_SEARCH_CEREBRO', ['from' => '8021', 'to' => '9000']);
+        $this->addEnvPort('ELASTIC_SEARCH_CEREBRO', ['from' => '8021', 'to' => '9000']);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
         // UI.
-        $service->getParentService()->addUIAccess([
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
+        $this->getService()->getParentService()->addUIAccess([
             'url' => 'localhost',
             'port' => $port['from'],
             'label' => 'Cerebro',

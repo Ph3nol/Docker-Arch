@@ -29,13 +29,8 @@ class MocoDockerContainer extends DockerContainer
         $this->applyWebServiceConfiguration();
         $this->setMaintainer('Alexis NIVON <anivon@alexisnivon.fr>');
 
-        $mocoServerPort = $this->addEnvPort('MOCO_SERVER', ['from' => '8888', 'to' => self::MOCO_INTERNAL_PORT]);
-        $this->getService()->addUIAccess([
-            'port' => $mocoServerPort['from'],
-            'label' => 'Base URL',
-        ]);
-
         $this->setEntryPoint(['/usr/local/bin/moco']);
+        $this->addEnvPort('MOCO_SERVER', ['from' => '8888', 'to' => self::MOCO_INTERNAL_PORT]);
 
         $mockFilename = $this->getService()->getOptions()['mock_filename'];
         $this->setCmd([
@@ -44,6 +39,19 @@ class MocoDockerContainer extends DockerContainer
             self::MOCO_INTERNAL_PORT,
             '-c',
             sprintf('%s/%s', $this->getWorkingDir(), $mockFilename)
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postExecute(): void
+    {
+        // UI.
+        $port = reset($this->getService()->getDockerContainer()->getPorts());
+        $this->getService()->addUIAccess([
+            'port' => $port['from'],
+            'label' => 'Base URL',
         ]);
     }
 }
