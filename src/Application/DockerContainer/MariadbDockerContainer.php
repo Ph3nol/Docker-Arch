@@ -14,6 +14,8 @@ class MariadbDockerContainer extends MysqlDockerContainer
      */
     public function execute(): void
     {
+        parent::execute();
+
         $this->setFrom(sprintf('mariadb:%s', $this->getService()->getOptions()['version']));
 
         $this->getService()->getProject()
