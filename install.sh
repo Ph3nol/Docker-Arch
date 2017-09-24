@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITHUB_LAST_RELEASE_ENDPOINT="https://api.github.com/repos/Ph3nol/Docker-Arch/releases/tags/latest"
+GITHUB_LAST_RELEASE_ENDPOINT="https://api.github.com/repos/Ph3nol/Docker-Arch/releases/latest"
 DESTINATION_BIN_PATH="/usr/local/bin/docker-arch"
 
 echo "--- Docker-Arch - Installation script ---"
@@ -12,7 +12,7 @@ then
     echo "> Going to use WGET to download PHAR package."
     LATEST_RELEASE_CONDITION=$(wget -S --spider "$GITHUB_LAST_RELEASE_ENDPOINT"  2>&1 | grep 'HTTP/1.1 200 OK')
     if [[ $LATEST_RELEASE_CONDITION ]]; then
-        PHAR_DOWNLOAD_LINK=$(curl -s "$GITHUB_RELEASE_ENDPOINT" | grep browser_download_url | cut -d '"' -f 4)
+        PHAR_DOWNLOAD_LINK=$(curl -s "$GITHUB_LAST_RELEASE_ENDPOINT" | grep browser_download_url | cut -d '"' -f 4)
     else
         PHAR_DOWNLOAD_LINK="https://github.com/Ph3nol/Docker-Arch/raw/master/dist/docker-arch.phar"
     fi
@@ -23,7 +23,7 @@ then
     echo "> Going to use CURL to download PHAR package."
     LATEST_RELEASE_CONDITION=$(curl --write-out %{http_code} --silent --output /dev/null "$GITHUB_LAST_RELEASE_ENDPOINT")
     if [[ "$LATEST_RELEASE_CONDITION" == "200" ]]; then
-        PHAR_DOWNLOAD_LINK=$(curl -s "$GITHUB_RELEASE_ENDPOINT" | grep browser_download_url | cut -d '"' -f 4)
+        PHAR_DOWNLOAD_LINK=$(curl -s "$GITHUB_LAST_RELEASE_ENDPOINT" | grep browser_download_url | cut -d '"' -f 4)
     else
         PHAR_DOWNLOAD_LINK="https://github.com/Ph3nol/Docker-Arch/raw/master/dist/docker-arch.phar"
     fi
