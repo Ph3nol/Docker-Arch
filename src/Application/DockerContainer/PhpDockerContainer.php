@@ -127,9 +127,11 @@ class PhpDockerContainer extends DockerContainer
 
         // Composer part.
         if (true === $service->getOptions()['composer']) {
-            $this->addCommand(
-                'curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/bin'
-            );
+            $this
+                ->addCommand(
+                    'curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=/bin'
+                )
+                ->addCommand('composer global require hirak/prestissimo');
         }
     }
 }
