@@ -84,16 +84,16 @@ class PhpDockerContainer extends DockerContainer
             unset($extensions[array_search('mysql', $extensions)]);
             $extensions[] = 'pdo_mysql';
         }
-        if (true === in_array('xdebug', $service->getOptions()['extensions'])) {
+        if (true === in_array('xdebug', $extensions)) {
             unset($extensions[array_search('xdebug', $extensions)]);
             $this
-                ->addCommand('pecl install -o -f xdebug')
-                ->addCommand('rm -rf /tmp/pear')
-                ->addCommand(
-                    'echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" '
-                    .'> /usr/local/etc/php/conf.d/xdebug.ini'
-                )
-                ->addCommand('echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/xdebug.ini');
+                ->addCommand('pecl install xdebug')
+                ->addCommand('docker-php-ext-enable xdebug')
+                ->addCommand('echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini')
+                ->addCommand('echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini')
+                ->addCommand('echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini')
+                ->addCommand('echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini')
+                ->addCommand('echo "xdebug.remote_connect_back=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini');
         }
         if (true === in_array('redis', $extensions)) {
             unset($extensions[array_search('redis', $extensions)]);
