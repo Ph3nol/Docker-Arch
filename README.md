@@ -21,16 +21,8 @@ docker pull ph3nol/docker-arch
 
 ## Use Docker-Arch from local installation (PHP 7.1+ required)
 
-Using `curl`:
-
 ``` shell
-curl -sSL https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh | bash
-```
-
-Using `wget`:
-
-``` shell
-wget -qO - https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Ph3nol/Docker-Arch/master/install.sh | sh
 ```
 
 ## Docker-Arch environment generation
