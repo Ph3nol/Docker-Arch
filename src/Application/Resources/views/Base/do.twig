@@ -26,6 +26,11 @@ usage () {
 
 {% if dockerSyncRequired %}
 create_volumes () {
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    sed -i "" -e "s/sync_strategy: \"unison\"/sync_strategy: \"native\"/g" ./docker-sync.yml
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i "" -e "s/sync_strategy: \"unison\"/sync_strategy: \"native_osx\"/g" ./docker-sync.yml
+fi
 {% for service in project.services if service.isDockerSynched == true %}
     $DOCKER_COMMAND volume create --name={{ project.identifier }}-{{ service.identifier }}-sync
 {% endfor %}

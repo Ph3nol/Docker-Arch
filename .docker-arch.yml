@@ -7,6 +7,8 @@ services:
         packages:
             - make
             - libxslt-dev
+        commands:
+            - echo "alias docker-arch=\"/apps/php/bin/docker-arch generate\"" >> ~/.zshrc
     options:
         version: "7.1"
         cli_only: true
