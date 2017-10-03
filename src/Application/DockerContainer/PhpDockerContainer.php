@@ -118,16 +118,16 @@ class PhpDockerContainer extends DockerContainer
             $this->addCommand('docker-php-ext-install '.$extension);
         }
 
-        // Some configs.
         foreach ($service->getOptions()['config'] as $key => $value) {
+            $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
+
             if (true === $service->getOptions()['cli_only']) {
-                $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
-            } else {
-                $this->addCommand('echo "php_admin_value['.$key.'] = '.$value.'" >> /usr/local/etc/php-fpm.d/www.conf');
+                continue;
             }
+
+            $this->addCommand('echo "php_admin_value['.$key.'] = '.$value.'" >> /usr/local/etc/php-fpm.d/www.conf');
         }
 
-        // Composer part.
         if (true === $service->getOptions()['composer']) {
             $this
                 ->addCommand(
