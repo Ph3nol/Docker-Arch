@@ -4,7 +4,7 @@ envs:
 services:
     # PHP Container
   - type: php
-    path: ../app
+    path: ${PATH:-../app}
     options:
         version: "7.1"
         cli_only: true

@@ -46,7 +46,11 @@ class ProjectDataTransformer
         if ($data['logs_path'] ?? false) {
             $project->setLogsPath($data['logs_path']);
         }
-        foreach ($data['envs'] ?? [] as $key => $value) {
+
+        // Envs, from project `envs` part and config file parsing.
+        $envs = $data['envs'] ?? [];
+        $envs += $this->parseProjectEnvsFromData($data);
+        foreach ($envs as $key => $value) {
             $project->addEnv($key, $value);
         }
 
@@ -75,5 +79,27 @@ class ProjectDataTransformer
         }
 
         return $project;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function parseProjectEnvsFromData(array $data): array
+    {
+        $envs = [];
+        $parseData = function (string $value) use (&$envs): void {
+            preg_match('/\$\{(.*)\}/i', $value, $matches);
+            if (!$matches) {
+                return ;
+            }
+
+            [$envKey, $envValue] = explode(':-', $matches[1]);
+            $envs[trim($envKey)] = trim($envValue);
+        };
+        array_walk_recursive($data, $parseData);
+
+        return $envs;
     }
 }
