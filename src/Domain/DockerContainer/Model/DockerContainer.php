@@ -171,7 +171,7 @@ class DockerContainer implements DockerContainerInterface
      */
     public function addEnvFromProject(string $key): self
     {
-        $this->envs[$key] = '${' . key . '}';
+        $this->envs[$key] = '${' . $key . '}';
 
         return $this;
     }
