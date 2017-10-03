@@ -58,7 +58,7 @@ class NginxDockerContainer extends DockerContainer
         $project->addEnv('NGINX_LOGS_LOCATION', Architect::GLOBAL_ABSOLUTE_TMP_DIRECTORY.'/logs/nginx');
         $this
             ->addVolume([
-                'local' => '${'.$project->generateEnvKey('NGINX_LOGS_LOCATION').'}',
+                'local' => '${NGINX_LOGS_LOCATION}',
                 'remote' => '/var/log/nginx',
                 'type' => 'rw',
             ]);

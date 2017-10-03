@@ -171,7 +171,7 @@ class DockerContainer implements DockerContainerInterface
      */
     public function addEnvFromProject(string $key): self
     {
-        $this->envs[$key] = '${'.$this->getService()->getProject()->generateEnvKey($key).'}';
+        $this->envs[$key] = '${' . key . '}';
 
         return $this;
     }
@@ -189,7 +189,7 @@ class DockerContainer implements DockerContainerInterface
 
         $portKey = $service->generateEnvKey($envProperty.'_PORT');
         $project->addEnv($portKey, $port['from']);
-        $port['from'] = '${'.$project->generateEnvKey($portKey).'}';
+        $port['from'] = '${' . $portKey . '}';
         $this->addPort($port);
 
         return $port;

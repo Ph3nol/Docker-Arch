@@ -60,7 +60,7 @@ class ElasticsearchDockerContainer extends DockerContainer
         // Volumes.
         $this
             ->addVolume([
-                'local' => '${'.$project->generateEnvKey('ELASTIC_SEARCH_DATA_LOCATION').'}',
+                'local' => '${ELASTIC_SEARCH_DATA_LOCATION}',
                 'remote' => '/usr/share/elasticsearch/data',
                 'type' => 'rw',
             ]);

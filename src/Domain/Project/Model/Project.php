@@ -13,8 +13,6 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFilesPropertyTrait;
  */
 class Project implements ProjectInterface
 {
-    const DOCKER_ENV_CONFIGURATION_PREFIX = 'DOCKER_CONFIG_';
-
     use TemplatedFilesPropertyTrait;
     use DockerContainerEnvsTrait;
 
@@ -229,21 +227,11 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $key
-     *
-     * @return string
-     */
-    public function generateEnvKey(string $key): string
-    {
-        return self::DOCKER_ENV_CONFIGURATION_PREFIX.$key;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function addEnv(string $key, string $value): self
     {
-        $this->envs[$this->generateEnvKey($key)] = $value;
+        $this->envs[$key] = $value;
 
         return $this;
     }
