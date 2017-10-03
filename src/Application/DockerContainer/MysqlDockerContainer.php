@@ -39,7 +39,7 @@ class MysqlDockerContainer extends DockerContainer
         // Volumes.
         $this
             ->addVolume([
-                'local' => '${'.$project->generateEnvKey('MYSQL_DATA_LOCATION').'}',
+                'local' => '${MYSQL_DATA_LOCATION}',
                 'remote' => '/var/lib/mysql',
                 'type' => 'rw',
             ]);
