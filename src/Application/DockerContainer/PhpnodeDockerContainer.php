@@ -18,15 +18,7 @@ class PhpnodeDockerContainer extends PhpDockerContainer
     {
         parent::execute();
 
-        $this
-            ->addPackage('libffi-dev')
-            ->addPackage('ruby-dev')
-            ->addPackage('libc-dev')
-            ->addPackage('ruby')
-            ->addPackage('g++')
-            ->addPackage('make')
-            ->addPackage('nodejs');
-
+        $this->addPackages(['libffi-dev', 'ruby-dev', 'libc-dev', 'ruby', 'g++', 'make', 'nodejs']);
         $this->addCommand('gem install sass compass --no-ri --no-rdoc');
     }
 }

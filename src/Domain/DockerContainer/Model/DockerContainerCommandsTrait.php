@@ -41,16 +41,4 @@ trait DockerContainerCommandsTrait
     {
         return $this->addCommand(implode(" && \\\n    ", $commands));
     }
-
-    /**
-     * @param array $commands
-     *
-     * @return self
-     */
-    public function setCommands(array $commands): self
-    {
-        $this->commands = $commands;
-
-        return $this;
-    }
 }

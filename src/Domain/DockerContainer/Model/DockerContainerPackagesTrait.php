@@ -21,28 +21,29 @@ trait DockerContainerPackagesTrait
     }
 
     /**
-     * @param string $package
-     * @param bool   $condition
+     * @param array $names
      *
      * @return self
      */
-    public function addPackage(string $package, bool $condition = true): self
+    public function addPackages(array $names): self
     {
-        if (true === $condition) {
-            $this->packages[] = $package;
+        foreach ($names as $name) {
+            $this->addPackage($name);
         }
 
         return $this;
     }
 
     /**
-     * @param array $packages
+     * @param string $name
      *
      * @return self
      */
-    public function setPackages(array $packages): self
+    public function addPackage(string $name): self
     {
-        $this->packages = $packages;
+        if (false === in_array($name, $this->packages)) {
+            $this->packages[] = $name;
+        }
 
         return $this;
     }
