@@ -34,22 +34,22 @@ ENV {{ envKey }} {{ envValue }}
 COPY {{ copyEntry.local }} {{ copyEntry.remote }}
 {% endfor %}
 {# ----------------------------------------------------- Packages (RUN apt-get part) #}
-{% if dockerContainer.packages|length and
+{% if dockerContainer.getPackages()|length and
     dockerContainer.isPackageManager(
         constant('Ph3\\DockerArch\\Domain\\DockerContainer\\Model\\DockerContainerInterface::PACKAGE_MANAGER_TYPE_APT')
     ) %}
 
 # Packages installation.
 RUN set -xe && apt-get update
-RUN apt-get install -y --no-install-recommends {{ dockerContainer.packages|join(" \\\n    ") }}
+RUN apt-get install -y --no-install-recommends {{ dockerContainer.getPackages()|join(" \\\n    ") }}
 RUN apt-get autoclean -y && rm -rf /var/lib/apt/lists/*
 {% endif %}
-{% if dockerContainer.packages|length and
+{% if dockerContainer.getPackages()|length and
     dockerContainer.isPackageManager(
         constant('Ph3\\DockerArch\\Domain\\DockerContainer\\Model\\DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK')
     ) %}
 RUN set -xe && apk update
-RUN apk add --update {{ dockerContainer.packages|join(" \\\n    ") }}
+RUN apk add --update {{ dockerContainer.getPackages()|join(" \\\n    ") }}
 RUN rm -rf /var/cache/apk/*
 {% endif %}
 {# ----------------------------------------------------- Commands (RUN part) #}
