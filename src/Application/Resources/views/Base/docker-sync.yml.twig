@@ -2,20 +2,24 @@ version: "2"
 
 syncs:
 {% for service in project.dockerSynchedServices %}
+{% set isAlpine = service.dockerContainer.isPackageManager(
+    constant('Ph3\\DockerArch\\Domain\\DockerContainer\\Model\\DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK')
+) %}
     {{ project.identifier }}-{{ service.identifier }}-sync:
         src: "{{ service.path }}"
         sync_strategy: "unison"
-        sync_userid: "33"
+        sync_userid: "{{ isAlpine ? '82' : '33' }}"
         sync_excludes:
             - ".DS_Store"
             - ".phpintel"
             - ".idea"
-            - "docker"
             - "logs/*"
             - "cache/*"
+{% if service.options.app_type|default(null) == 'symfony' %}
             - "app/logs/*"
             - "app/cache/*"
             - "var/logs/*"
             - "var/cache/*"
+{% endif %}
 
 {% endfor %}
