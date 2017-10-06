@@ -28,14 +28,6 @@ class DockerContainer implements DockerContainerInterface
     private $packageManager = DockerContainerInterface::PACKAGE_MANAGER_TYPE_APT;
 
     /**
-     * `false` for instant.
-     * Depends on each instances/images User management.
-     *
-     * @var bool
-     */
-    private $userCreation = false;
-
-    /**
      * @var ServiceInterface
      */
     private $service;
