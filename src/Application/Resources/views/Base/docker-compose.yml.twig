@@ -61,9 +61,6 @@ services:
             - {{ port.from }}:{{ port.to }}
 {% endfor %}
 {% endif %}
-{% if service.dockerContainer.isUserCreationEnabled == true %}
-        user: {{ service.dockerContainer.user }}
-{% endif %}
 {% if service.dockerContainer.workingDir %}
         working_dir: {{ service.dockerContainer.workingDir }}
 {% endif %}

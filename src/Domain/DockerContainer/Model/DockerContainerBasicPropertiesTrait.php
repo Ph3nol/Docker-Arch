@@ -35,7 +35,7 @@ trait DockerContainerBasicPropertiesTrait
     /**
      * @var string
      */
-    protected $user;
+    protected $user = 'root';
 
     /**
      * @return string

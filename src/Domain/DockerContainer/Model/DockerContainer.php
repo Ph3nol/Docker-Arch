@@ -83,7 +83,6 @@ class DockerContainer implements DockerContainerInterface
         }
 
         $this->initLocale();
-        $this->initUser();
     }
 
     /**
@@ -114,24 +113,6 @@ class DockerContainer implements DockerContainerInterface
     public function getUserHomeDirectory(): string
     {
         return ('root' === $this->getUser()) ? '/root' : '/home/'.$this->getUser();
-    }
-
-    /**
-     * @return self
-     */
-    public function disableUserCreation(): self
-    {
-        $this->userCreation = false;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUserCreationEnabled(): bool
-    {
-        return $this->userCreation;
     }
 
     /**
@@ -254,14 +235,16 @@ class DockerContainer implements DockerContainerInterface
         if (true === $this->getService()->getOptions()['zsh']) {
             $this
                 ->addPackage('zsh')
-                ->addCommand('echo "source ~/.shell.config" >> ~/.zshrc');
+                ->addCommand('echo "source ~/.shell.config" >> '.$this->getAbsoluteUserPath('~/.zshrc'));
         } else {
-            $this->addCommand('echo "source ~/.shell.config" >> ~/.bashrc');
+            $this->addCommand('echo "source ~/.shell.config" >> '.$this->getAbsoluteUserPath('~/.bashrc'));
         }
         if (true === $this->getService()->getOptions()['zsh'] &&
             true === $this->getService()->getOptions()['custom_zsh']) {
-            $this
-                ->addCommand('curl https://cdn.rawgit.com/zsh-users/antigen/v1.4.1/bin/antigen.zsh > ~/.antigen.zsh');
+            $this->addCommand(
+                'curl https://cdn.rawgit.com/zsh-users/antigen/v1.4.1/bin/antigen.zsh > '.
+                    $this->getAbsoluteUserPath('~/.antigen.zsh')
+            );
         }
         $this->getService()->addTemplatedFile(new TemplatedFile(
             'dotfiles/.shell.config',
@@ -307,47 +290,6 @@ class DockerContainer implements DockerContainerInterface
                 ->addCommand(sprintf('/usr/sbin/update-locale LANG=%s.UTF-8', $locale))
                 // Envs.
                 ->addEnv('LC_ALL', sprintf('%s.UTF-8', $locale));
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private function initUser(): void
-    {
-        /**
-         * Set as `root` for instant.
-         * Will be generated from self::initUser() lately.
-         */
-        $this->setUser('root');
-
-        return ;
-
-        // User actions.
-        $user = $this->getService()->getProject()->getUser();
-        if (null === $user) {
-            $user = 'docker-arch';
-        }
-
-        $this->setUser($user);
-
-        if (false === $this->isUserCreationEnabled()) {
-            return ;
-        }
-
-        if ('root' === $user) {
-            return ;
-        }
-
-        if (false === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {
-            $this
-                ->addPackage('adduser')
-                ->addCommand(sprintf('groupadd %s || true', $user))
-                ->addCommand(sprintf('useradd --create-home -g %s %s || true', $user, $user));
-        } else {
-            $this
-                ->addCommand(sprintf('addgroup -S %s || true', $user))
-                ->addCommand(sprintf('adduser -D -H -S -G %s %s || true', $user, $user));
         }
     }
 }
