@@ -52,7 +52,7 @@ export PROMPT="🐳  {{ service.identifier }} @ {{ service.project.identifier }}
 
 eval `ssh-agent -s` &> /dev/null
 if [ -d ~/.ssh ]; then
-    ssh-add $(find ~/.ssh -maxdepth 1 -type f -printf '%p\n' | grep id_) &> /dev/null
+    ssh-add $(find ~/.ssh -maxdepth 1 -type f -printf '%p\n' | grep id_ | grep -v .pub) &> /dev/null
 fi
 
 ### --- Aliases
