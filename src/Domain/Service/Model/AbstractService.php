@@ -3,6 +3,7 @@
 namespace Ph3\DockerArch\Domain\Service\Model;
 
 use Cocur\Slugify\Slugify;
+use Ph3\DockerArch\Application\Service\CustomService;
 use Ph3\DockerArch\Domain\DockerContainer\Exception\NotFoundException as DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
@@ -106,6 +107,14 @@ abstract class AbstractService implements ServiceInterface
     public function isSame(ServiceInterface $service): bool
     {
         return ($service->getIdentifier() === $this->getIdentifier());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCustom(): bool
+    {
+        return $this instanceof CustomService;
     }
 
     /**
