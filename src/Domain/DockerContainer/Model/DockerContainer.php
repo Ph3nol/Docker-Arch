@@ -52,7 +52,9 @@ class DockerContainer implements DockerContainerInterface
             ->addEnv('DEBIAN_FRONTEND', 'noninteractive')
             ->addNetwork(self::DOCKER_MAIN_NETWORK);
 
-        $this->addPackage('vim');
+        $this
+            ->addPackage('openssh-client')
+            ->addPackage('vim');
 
         if (true === $this->getService()->isWebService()) {
             $this
@@ -61,8 +63,7 @@ class DockerContainer implements DockerContainerInterface
                 ->addPackage('git')
                 ->addPackage('less')
                 ->addPackage('wget')
-                ->addPackage('curl')
-                ->addPackage('openssh-client');
+                ->addPackage('curl');
         }
 
         if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK)) {

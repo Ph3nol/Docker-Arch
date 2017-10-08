@@ -5,7 +5,7 @@ set -e
 chown -R www-data:www-data {{ service.dockerContainer.workingDir }}
 {% endif %}
 
-{% if service.options.cli_only == true %}
+{% if service.isCliOnly == true %}
 docker-php-entrypoint php -a
 {% else %}
 docker-php-entrypoint php-fpm

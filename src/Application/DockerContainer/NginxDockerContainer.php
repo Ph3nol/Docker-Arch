@@ -78,7 +78,7 @@ class NginxDockerContainer extends DockerContainer
     /**
      * {@inheritdoc}
      */
-    public function postEecute(): void
+    public function postExecute(): void
     {
         // UI.
         $port = reset($this->getService()->getDockerContainer()->getPorts());

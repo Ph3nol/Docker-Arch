@@ -31,7 +31,7 @@ class ServiceCollection extends \ArrayObject
     {
         $cliServices = [];
         foreach ($this as $service) {
-            if (true === (bool) preg_match('/(php|nodejs)/i', $service->getName())) {
+            if (true === (bool) preg_match('/(php|nodejs|capistrano)/i', $service->getName())) {
                 $cliServices[] = $service;
             }
         }

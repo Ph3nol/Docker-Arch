@@ -31,7 +31,7 @@ antigen apply
     ) %}
 ### --- Alpine tricks.
 
-unalias grep
+unalias grep 2>/dev/null
 {% endif %}
 
 ### --- Envs.
@@ -45,12 +45,16 @@ POWERLEVEL9K_CUSTOM_DOCKER_CONTAINER_BACKGROUND=""
 POWERLEVEL9K_CUSTOM_DOCKER_CONTAINER_FOREGROUND="black"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_docker_container context dir rbenv vcs)
 {% else %}
-export PROMPT="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... "$PROMPT
+if [ -z "$PS1" ]; then
+    export PS1="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... "$PS1
+else
+    export PROMPT="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... "$PROMPT
+fi
 {% endif %}
 
 ### --- SSH
 
-eval `ssh-agent -s` &> /dev/null
+eval `ssh-agent -s` 2>/dev/null
 if [ -d ~/.ssh ]; then
     ssh-add $(find ~/.ssh -maxdepth 1 -type f -printf '%p\n' | grep id_) &> /dev/null
 fi
