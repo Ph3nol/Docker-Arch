@@ -1,0 +1,12 @@
+name: Docker Arch - Custom Image Project
+services:
+    # SFTP Container (connect from `sftp -P 2222 docker-arch@localhost`, password: unicorn)
+  - type: custom
+    options:
+        image: "atmoz/sftp:alpine"
+        package_manager: apk
+    container:
+        cmd:
+            - "docker-arch:unicorn:1001"
+        ports:
+            - "2222:22"

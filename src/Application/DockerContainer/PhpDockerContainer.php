@@ -121,7 +121,7 @@ class PhpDockerContainer extends DockerContainer
         foreach ($service->getOptions()['config'] as $key => $value) {
             $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
 
-            if (true === $service->getOptions()['cli_only']) {
+            if (true === $service->isCliOnly()) {
                 continue;
             }
 

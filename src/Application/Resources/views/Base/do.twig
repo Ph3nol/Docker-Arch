@@ -43,7 +43,8 @@ create_volumes
 $DOCKER_SYNC_COMMAND start
 {% endif %}
 $DOCKER_COMPOSE_COMMAND up --build -d
-ui
+read -p "---> Launch {{ constant('\\Ph3\\DockerArch\\Application\\Architect::PROJECT_NAME') }} UI? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then ui; fi
 terminate
 }
 

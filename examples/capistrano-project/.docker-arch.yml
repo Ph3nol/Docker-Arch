@@ -1,0 +1,31 @@
+name: Docker Arch - Capistrano Project
+services:
+    # Nginx Container
+  - type: nginx
+    path: ../app
+    host: localhost
+    # Capistrano
+  - type: capistrano
+    options:
+        version: "3.9.1"
+        zsh: true
+        # dotfiles: true # Use this instead of this example volumes to fake SSH key access
+    container:
+        volumes:
+            - "../docker:/root/.ssh:ro"
+        working_dir: /apps/nginx
+    # Custom SSH image (deploy server destination)
+  - type: custom
+    options:
+        image: ncc0706/alpine-sshd
+        package_manager: apk
+    container:
+        volumes:
+            - "../docker/authorized_keys:/root/.ssh/authorized_keys:ro"
+        packages:
+            - git
+        commands:
+            - "mkdir ~/.ssh"
+            - "echo 'Host *' >> ~/.ssh/config"
+            - "echo '    ForwardAgent yes' >> ~/.ssh/config"
+        working_dir: /var/www/docker-arch
