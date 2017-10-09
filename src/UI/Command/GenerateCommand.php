@@ -78,16 +78,23 @@ class GenerateCommand extends Command
      */
     private function getAvailableServicesFqcns(): array
     {
-        $fqcns = [];
-        foreach (glob(__DIR__.'/../../Application/Service/*.php') as $file) {
-            $serviceFqcn = '\\Ph3\\DockerArch\\Application\\Service\\' . pathinfo($file, PATHINFO_FILENAME);
-            $serviceRefClass = new \ReflectionClass($serviceFqcn);
-            $name = $serviceRefClass->getConstant('NAME');
-            if ($serviceRefClass->implementsInterface(ServiceInterface::class) && false !== $name) {
-                $fqcns[$name] = $serviceFqcn;
-            }
-        }
-
-        return $fqcns;
+        return [
+            'atmo' => '\\Ph3\\DockerArch\\Application\\Service\\AtmoService',
+            'capistrano' => '\\Ph3\\DockerArch\\Application\\Service\\CapistranoService',
+            'cerebro' => '\\Ph3\\DockerArch\\Application\\Service\\CerebroService',
+            'custom' => '\\Ph3\\DockerArch\\Application\\Service\\CustomService',
+            'elasticsearchHead' => '\\Ph3\\DockerArch\\Application\\Service\\ElasticsearchHeadService',
+            'elasticsearch' => '\\Ph3\\DockerArch\\Application\\Service\\ElasticsearchService',
+            'mailCatcher' => '\\Ph3\\DockerArch\\Application\\Service\\MailCatcherService',
+            'mariadb' => '\\Ph3\\DockerArch\\Application\\Service\\MariaDBService',
+            'moco' => '\\Ph3\\DockerArch\\Application\\Service\\MocoService',
+            'mysql' => '\\Ph3\\DockerArch\\Application\\Service\\MySQLService',
+            'nginx' => '\\Ph3\\DockerArch\\Application\\Service\\NginxService',
+            'nodejs' => '\\Ph3\\DockerArch\\Application\\Service\\NodeJSService',
+            'phpNode' => '\\Ph3\\DockerArch\\Application\\Service\\PHPNodeService',
+            'php' => '\\Ph3\\DockerArch\\Application\\Service\\PHPService',
+            'rabbitmq' => '\\Ph3\\DockerArch\\Application\\Service\\RabbitMQService',
+            'redis' => '\\Ph3\\DockerArch\\Application\\Service\\RedisService',
+        ];
     }
 }
