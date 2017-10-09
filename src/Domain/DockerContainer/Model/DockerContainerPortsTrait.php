@@ -33,6 +33,22 @@ trait DockerContainerPortsTrait
     }
 
     /**
+     * @param string $port
+     *
+     * @return self
+     */
+    public function addPortFromString(string $port): self
+    {
+        $port = explode(':', $port);
+        $this->addPort([
+            'from' => $port[0],
+            'to' => $port[1],
+        ]);
+
+        return $this;
+    }
+
+    /**
      * @param array $ports
      *
      * @return self

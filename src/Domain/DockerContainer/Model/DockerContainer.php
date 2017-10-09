@@ -46,17 +46,18 @@ class DockerContainer implements DockerContainerInterface
      */
     private function init(): void
     {
+        $service = $this->getService();
+
         $this
             ->setMaintainer('Docker Arch <https://github.com/Ph3nol/Docker-Arch>')
             ->addEnv('DOCKER_CONTAINER_NAME', $this->getService()->getIdentifier())
-            ->addEnv('DEBIAN_FRONTEND', 'noninteractive')
-            ->addNetwork(self::DOCKER_MAIN_NETWORK);
+            ->addEnv('DEBIAN_FRONTEND', 'noninteractive');
 
         $this
             ->addPackage('openssh-client')
             ->addPackage('vim');
 
-        if ($this->getService()->isWeb()) {
+        if ($service->isWeb()) {
             $this
                 ->addEnv('TERM', 'xterm-256color')
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true')
@@ -73,6 +74,11 @@ class DockerContainer implements DockerContainerInterface
                 ->addPackage('ca-certificates')
                 ->addPackage('openssl')
                 ->addCommand('update-ca-certificates');
+        }
+
+        $this->addNetwork(self::DOCKER_MAIN_NETWORK);
+        if (null !== $service->getHost() && 'localhost' !== $service->getHost()) {
+            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
         }
 
         $this->initLocale();

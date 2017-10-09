@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Application\DockerContainer;
 
+use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
@@ -63,14 +64,6 @@ class NginxDockerContainer extends DockerContainer
                 'type' => 'rw',
             ]);
 
-        // Networks.
-        $this->addNetwork(
-            self::DOCKER_MAIN_NETWORK,
-            array_filter(array_keys($this->vhostsServicesByHost), function (string $host): bool {
-                return ('localhost' !== $host);
-            })
-        );
-
         // Ports.
         $this->addEnvPort('NGINX', ['from' => '8080', 'to' => '80']);
     }
@@ -113,15 +106,17 @@ class NginxDockerContainer extends DockerContainer
         $vhostIndex = 0;
         foreach ($this->vhostsServicesByHost as $service) {
             $appType = $service->getOptions()['app_type'] ?? null;
+            preg_match('/(\w+)Service$/i', get_class($service), $matches);
+            $vhostFileName = (new Slugify())->slugify($matches[1], '-');
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
-                $service->getIdentifier(),
+                $vhostFileName,
                 $appType ? '-'.$appType : null
             );
             $filePath = sprintf(
                 'conf.d/%s-%s%s.vhost.conf',
                 str_pad($vhostIndex + 10, 3, '0', STR_PAD_LEFT),
-                $service->getIdentifier(),
+                $vhostFileName,
                 $appType ? '-'.$appType : null
             );
 

@@ -29,11 +29,8 @@ class DockerContainerDataTransformer
         if ($data['working_dir'] ?? null) {
             $dockerContainer->setWorkingDir($data['working_dir']);
         }
-        foreach ($data['ports'] ?? [] as $from => $to) {
-            $dockerContainer->addPort([
-                'from' => $from,
-                'to' => $to,
-            ]);
+        foreach ($data['ports'] ?? [] as $port) {
+            $dockerContainer->addPortFromString($port);
         }
         foreach ($data['envs'] ?? [] as $key => $value) {
             $dockerContainer->addEnv($key, $value);
