@@ -2,7 +2,7 @@
 
 namespace Ph3\DockerArch\Domain\DockerContainer\Model;
 
-use Ph3\DockerArch\Domain\Service\Model\DockerContainerNotFoundException;
+use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
@@ -103,7 +103,6 @@ class DockerContainer implements DockerContainerInterface
      */
     public function execute(): void
     {
-        $this->execute();
     }
 
     /**

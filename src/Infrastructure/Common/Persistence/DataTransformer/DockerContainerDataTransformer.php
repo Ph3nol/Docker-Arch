@@ -4,7 +4,7 @@ namespace Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer;
 
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
-use Ph3\DockerArch\Domain\Service\Model\DockerContainerNotFoundException;
+use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 
 /**
