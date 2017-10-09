@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class PhpService extends AbstractService
+class PHPService extends AbstractService implements CliInterface, WebInterface, VhostInterface
 {
     /**
      * {@inheritdoc}
@@ -20,7 +20,7 @@ class PhpService extends AbstractService
         $resolver->setDefaults([
             'app_type' => null,
             'dotfiles' => false,
-            'cli_only' => false,
+            'cli' => false,
             'zsh' => true,
             'custom_zsh' => false,
             'powerline' => false,
@@ -32,7 +32,7 @@ class PhpService extends AbstractService
         $resolver->setAllowedTypes('version', 'string');
         $resolver->setAllowedValues('version', ['5.6', '7.0', '7.1', '7.2']);
         $resolver->setNormalizer('version', function (Options $options, $value) {
-            $dockerVersionSuffix = (false === $options['cli_only']) ? '-fpm' : '';
+            $dockerVersionSuffix = (false === $options['cli']) ? '-fpm' : '';
 
             return $value.$dockerVersionSuffix;
         });
@@ -43,7 +43,7 @@ class PhpService extends AbstractService
                 'log_errors' => 'on',
             ];
 
-            if (false === $options['cli_only']) {
+            if (false === $options['cli']) {
                 $defaultValue['error_log'] = '/var/log/fpm-php.www.log';
             }
 
@@ -56,24 +56,15 @@ class PhpService extends AbstractService
     /**
      * {@inheritdoc}
      */
-    public function allowedLinksExpression(): ?string
+    public function allowedLinksFqcns(): array
     {
-        return '(mysql|mariadb|redis|rabbitmq|elasticsearch|moco)';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isWebService(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isVhostService(): bool
-    {
-        return true;
+        return [
+            MySQLService::class,
+            MariaDBService::class,
+            RedisService::class,
+            RabbitMQService::class,
+            ElasticsearchService::class,
+            MocoService::class,
+        ];
     }
 }

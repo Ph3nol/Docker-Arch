@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class MailcatcherService extends AbstractService
+class MailCatcherService extends AbstractService
 {
     /**
      * {@inheritdoc}

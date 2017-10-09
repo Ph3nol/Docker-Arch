@@ -104,7 +104,7 @@ class NginxDockerContainer extends DockerContainer
 
         $this->vhostsServicesByHost = [];
         foreach ($dockerContainerService->getProject()->getVhostServices() as $service) {
-            if (false === $service->isCliOnly() && null !== $service->getHost()) {
+            if (null !== $service->getHost()) {
                 $this->vhostsServicesByHost[$service->getHost()] = $service;
             }
         }
@@ -115,7 +115,7 @@ class NginxDockerContainer extends DockerContainer
             $appType = $service->getOptions()['app_type'] ?? null;
             $templatePath = sprintf(
                 'Service/Nginx/vhosts/%s%s.conf.twig',
-                $service->getName(),
+                $service->getIdentifier(),
                 $appType ? '-'.$appType : null
             );
             $filePath = sprintf(

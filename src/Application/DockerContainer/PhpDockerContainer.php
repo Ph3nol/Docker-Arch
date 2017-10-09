@@ -9,7 +9,7 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class PhpDockerContainer extends DockerContainer
+class PHPDockerContainer extends DockerContainer
 {
     /**
      * {@inheritdoc}
@@ -121,7 +121,7 @@ class PhpDockerContainer extends DockerContainer
         foreach ($service->getOptions()['config'] as $key => $value) {
             $this->addCommand('echo "'.$key.' = '.$value.'" >> /usr/local/etc/php/conf.d/php.ini');
 
-            if (true === $service->isCliOnly()) {
+            if (true === $service->getOptions()['cli']) {
                 continue;
             }
 

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class NodejsService extends AbstractService
+class NodeJSService extends AbstractService implements CliInterface, WebInterface, VhostInterface
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,6 @@ class NodejsService extends AbstractService
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'cli_only' => false,
             'dotfiles' => false,
             'zsh' => true,
             'custom_zsh' => false,
@@ -38,32 +37,12 @@ class NodejsService extends AbstractService
     /**
      * {@inheritdoc}
      */
-    public function allowedLinksExpression(): ?string
+    public function allowedLinksFqcns(): array
     {
-        return '(mysql|mariadb|redis)';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isWebService(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isVhostService(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCliOnly(): bool
-    {
-        return true;
+        return [
+            MySQLService::class,
+            MariaDBService::class,
+            RedisService::class,
+        ];
     }
 }

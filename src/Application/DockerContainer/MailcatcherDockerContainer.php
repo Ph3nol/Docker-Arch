@@ -8,7 +8,7 @@ use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class MailcatcherDockerContainer extends DockerContainer
+class MailCatcherDockerContainer extends DockerContainer
 {
     /**
      * {@inheritdoc}

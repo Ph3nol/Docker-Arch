@@ -36,6 +36,9 @@ class ServiceDataTransformer
         if ($data['host'] ?? null) {
             $service->setHost($data['host']);
         }
+        if ($data['identifier'] ?? null) {
+            $service->setIdentifier($data['identifier']);
+        }
 
         return $service;
     }

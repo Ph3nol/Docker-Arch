@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class MariadbService extends MysqlService
+class MariaDBService extends MySQLService
 {
     /**
      * {@inheritdoc}

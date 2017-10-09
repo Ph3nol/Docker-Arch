@@ -67,7 +67,10 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
-        $this->setIdentifierAsName();
+
+        preg_match('/(\w+)Service$/i', get_called_class(), $matches);
+        $this->identifier = (new Slugify())->slugify($matches[1], '-');
+
         $this->setDockerContainer(
             DockerContainer::getInstanceForService($this)
         );
@@ -87,16 +90,6 @@ abstract class AbstractService implements ServiceInterface
     public function getProject(): ProjectInterface
     {
         return $this->project;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
-    {
-        preg_match('/(\w+)Service$/i', get_called_class(), $matches);
-
-        return (new Slugify())->slugify($matches[1], '-');
     }
 
     /**
@@ -220,35 +213,35 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @return string|false
+     * @return array
      */
-    public function allowedLinksExpression()
+    public function allowedLinksFqcns(): array
     {
-        return false;
+        return [];
     }
 
     /**
      * @return boolean
      */
-    public function isWebService(): bool
+    public function isVhost(): bool
     {
-        return false;
+        return $this instanceof VhostInterface;
     }
 
     /**
      * @return boolean
      */
-    public function isVhostService(): bool
+    public function isWeb(): bool
     {
-        return false;
+        return $this instanceof WebInterface;
     }
 
     /**
      * @return boolean
      */
-    public function isCliOnly(): bool
+    public function isCli(): bool
     {
-        return $this->getOptions()['cli_only'] ?? false;
+        return $this instanceof CliInterface;
     }
 
     /**
@@ -261,14 +254,6 @@ abstract class AbstractService implements ServiceInterface
         $this->identifier = $identifier;
 
         return $this;
-    }
-
-    /**
-     * @return void
-     */
-    public function setIdentifierAsName(): void
-    {
-        $this->setIdentifier($this->getName());
     }
 
     /**
@@ -319,7 +304,7 @@ abstract class AbstractService implements ServiceInterface
     {
         $instance = new static($service->getProject());
 
-        $identifier = sprintf('%s-for-%s', $instance->getName(), $service->getIdentifier());
+        $identifier = sprintf('%s-for-%s', $instance->getIdentifier(), $service->getIdentifier());
         $identifier = (new Slugify())->slugify($identifier, '-');
 
         $instance

@@ -9,6 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Alexis NIVON <anivon@alexisnivon.fr>
  */
-class PhpnodeService extends PhpService
+class PHPNodeService extends PHPService
 {
 }
