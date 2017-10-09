@@ -3,7 +3,10 @@
 namespace Ph3\DockerArch\Domain\Service\Model;
 
 use Cocur\Slugify\Slugify;
+use Ph3\DockerArch\Application\Service\CliInterface;
 use Ph3\DockerArch\Application\Service\CustomService;
+use Ph3\DockerArch\Application\Service\VhostInterface;
+use Ph3\DockerArch\Application\Service\WebInterface;
 use Ph3\DockerArch\Domain\DockerContainer\Exception\NotFoundException as DockerContainerNotFoundException;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;

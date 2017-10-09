@@ -27,10 +27,10 @@ class NginxService extends AbstractService implements WebInterface, VhostInterfa
         return [
             PHPService::class,
             PHPNodeService::class,
-            NodeJS::class,
-            Atmo::class,
-            Cebebro::class,
-            ElasticsearchHead::class,
+            NodeJSService::class,
+            AtmoService::class,
+            CerebroService::class,
+            ElasticsearchHeadService::class,
         ];
     }
 }
