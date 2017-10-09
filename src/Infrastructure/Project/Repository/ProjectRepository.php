@@ -2,6 +2,7 @@
 
 namespace Ph3\DockerArch\Infrastructure\Project\Repository;
 
+use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Domain\Project\Model\ProjectInterface;
 use Ph3\DockerArch\Infrastructure\Common\AbstractRepository;
 use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\DockerContainerDataTransformer;
