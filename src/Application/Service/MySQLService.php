@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MySQLService extends AbstractService
 {
+    const NAME = 'mysql';
+
     /**
      * {@inheritdoc}
      */

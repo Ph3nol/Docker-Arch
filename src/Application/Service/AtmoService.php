@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AtmoService extends AbstractService implements VhostInterface
 {
+    const NAME = 'atmo';
+
     /**
      * {@inheritdoc}
      */

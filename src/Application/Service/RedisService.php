@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RedisService extends AbstractService
 {
+    const NAME = 'redis';
+
     /**
      * {@inheritdoc}
      */

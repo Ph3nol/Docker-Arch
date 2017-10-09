@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class NodeJSService extends AbstractService implements CliInterface, WebInterface, VhostInterface
 {
+    const NAME = 'nodejs';
+
     /**
      * {@inheritdoc}
      */

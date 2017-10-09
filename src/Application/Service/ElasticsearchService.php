@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ElasticsearchService extends AbstractService
 {
+    const NAME = 'elasticsearch';
+
     /**
      * {@inheritdoc}
      */

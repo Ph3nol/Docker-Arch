@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PHPService extends AbstractService implements CliInterface, WebInterface, VhostInterface
 {
+    const NAME = 'php';
+
     /**
      * {@inheritdoc}
      */

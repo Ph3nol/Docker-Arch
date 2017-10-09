@@ -7,6 +7,8 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Application\TemplatedFileGenerator;
+use Ph3\DockerArch\Domain\Service\Model\ServiceCollection;
+use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +44,7 @@ class GenerateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $servicesFqcns = $this->getAvailableServicesFqcns();
         $templatedFileGenerator = new TemplatedFileGenerator();
 
         $logger = new Logger('Docker-Arch.command.generate');
@@ -57,7 +60,7 @@ class GenerateCommand extends Command
 
         $output->writeln("Docker-Arch - Environment generator\n");
 
-        $architect = new Architect($templatedFileGenerator, $logger);
+        $architect = new Architect($servicesFqcns, $templatedFileGenerator, $logger);
         $architect->generate($input->getArgument('path') ? : getcwd());
 
         $output->writeln("\n<info>Your Docker environment has been successfully generated!</info>\n");
@@ -68,5 +71,23 @@ class GenerateCommand extends Command
             "Let's use <comment>%s/do</comment> script for doing amazing things! :)",
             substr(Architect::PROJECT_CONFIG_DIRECTORY, 1)
         ));
+    }
+
+    /**
+     * @return array
+     */
+    private function getAvailableServicesFqcns(): array
+    {
+        $fqcns = [];
+        foreach (glob(__DIR__.'/../../Application/Service/*.php') as $file) {
+            $serviceFqcn = '\\Ph3\\DockerArch\\Application\\Service\\' . pathinfo($file, PATHINFO_FILENAME);
+            $serviceRefClass = new \ReflectionClass($serviceFqcn);
+            $name = $serviceRefClass->getConstant('NAME');
+            if ($serviceRefClass->implementsInterface(ServiceInterface::class) && false !== $name) {
+                $fqcns[$name] = $serviceFqcn;
+            }
+        }
+
+        return $fqcns;
     }
 }

@@ -14,6 +14,8 @@ class CerebroService extends AbstractService implements HasParentServiceInterfac
 {
     use ParentServiceTrait;
 
+    const NAME = 'cerebro';
+
     /**
      * {@inheritdoc}
      */

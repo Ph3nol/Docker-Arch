@@ -13,6 +13,19 @@ use Ph3\DockerArch\Infrastructure\Common\Persistence\DataTransformer\Exception\S
 class ServiceDataTransformer
 {
     /**
+     * @var array
+     */
+    private $servicesFqcns;
+
+    /**
+     * @param array $servicesFqcns
+     */
+    public function __construct(array $servicesFqcns)
+    {
+        $this->servicesFqcns = $servicesFqcns;
+    }
+
+    /**
      * @param ProjectInterface $project
      * @param array            $data
      *
@@ -43,22 +56,18 @@ class ServiceDataTransformer
     }
 
     /**
-     * @param string $type
+     * @param string $name
      *
      * @return string
      */
-    private function getServiceFqcn(string $type): string
+    private function getServiceFqcn(string $name): string
     {
-        $fqcn = sprintf(
-            '\\Ph3\\DockerArch\\Application\\Service\\%sService',
-            ucfirst($type)
-        );
-        if (false === class_exists($fqcn)) {
+        if (false === array_key_exists($name, $this->servicesFqcns)) {
             throw new ServiceNotFoundException(
-                'Service '.$fqcn.' does not exist'
+                'Service '.$name.' does not exist'
             );
         }
 
-        return $fqcn;
+        return $this->servicesFqcns[$name];
     }
 }

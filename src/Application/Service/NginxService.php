@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class NginxService extends AbstractService implements WebInterface, VhostInterface
 {
+    const NAME = 'nginx';
+
     /**
      * {@inheritdoc}
      */

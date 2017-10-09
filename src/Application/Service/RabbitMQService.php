@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RabbitMQService extends AbstractService
 {
+    const NAME = 'rabbitmq';
+
     /**
      * {@inheritdoc}
      */

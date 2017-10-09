@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CustomService extends AbstractService
 {
+    const NAME = 'custom';
+
     /**
      * {@inheritdoc}
      */

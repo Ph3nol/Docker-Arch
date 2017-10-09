@@ -11,4 +11,5 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PHPNodeService extends PHPService
 {
+    const NAME = 'phpNode';
 }

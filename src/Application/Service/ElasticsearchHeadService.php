@@ -14,6 +14,8 @@ class ElasticsearchHeadService extends AbstractService implements HasParentServi
 {
     use ParentServiceTrait;
 
+    const NAME = 'elasticsearchHead';
+
     /**
      * {@inheritdoc}
      */

@@ -5,7 +5,7 @@ services:
     path: ../app
     host: localhost
     # PHP Node Container
-  - type: phpnode
+  - type: phpNode
     path: ../app
     host: localhost
     options:

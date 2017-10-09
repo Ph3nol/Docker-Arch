@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MailCatcherService extends AbstractService
 {
+    const NAME = 'mailCatcher';
+
     /**
      * {@inheritdoc}
      */

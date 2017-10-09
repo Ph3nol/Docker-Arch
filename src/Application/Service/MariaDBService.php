@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class MariaDBService extends MySQLService
 {
+    const NAME = 'mariadb';
+
     /**
      * {@inheritdoc}
      */

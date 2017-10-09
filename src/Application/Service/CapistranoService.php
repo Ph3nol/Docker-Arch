@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CapistranoService extends AbstractService implements CliInterface
 {
+    const NAME = 'capistrano';
+
     /**
      * {@inheritdoc}
      */

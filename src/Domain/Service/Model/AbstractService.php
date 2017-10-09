@@ -70,10 +70,7 @@ abstract class AbstractService implements ServiceInterface
     {
         $this->project = $project;
         $this->options = $this->getOptionsResolver()->resolve($options);
-
-        preg_match('/(\w+)Service$/i', get_called_class(), $matches);
-        $this->identifier = (new Slugify())->slugify($matches[1], '-');
-
+        $this->identifier = (new Slugify())->slugify($this->getName(), '-');
         $this->setDockerContainer(
             DockerContainer::getInstanceForService($this)
         );
@@ -137,6 +134,14 @@ abstract class AbstractService implements ServiceInterface
     public function getIdentifier(): string
     {
         return $this->identifier;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return static::NAME;
     }
 
     /**

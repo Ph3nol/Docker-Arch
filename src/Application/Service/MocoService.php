@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MocoService extends AbstractService
 {
+    const NAME = 'moco';
+
     /**
      * {@inheritdoc}
      */

@@ -26,6 +26,11 @@ class Architect implements ArchitectInterface
     const GLOBAL_ABSOLUTE_TMP_DIRECTORY = '/tmp/.docker-arch';
 
     /**
+     * @var array
+     */
+    protected $servicesFqcns;
+
+    /**
      * @var TemplatedFileGeneratorInterface
      */
     protected $templatedFileGenerator;
@@ -71,15 +76,20 @@ class Architect implements ArchitectInterface
     private $generatedUIPath;
 
     /**
+     * @param array                           $servicesFqcns
      * @param TemplatedFileGeneratorInterface $templatedFileGenerator
      * @param LoggerInterface                 $logger
      */
-    public function __construct(TemplatedFileGeneratorInterface $templatedFileGenerator, LoggerInterface $logger = null)
-    {
+    public function __construct(
+        array $servicesFqcns,
+        TemplatedFileGeneratorInterface $templatedFileGenerator,
+        LoggerInterface $logger = null
+    ) {
         define('PROJECT_ROOT_DIR', __DIR__.'/../..');
         define('PROJECT_APP_DIR', PROJECT_ROOT_DIR.'/app');
         define('PROJECT_SRC_DIR', PROJECT_ROOT_DIR.'/src');
 
+        $this->servicesFqcns = $servicesFqcns;
         $this->templatedFileGenerator = $templatedFileGenerator;
         $this->logger = $logger ?: new NullLogger();
         $this->fs = new Filesystem();
@@ -178,7 +188,8 @@ class Architect implements ArchitectInterface
             $this->persister = Persister::init($this->projectPath);
         }
 
-        $this->project = (new ProjectRepository($this->persister))->getProject();
+        $repository = new ProjectRepository($this->persister, $this->servicesFqcns);
+        $this->project = $repository->getProject();
         $this->project->setPath($this->projectPath);
     }
 
