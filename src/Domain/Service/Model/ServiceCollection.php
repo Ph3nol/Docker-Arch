@@ -31,7 +31,7 @@ class ServiceCollection extends \ArrayObject
     {
         $cliServices = [];
         foreach ($this as $service) {
-            if (true === (bool) preg_match('/(php|nodejs|capistrano)/i', $service->getName())) {
+            if ($service->isCli()) {
                 $cliServices[] = $service;
             }
         }
@@ -46,7 +46,7 @@ class ServiceCollection extends \ArrayObject
     {
         $webServices = [];
         foreach ($this as $service) {
-            if (true === $service->isWebService()) {
+            if ($service->isWeb()) {
                 $webServices[] = $service;
             }
         }
@@ -61,7 +61,7 @@ class ServiceCollection extends \ArrayObject
     {
         $vhostServices = [];
         foreach ($this as $service) {
-            if (true === $service->isVhostService()) {
+            if (true === $service->isVhost()) {
                 $vhostServices[] = $service;
             }
         }
@@ -87,15 +87,15 @@ class ServiceCollection extends \ArrayObject
     }
 
     /**
-     * @param string $name
+     * @param string $identifier
      *
      * @return ServiceInterface[]
      */
-    public function getServicesForName(string $name): ServiceCollection
+    public function getServicesForIdentifier(string $identifier): ServiceCollection
     {
         $services = [];
         foreach ($this as $service) {
-            if ($service->getName() === $name) {
+            if ($service->getIdentifier() === $identifier) {
                 $services[] = $service;
             }
         }
@@ -110,15 +110,15 @@ class ServiceCollection extends \ArrayObject
     {
         $servicesCount = [];
         foreach ($this as $service) {
-            $servicesCount[$service->getName()] += 1;
-            if (1 < count($this->getServicesForName($service->getName()))) {
+            $servicesCount[$service->getIdentifier()] += 1;
+            if (1 < count($this->getServicesForIdentifier($service->getIdentifier()))) {
                 $serviceIdentifier = sprintf(
                     '%s-%s',
-                    $service->getName(),
-                    $service->getHost() ? : $servicesCount[$service->getName()]
+                    $service->getIdentifier(),
+                    $service->getHost() ? : $servicesCount[$service->getIdentifier()]
                 );
             } else {
-                $serviceIdentifier = $service->getName();
+                $serviceIdentifier = $service->getIdentifier();
             }
 
             $service->setIdentifier((new Slugify())->slugify($serviceIdentifier));

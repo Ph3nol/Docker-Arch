@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class CapistranoService extends AbstractService
+class CapistranoService extends AbstractService implements CliInterface
 {
     /**
      * {@inheritdoc}
@@ -25,13 +25,5 @@ class CapistranoService extends AbstractService
         ]);
 
         return $resolver;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCliOnly(): bool
-    {
-        return true;
     }
 }

@@ -61,7 +61,7 @@ fi
 
 ### --- Aliases
 
-{% if service.isWebService %}
+{% if service.isWeb %}
 alias cho="chown -R www-data:www-data . && echo '> CHOWN applied for www-data'"
 {% if service.options.composer|default(false) == true %}
 alias composer="php -d memory_limit=-1 /bin/composer"

@@ -122,23 +122,23 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param string $name
+     * @param string $identifier
      *
      * @return ServiceInterface[]
      */
-    public function getServicesForName(string $name): ServiceCollection
+    public function getServicesForIdentifier(string $identifier): ServiceCollection
     {
-        return $this->getServices()->getServicesForName($name);
+        return $this->getServices()->getServicesForIdentifier($identifier);
     }
 
     /**
-     * @param string $name
+     * @param string $identifier
      *
      * @return bool
      */
-    public function hasServiceForName(string $name): bool
+    public function hasServiceForIdentifier(string $identifier): bool
     {
-        return (0 < count($this->getServicesForName($name)));
+        return (0 < count($this->getServicesForIdentifier($identifier)));
     }
 
     /**
@@ -148,7 +148,7 @@ class Project implements ProjectInterface
      */
     public function getLinksForService(ServiceInterface $forService): array
     {
-        if (false === $forService->allowedLinksExpression()) {
+        if (!$forService->allowedLinksFqcns()) {
             return [];
         }
 
@@ -158,7 +158,7 @@ class Project implements ProjectInterface
                 continue;
             }
 
-            if (false === (bool) preg_match('/'.$forService->allowedLinksExpression().'/i', $service->getName())) {
+            if (false === in_array(get_class($service), $forService->allowedLinksFqcns())) {
                 continue;
             }
 

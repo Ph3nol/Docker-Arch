@@ -7,7 +7,7 @@ use Ph3\DockerArch\Application\Architect;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class MariadbDockerContainer extends MysqlDockerContainer
+class MariaDBDockerContainer extends MySQLDockerContainer
 {
     /**
      * {@inheritdoc}

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class NginxService extends AbstractService
+class NginxService extends AbstractService implements WebInterface, VhostInterface
 {
     /**
      * {@inheritdoc}
@@ -22,24 +22,15 @@ class NginxService extends AbstractService
     /**
      * {@inheritdoc}
      */
-    public function allowedLinksExpression(): ?string
+    public function allowedLinksFqcns(): array
     {
-        return '(php|nodejs|atmo|cerebro|elasticsearchHead)';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isWebService(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isVhostService(): bool
-    {
-        return true;
+        return [
+            PHPService::class,
+            PHPNodeService::class,
+            NodeJS::class,
+            Atmo::class,
+            Cebebro::class,
+            ElasticsearchHead::class,
+        ];
     }
 }

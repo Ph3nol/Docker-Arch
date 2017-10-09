@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class AtmoService extends AbstractService
+class AtmoService extends AbstractService implements VhostInterface
 {
     /**
      * {@inheritdoc}
@@ -21,13 +21,5 @@ class AtmoService extends AbstractService
         $resolver->setAllowedTypes('mock_file_path', 'string');
 
         return $resolver;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isVhostService(): bool
-    {
-        return true;
     }
 }

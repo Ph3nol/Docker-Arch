@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class RabbitmqService extends AbstractService
+class RabbitMQService extends AbstractService
 {
     /**
      * {@inheritdoc}

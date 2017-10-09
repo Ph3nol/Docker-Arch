@@ -56,7 +56,7 @@ class DockerContainer implements DockerContainerInterface
             ->addPackage('openssh-client')
             ->addPackage('vim');
 
-        if (true === $this->getService()->isWebService()) {
+        if ($this->getService()->isWeb()) {
             $this
                 ->addEnv('TERM', 'xterm-256color')
                 ->addEnv('GIT_DISCOVERY_ACROSS_FILESYSTEM', 'true')

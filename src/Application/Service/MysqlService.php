@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Cédric Dugat <cedric@dugat.me>
  */
-class MysqlService extends AbstractService
+class MySQLService extends AbstractService
 {
     /**
      * {@inheritdoc}

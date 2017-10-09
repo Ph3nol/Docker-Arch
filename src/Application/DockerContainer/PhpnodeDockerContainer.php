@@ -9,7 +9,7 @@ use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 /**
  * @author Alexis NIVON <anivon@alexisnivon.fr>
  */
-class PhpnodeDockerContainer extends PhpDockerContainer
+class PHPNodeDockerContainer extends PHPDockerContainer
 {
     /**
      * {@inheritdoc}
