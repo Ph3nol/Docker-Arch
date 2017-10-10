@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ab2b0bf4d0c06bcd55774fbe4621579",
+    "content-hash": "fd50bf70a1a4e254001abeec9e61d310",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -663,137 +663,6 @@
     ],
     "packages-dev": [
         {
-            "name": "atoum/atoum",
-            "version": "3.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atoum/atoum.git",
-                "reference": "6af6b609a108fd2e63f2f42efbb4f0b799e6c710"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/6af6b609a108fd2e63f2f42efbb4f0b799e6c710",
-                "reference": "6af6b609a108fd2e63f2f42efbb4f0b799e6c710",
-                "shasum": ""
-            },
-            "require": {
-                "ext-hash": "*",
-                "ext-json": "*",
-                "ext-session": "*",
-                "ext-tokenizer": "*",
-                "ext-xml": "*",
-                "php": "^5.6.0 || ^7.0.0"
-            },
-            "replace": {
-                "mageekguy/atoum": "*"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "~1.12"
-            },
-            "suggest": {
-                "atoum/stubs": "Provides IDE support (like autocompletion) for atoum",
-                "ext-mbstring": "Provides support for UTF-8 strings",
-                "ext-xdebug": "Provides code coverage report (>= 2.3)"
-            },
-            "bin": [
-                "bin/atoum"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "classes/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Frédéric Hardy",
-                    "email": "frederic.hardy@atoum.org",
-                    "homepage": "http://blog.mageekbox.net"
-                },
-                {
-                    "name": "François Dussert",
-                    "email": "francois.dussert@atoum.org"
-                },
-                {
-                    "name": "Gérald Croes",
-                    "email": "gerald.croes@atoum.org"
-                },
-                {
-                    "name": "Julien Bianchi",
-                    "email": "julien.bianchi@atoum.org"
-                },
-                {
-                    "name": "Ludovic Fleury",
-                    "email": "ludovic.fleury@atoum.org"
-                }
-            ],
-            "description": "Simple modern and intuitive unit testing framework for PHP 5.3+",
-            "homepage": "http://www.atoum.org",
-            "keywords": [
-                "TDD",
-                "atoum",
-                "test",
-                "unit testing"
-            ],
-            "time": "2017-07-19T19:59:03+00:00"
-        },
-        {
-            "name": "atoum/stubs",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atoum/stubs.git",
-                "reference": "45babf1aa5042a99c68fe8a17e1229d7c21407cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atoum/stubs/zipball/45babf1aa5042a99c68fe8a17e1229d7c21407cb",
-                "reference": "45babf1aa5042a99c68fe8a17e1229d7c21407cb",
-                "shasum": ""
-            },
-            "suggest": {
-                "atoum/atoum": "Include atoum in your projet dependencies"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Julien Bianchi",
-                    "email": "julien.bianchi@atoum.org"
-                },
-                {
-                    "name": "Ludovic Fleury",
-                    "email": "ludovic.fleury@atoum.org"
-                }
-            ],
-            "description": "Stubs for atoum, the simple modern and intuitive unit testing framework for PHP 5.3+",
-            "homepage": "http://www.atoum.org",
-            "keywords": [
-                "TDD",
-                "atoum",
-                "test",
-                "unit testing"
-            ],
-            "time": "2016-01-07T19:57:29+00:00"
-        },
-        {
             "name": "consolidation/annotated-command",
             "version": "2.5.1",
             "source": {
@@ -1343,47 +1212,6 @@
                 "service"
             ],
             "time": "2017-05-10T09:20:27+00:00"
-        },
-        {
-            "name": "m6web/symfony2-coding-standard",
-            "version": "v3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/M6Web/Symfony2-coding-standard.git",
-                "reference": "b668786eb88e77934e0ca73fbef5ef61d6d6509d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/M6Web/Symfony2-coding-standard/zipball/b668786eb88e77934e0ca73fbef5ef61d6d6509d",
-                "reference": "b668786eb88e77934e0ca73fbef5ef61d6d6509d",
-                "shasum": ""
-            },
-            "require": {
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "suggest": {
-                "m6web/coke": "PHP CodeSniffer configurator"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mikael Randy",
-                    "role": "maintainer"
-                }
-            ],
-            "description": "Symfony2 PHP CodeSniffer Coding Standard",
-            "keywords": [
-                "Symfony2",
-                "codesniffer",
-                "m6web",
-                "phpcs",
-                "standard"
-            ],
-            "time": "2016-03-11T16:39:58+00:00"
         },
         {
             "name": "nikic/php-parser",
