@@ -9,4 +9,4 @@ before_script:
     - php composer.phar install --prefer-dist --no-interaction
 
 script:
-    - make qa test
+    - make qa
