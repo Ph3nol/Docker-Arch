@@ -70,7 +70,7 @@ class ProjectRepository extends AbstractRepository implements ProjectRepositoryI
             $dockerContainer = $service->getDockerContainer();
             $dockerContainer->execute();
             (new DockerContainerDataTransformer())
-                ->updateModel($dockerContainer, $data['services'][$k]['container'] ?? []);
+                ->updateModel($dockerContainer, $projectData['services'][$k]['container'] ?? []);
         }
         // Post.
         foreach ($project->getServices() as $k => $service) {
