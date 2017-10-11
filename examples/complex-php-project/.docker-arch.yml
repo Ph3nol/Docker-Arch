@@ -5,7 +5,7 @@ services:
     # PHP Container
   - type: php
     identifier: cli-instance-example
-    path: ${PATH:-../app}
+    path: ${APP_PATH:-../app}
     options:
         version: "7.1"
         cli: true
