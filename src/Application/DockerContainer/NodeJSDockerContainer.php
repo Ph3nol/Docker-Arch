@@ -35,6 +35,11 @@ class NodeJSDockerContainer extends DockerContainer
             $this->applyDotfiles();
         }
 
+        // NPM packages.
+        if ($npmPackages = $service->getOptions()['npm_packages'] ?? []) {
+            $this->addCommand('npm install -g '.implode(' ', $npmPackages));
+        }
+
         // Ports.
         $this->addEnvPort('NODEJS', ['from' => '8090', 'to' => '9000']);
     }

@@ -10,5 +10,7 @@ services:
     host: localhost
     options:
         version: "8"
+        npm_packages:
+            - gulp
     container:
         entry_point: ["npm start"]

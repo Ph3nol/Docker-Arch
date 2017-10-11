@@ -24,10 +24,7 @@ class NodeJSService extends AbstractService implements CliInterface, WebInterfac
             'zsh' => true,
             'custom_zsh' => false,
             'powerline' => false,
-            'bower' => true,
-            'gulp' => true,
             'npm_packages' => [],
-            'supervisor' => false,
         ]);
         $resolver->setRequired(['version']);
         $resolver->setAllowedTypes('version', 'string');
