@@ -6,6 +6,7 @@ use Cocur\Slugify\Slugify;
 use Ph3\DockerArch\Application\Architect;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainer;
 use Ph3\DockerArch\Domain\DockerContainer\Model\DockerContainerInterface;
+use Ph3\DockerArch\Domain\Service\Model\ServiceInterface;
 use Ph3\DockerArch\Domain\TemplatedFile\Model\TemplatedFile;
 
 /**
@@ -73,18 +74,33 @@ class NginxDockerContainer extends DockerContainer
      */
     public function postExecute(): void
     {
+        $service = $this->getService();
+
         // UI.
-        $port = reset($this->getService()->getDockerContainer()->getPorts());
+        $port = reset($service->getDockerContainer()->getPorts());
         foreach ($this->vhostsServicesByHost as $vhostService) {
             if (null === $vhostService->getHost()) {
                 continue;
             }
 
-            $this->getService()->addUIAccess([
+            $service->addUIAccess([
                 'host' => $vhostService->getHost(),
                 'port' => $port['from'],
                 'label' => 'Web Access ('.$vhostService->getHost().')',
             ]);
+        }
+
+        // Main Network Aliases.
+        $isServiceNetworkAliasable = function (ServiceInterface $service) {
+            return (null !== $service->getHost() && 'localhost' !== $service->getHost());
+        };
+        if (true === $isServiceNetworkAliasable($service)) {
+            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
+        }
+        foreach ($this->vhostsServicesByHost as $vhostService) {
+            if ($isServiceNetworkAliasable($vhostService)) {
+                $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $vhostService->getHost());
+            }
         }
     }
 
