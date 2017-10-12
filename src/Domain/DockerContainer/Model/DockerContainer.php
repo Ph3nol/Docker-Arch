@@ -84,6 +84,10 @@ class DockerContainer implements DockerContainerInterface
      */
     public function preExecute(): void
     {
+        $service = $this->getService();
+        if (null !== $service->getHost() && 'localhost' !== $service->getHost()) {
+            $this->addNetwork(self::DOCKER_MAIN_NETWORK);
+        }
     }
 
     /**
