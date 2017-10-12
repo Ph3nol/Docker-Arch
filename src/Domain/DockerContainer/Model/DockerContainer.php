@@ -76,11 +76,6 @@ class DockerContainer implements DockerContainerInterface
                 ->addCommand('update-ca-certificates');
         }
 
-        $this->addNetwork(self::DOCKER_MAIN_NETWORK);
-        if (null !== $service->getHost() && 'localhost' !== $service->getHost()) {
-            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
-        }
-
         $this->initLocale();
     }
 
@@ -89,6 +84,10 @@ class DockerContainer implements DockerContainerInterface
      */
     public function preExecute(): void
     {
+        $service= $this->getService();
+        if (null !== $service->getHost() && 'localhost' !== $service->getHost()) {
+            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
+        }
     }
 
     /**
