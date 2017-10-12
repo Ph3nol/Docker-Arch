@@ -31,8 +31,6 @@ class CapistranoDockerContainer extends DockerContainer
         $this->applyShellConfiguration();
         $this->setWorkingDir('/apps');
 
-        $this
-            ->addCommand('gem install capistrano --version='.$service->getOptions()['version'])
-            ->addCommand('gem install capistrano-scm-local');
+        $this->addCommand('gem install capistrano --version='.$service->getOptions()['version']);
     }
 }
