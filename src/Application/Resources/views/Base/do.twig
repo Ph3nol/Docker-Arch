@@ -67,9 +67,10 @@ DOCKER_CLI_CONTAINERS_IDENTIFIERS=({% for service in project.cliServices %}"{{ s
 DOCKER_CLI_CONTAINERS_SHELLS=({% for service in project.cliServices %}"{{ service.options.zsh|default(false) ? 'zsh': 'bash' }}"{% if not loop.last %} {% endif %}{% endfor %})
 INDEX=1
 echo "Choose the container instance to access its bash/zsh shell:"
+UP_CONTAINERS=$($DOCKER_COMPOSE_COMMAND ps | sed 1,2d | grep Up)
 for DOCKER_CONTAINER_IDENTIFIER in "${DOCKER_CLI_CONTAINERS_IDENTIFIERS[@]}"
 do
-    CONTAINER_STATUS=$($DOCKER_COMPOSE_COMMAND ps | sed 1,2d | grep Up | grep $DOCKER_CONTAINER_IDENTIFIER | cut -d ' ' -f1)
+    CONTAINER_STATUS=$(echo "$UP_CONTAINERS" | grep $DOCKER_CONTAINER_IDENTIFIER | cut -d ' ' -f1)
     CONTAINER_STATUS_DISPLAY=$(if [ "$CONTAINER_STATUS" == "" ]; then echo "NOT AVAILABLE"; else echo "AVAILABLE"; fi)
     SHELL_TYPE=${DOCKER_CLI_CONTAINERS_SHELLS[$INDEX - 1]}
     echo "    > $INDEX - $DOCKER_CONTAINER_IDENTIFIER [$SHELL_TYPE] [$CONTAINER_STATUS_DISPLAY]"
