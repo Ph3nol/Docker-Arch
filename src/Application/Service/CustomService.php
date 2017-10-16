@@ -26,7 +26,36 @@ class CustomService extends AbstractService
             DockerContainerInterface::PACKAGE_MANAGER_TYPE_APTITUTDE,
             DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK,
         ]);
+        $resolver->setDefaults([
+            'cli' => false,
+            'vhost' => false,
+            'web' => false,
+        ]);
 
         return $resolver;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVhost(): bool
+    {
+        return true === $this->getOptions()['vhost'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isWeb(): bool
+    {
+        return true === $this->getOptions()['web'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCli(): bool
+    {
+        return true === $this->getOptions()['cli'];
     }
 }
