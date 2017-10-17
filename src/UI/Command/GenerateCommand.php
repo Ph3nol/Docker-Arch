@@ -95,6 +95,7 @@ class GenerateCommand extends Command
             'php' => '\\Ph3\\DockerArch\\Application\\Service\\PHPService',
             'rabbitmq' => '\\Ph3\\DockerArch\\Application\\Service\\RabbitMQService',
             'redis' => '\\Ph3\\DockerArch\\Application\\Service\\RedisService',
+            'jekyll' => '\\Ph3\\DockerArch\\Application\\Service\\JekyllService',
         ];
     }
 }
