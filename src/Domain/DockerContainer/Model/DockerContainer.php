@@ -194,6 +194,17 @@ class DockerContainer implements DockerContainerInterface
     }
 
     /**
+     * @return string
+     */
+    public function getMainPath(): string
+    {
+        return sprintf(
+            '/apps/%s',
+            $this->getService()->getHost() ? : $this->getService()->getIdentifier()
+        );
+    }
+
+    /**
      * @param string $relativePath
      *
      * @return string
@@ -256,10 +267,7 @@ class DockerContainer implements DockerContainerInterface
     protected function applyWebServiceConfiguration(): void
     {
         if (null === $this->getWorkingDir()) {
-            $this->setWorkingDir(sprintf(
-                '/apps/%s',
-                $this->getService()->getHost() ? : $this->getService()->getIdentifier()
-            ));
+            $this->setWorkingDir($this->getMainPath());
         }
     }
 

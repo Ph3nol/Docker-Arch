@@ -92,7 +92,7 @@ class NginxDockerContainer extends DockerContainer
 
         // Main Network Aliases.
         $isServiceNetworkAliasable = function (ServiceInterface $service) {
-            return (null !== $service->getHost() && 'localhost' !== $service->getHost());
+            return null !== $service->getHost();
         };
         if (true === $isServiceNetworkAliasable($service)) {
             $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
