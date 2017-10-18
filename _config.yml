@@ -1,0 +1,16 @@
+# Site settings
+title: Docker-Arch
+description: Generate Web/CLI projects Dockerized development environments, from 1 simple YAML file.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "" # the base hostname & protocol for your site
+
+twitter_username: Ph3nol
+linkedin_username: cedricdugat
+github_username: Ph3nol
+
+project_name: Docker-Arch
+project_github_username: Ph3nol
+project_github_identifier: Docker-Arch
+
+# Build settings
+markdown: kramdown

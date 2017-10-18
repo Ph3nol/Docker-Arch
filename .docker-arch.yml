@@ -1,0 +1,6 @@
+name: Docker Arch Landing Page
+services:
+    # Jekyll site
+  - type: jekyll
+    path: ../
+    host: localhost

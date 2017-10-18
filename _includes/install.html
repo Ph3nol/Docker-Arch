@@ -1,0 +1,32 @@
+<section id="install">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Installation</h2>
+                <hr class="primary">
+                <h5>
+                    1-line, from
+                    <a href="https://hub.docker.com/r/ph3nol/docker-arch/" title="Docker image">Docker image</a>
+                </h5>
+                <p class="text-faded">
+                    <pre>docker run -it -v $(PWD):/destination ph3nol/docker-arch:latest generate /destination</pre>
+                </p>
+                <h5>1-line, from PHP (7.1+) development environnement</h5>
+                <p class="text-faded">
+                    <pre>curl -sSL https://raw.githubusercontent.com/{{ site.project_github_username }}/{{ site.project_github_identifier }}/master/install.sh | sh</pre>
+                </p>
+                <hr class="primary">
+                <p class="text-faded">
+                    <a href="https://github.com/{{ site.project_github_username }}/{{ site.project_github_identifier }}/blob/master/README.md" class="btn btn-primary btn-xl">
+                        <i class="fa fa-book"></i>
+                        Installation/Usage README file
+                    </a>
+                    <a href="https://github.com/{{ site.project_github_username }}/{{ site.project_github_identifier }}/blob/master/examples" class="btn btn-primary btn-xl">
+                        <i class="fa fa-cubes"></i>
+                        Concrete examples
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
