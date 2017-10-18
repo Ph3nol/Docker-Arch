@@ -1,0 +1,12 @@
+{% set mainPath = service.dockerContainer.mainPath %}
+#!/bin/sh
+set -e
+
+chown jekyll:jekyll {{ mainPath }}
+
+if [ ! -f "{{ mainPath }}/_config.yml" ]; then
+    echo "--> No Jekyll project - Let's creating it..."
+    jekyll new .
+fi
+
+jekyll serve

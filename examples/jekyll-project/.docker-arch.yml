@@ -1,0 +1,6 @@
+name: Docker Arch - Jekyll Project
+services:
+    # Jekyll App
+  - type: jekyll
+    path: ../app
+    host: localhost
