@@ -46,7 +46,7 @@ POWERLEVEL9K_CUSTOM_DOCKER_CONTAINER_FOREGROUND="black"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_docker_container context dir rbenv vcs)
 {% else %}
 if [ -z "$PS1" ]; then
-    export PS1="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... "$PS1
+    export PS1="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... @\h ➜ \W $ "
 else
     export PROMPT="🐳  {{ service.identifier }} @ {{ service.project.identifier }} ... "$PROMPT
 fi
