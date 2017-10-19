@@ -9,5 +9,26 @@
 <script src="js/jquery.fittext.js"></script>
 <script src="js/wow.min.js"></script>
 
+<!-- Github Snippets -->
+<script src="js/polyfill.min.js"></script>
+<script src="js/github-embed.min.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="js/creative.js"></script>
+
+<script>
+    $(function() {
+        githubEmbed('#simple-example-snippet', {
+            "owner": "{{ site.project_github_username }}",
+            "repo": "{{ site.project_github_identifier }}",
+            "ref": "master",
+            "embed": [
+                {
+                    "path": "examples/php-mysql-project/.docker-arch.yml",
+                    "type": "yaml",
+                    "active": true
+                }
+            ]
+        });
+    });
+</script>

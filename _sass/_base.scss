@@ -67,6 +67,10 @@ aside {
     padding: 0;
 }
 
+strong {
+    font-weight: 600;
+}
+
 // Navigation
 
 .navbar-default {
@@ -353,3 +357,16 @@ body {
     -webkit-tap-highlight-color: $theme-dark;
 }
 
+.github-embed-main {
+    border: none;
+    .github-embed-nav {
+        display: none;
+    }
+    .github-embed-frames {
+        position: relative;
+        padding: 0 0 2.5rem 0;
+    }
+    .github-embed-footer {
+        font-size: .8em;
+    }
+}
