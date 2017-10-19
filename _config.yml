@@ -1,5 +1,5 @@
 # Site settings
-title: Docker-Arch
+title: Docker-Arch — Dockerized development environments generator
 description: Generate Web/CLI projects Dockerized development environments, from 1 simple YAML file.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "" # the base hostname & protocol for your site
