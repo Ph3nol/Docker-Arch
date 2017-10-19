@@ -165,8 +165,8 @@ header {
         width: 100%;
         .header-content-inner {
             h1 {
-                font-weight: 700;
-                text-transform: uppercase;
+                font-weight: 600;
+                text-transform: capitalize;
                 margin-top: 0;
                 margin-bottom: 0;
             }
@@ -178,6 +178,10 @@ header {
                 color: rgba(white, .7);
                 font-size: 16px;
                 margin-bottom: 50px;
+                &.headline {
+                    font-size: 1.6em;
+                    font-weight: 400;
+                }
             }
         }
     }
