@@ -312,9 +312,17 @@ class Project implements ProjectInterface
      */
     private function getDockerSynchedServiceVolume(ServiceInterface $service): ?array
     {
+        if (null === $service->getPath()) {
+            return null;
+        }
+
+        if (null === $remotePath = $service->getRemotePath()) {
+            $remotePath = '/apps/'.($service->getHost() ? : $service->getIdentifier());
+        }
+
         return [
             'local' => sprintf('%s-%s-sync', $this->getIdentifier(), $service->getIdentifier()),
-            'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
+            'remote' => $remotePath,
             'type' => 'nocopy',
         ];
     }
@@ -330,9 +338,13 @@ class Project implements ProjectInterface
             return null;
         }
 
+        if (null === $remotePath = $service->getRemotePath()) {
+            $remotePath = '/apps/'.($service->getHost() ? : $service->getIdentifier());
+        }
+
         return [
             'local' => $path,
-            'remote' => '/apps/'.($service->getHost() ? : $service->getIdentifier()),
+            'remote' => $remotePath,
             'type' => 'cached',
         ];
     }

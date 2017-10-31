@@ -42,6 +42,9 @@ class ServiceDataTransformer
         if ($data['path'] ?? null) {
             $service->setPath($data['path']);
         }
+        if ($data['remote_path'] ?? null) {
+            $service->setRemotePath($data['remote_path']);
+        }
         if ($data['docker_sync'] ?? null) {
             $service->withDockerSync();
         }

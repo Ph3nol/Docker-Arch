@@ -53,6 +53,11 @@ abstract class AbstractService implements ServiceInterface
     private $path;
 
     /**
+     * @var string
+     */
+    private $remotePath;
+
+    /**
      * @var array
      */
     private $options = [];
@@ -178,6 +183,26 @@ abstract class AbstractService implements ServiceInterface
     public function getPath(): ?string
     {
         return $this->path;
+    }
+
+    /**
+     * @param string $remotePath
+     *
+     * @return ServiceInterface
+     */
+    public function setRemotePath(string $remotePath): ServiceInterface
+    {
+        $this->remotePath = $remotePath;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemotePath(): ?string
+    {
+        return $this->remotePath;
     }
 
     /**
