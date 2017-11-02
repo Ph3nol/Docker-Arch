@@ -23,7 +23,7 @@ class CustomService extends AbstractService
         $resolver->setRequired(['image', 'package_manager']);
         $resolver->setAllowedValues('package_manager', [
             DockerContainerInterface::PACKAGE_MANAGER_TYPE_APT,
-            DockerContainerInterface::PACKAGE_MANAGER_TYPE_APTITUTDE,
+            DockerContainerInterface::PACKAGE_MANAGER_TYPE_APTITUDE,
             DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK,
         ]);
         $resolver->setDefaults([
