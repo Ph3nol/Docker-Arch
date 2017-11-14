@@ -5,4 +5,6 @@ bin/coke
 bin/php*
 bin/pdepend
 bin/robo
-dist/
+!/dist
+/dist/*
+!/dist/.gitkeep
