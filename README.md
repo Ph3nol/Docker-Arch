@@ -50,6 +50,8 @@ Finally, use `.docker-arch/do` script, from the project, for somes actions:
 
 To use the Docker image so fast, you can use these aliases/functions:
 
+#### Unixy
+
 ``` bash
 function docker-arch {
     case "$1" in
@@ -60,6 +62,16 @@ function docker-arch {
             docker run -it -v $DESTINATION_PATH:/destination ph3nol/docker-arch:latest generate /destination
             ;;
     esac
+}
+```
+
+#### Windows
+
+```ps
+// ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
+
+function docker-arch ([String] $Destination = $PWD) {
+  docker run --rm -it -v "${Destination}:/destination" ph3nol/docker-arch:latest generate /destination
 }
 ```
 
