@@ -23,7 +23,7 @@ class ElasticsearchService extends AbstractService
             'version' => '5.6',
             'with_management' => true,
         ]);
-        $resolver->setAllowedValues('version', ['6.0', '5.6', '5.5', '5.4', '5.3', '5.2', '5.1', '5.0']);
+        $resolver->setAllowedValues('version', ['6.0', '5.6', '5.5', '5.4', '5.3', '5.2', '5.1', '5.0', '2.3']);
 
         return $resolver;
     }
