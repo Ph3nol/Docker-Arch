@@ -18,7 +18,7 @@ class ElasticsearchDockerContainer extends DockerContainer
      */
     public function getPackageManager(): string
     {
-        return DockerContainerInterface::PACKAGE_MANAGER_TYPE_APK;
+        return DockerContainerInterface::PACKAGE_MANAGER_TYPE_APT;
     }
 
     /**
@@ -64,6 +64,9 @@ class ElasticsearchDockerContainer extends DockerContainer
                 'remote' => '/usr/share/elasticsearch/data',
                 'type' => 'rw',
             ]);
+
+        // Envs.
+        $this->addEnv('ES_JAVA_OPTS', '-Xms2g -Xmx2g');
 
         // Ports.
         $this->addEnvPort('ELASTIC_SEARCH', ['from' => '8020', 'to' => '9200']);
