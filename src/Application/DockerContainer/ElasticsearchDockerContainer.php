@@ -43,7 +43,7 @@ class ElasticsearchDockerContainer extends DockerContainer
         $service = $this->getService();
         $project = $service->getProject();
 
-        $this->setFrom(sprintf('blacktop/elasticsearch:%s', $service->getOptions()['version']));
+        $this->setFrom(sprintf('elasticsearch:%s', $service->getOptions()['version']));
 
         // Commands.
         if (true === $service->getOptions()['with_management']) {
