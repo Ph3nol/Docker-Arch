@@ -91,16 +91,9 @@ class NginxDockerContainer extends DockerContainer
         }
 
         // Main Network Aliases.
-        $isServiceNetworkAliasable = function (ServiceInterface $service) {
-            return null !== $service->getHost();
-        };
-        if (true === $isServiceNetworkAliasable($service)) {
-            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
-        }
+        $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $service->getHost());
         foreach ($this->vhostsServicesByHost as $vhostService) {
-            if ($isServiceNetworkAliasable($vhostService)) {
-                $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $vhostService->getHost());
-            }
+            $this->addNetworkAlias(self::DOCKER_MAIN_NETWORK, $vhostService->getHost());
         }
     }
 
