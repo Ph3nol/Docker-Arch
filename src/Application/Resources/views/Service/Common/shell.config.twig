@@ -17,8 +17,7 @@ antigen bundle zsh-users/zsh-history-substring-search ./zsh-history-substring-se
 antigen bundle command-not-found
 
 {% if service.options.powerline|default(false) %}
-POWERLEVEL9K_INSTALLATION_PATH=$ANTIGEN_BUNDLES/bhilburn/powerlevel9k
-antigen theme bhilburn/powerlevel9k powerlevel9k
+antigen theme https://github.com/denysdovhan/spaceship-prompt spaceship
 {% else %}
 antigen theme nebirhos
 {% endif %}

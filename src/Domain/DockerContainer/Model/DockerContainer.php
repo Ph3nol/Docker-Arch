@@ -222,7 +222,7 @@ class DockerContainer implements DockerContainerInterface
         // Volumes.
         $this
             ->addVolume([
-                'local' => '~/.ssh', 'remote' => $this->getAbsoluteUserPath('~/.ssh'), 'type' => 'ro'
+                'local' => '~/.ssh', 'remote' => $this->getAbsoluteUserPath('~/.ssh'), 'type' => 'rw'
             ])
             ->addVolume([
                 'local' => '~/.gitconfig', 'remote' => $this->getAbsoluteUserPath('~/.gitconfig'), 'type' => 'ro'
