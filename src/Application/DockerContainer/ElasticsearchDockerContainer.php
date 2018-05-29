@@ -26,6 +26,8 @@ class ElasticsearchDockerContainer extends DockerContainer
      */
     public function preExecute(): void
     {
+        parent::preExecute();
+
         $service = $this->getService();
         if (true === $service->getOptions()['with_management']) {
             $service
