@@ -76,6 +76,12 @@ class DockerContainer implements DockerContainerInterface
                 ->addCommand('update-ca-certificates');
         }
 
+        if (true === $this->isPackageManager(self::PACKAGE_MANAGER_TYPE_APK) &&
+            true === $this->getService()->getOptions()['zsh']) {
+            $this
+                ->addPackage('zsh-vcs');
+        }
+
         $this->initLocale();
     }
 
