@@ -23,7 +23,6 @@ syncs:
 {% if service.options.app_type|default(null) == 'symfony' %}
     {{ project.identifier }}-{{ service.identifier }}-vendors-sync:
         src: "{{ service.path }}/vendor"
-        dest: "/opt/apps/{{ service.path }}/vendor"
         sync_args: "--delete"
         sync_strategy: "rsync"
         sync_host_port: 10872
